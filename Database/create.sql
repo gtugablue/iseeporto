@@ -47,6 +47,7 @@ CREATE TABLE UserAchievements
 (
   userId INT NOT NULL,
   achievementId INT NOT NULL,
+  unlockedDate DATE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (achievementId) REFERENCES Achievement(id)
 );
