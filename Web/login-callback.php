@@ -18,9 +18,10 @@ if (isset($accessToken)) {
     // Logged in!
     $_SESSION['facebook_access_token'] = (string) $accessToken;
 
-    // Now you can redirect to another page and use the
-    // access token from $_SESSION['facebook_access_token']
-    echo "Successfully logged in!";
+    $response = $fb->get("/me", $accessToken);
+    $userNode = $response->getGraphUser();
+
+    echo "Hello " . $userNode->getId() . " you've been successfully logged in!";
 }
 
 ?>
