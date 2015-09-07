@@ -18,8 +18,8 @@ $fb = new Facebook\Facebook([
 ]);
 
 // Database
-define (DB_USER, "adm51187_isee");
-define (DB_PASSWORD, "iseeporto2015");
-define (DB_DATABASE, "adm51187_iseeporto");
-define (DB_HOST, "revtut.net");
+define ('DB_USER', "adm51187_isee");
+define ('DB_PASSWORD', "iseeporto2015");
+define ('DB_DATABASE', "adm51187_iseeporto");
+define ('DB_HOST', "revtut.net");
 ?>
