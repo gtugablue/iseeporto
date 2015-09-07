@@ -1,8 +1,5 @@
 <?php
 require_once "includes/config.php";
-require_once FACEBOOK_SDK_SRC_DIR . 'autoload.php';
-
-session_start();
 
 $fb = new Facebook\Facebook([
   'app_id' => '1657545704515352',
@@ -11,8 +8,8 @@ $fb = new Facebook\Facebook([
   ]);
 
 $helper = $fb->getRedirectLoginHelper();
-$permissions = ['email', 'user_likes']; // optional
-$loginUrl = $helper->getLoginUrl('http://{your-website}/login-callback.php', $permissions);
+$permissions = ['email']; // optional
+$loginUrl = $helper->getLoginUrl('http://paginas.fe.up.pt/~up201304143/iSee%20Porto/login-callback.php', $permissions);
 
 echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
 ?>
