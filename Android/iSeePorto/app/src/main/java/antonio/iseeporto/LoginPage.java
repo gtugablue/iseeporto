@@ -1,9 +1,12 @@
 package antonio.iseeporto;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class LoginPage extends ActionBarActivity {
 
@@ -11,6 +14,15 @@ public class LoginPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+        final Button loginButton = (Button) findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginPage.this, MainPage.class));
+            }
+        });
     }
 
     @Override
@@ -34,4 +46,6 @@ public class LoginPage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
