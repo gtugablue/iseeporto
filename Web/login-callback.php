@@ -22,6 +22,8 @@ if (isset($accessToken)) {
     $userNode = $response->getGraphUser();
 
     echo "Hello " . $userNode->getId() . " you've been successfully logged in!";
+} else {
+    echo "Failed to login...";
 }
 
 ?>
