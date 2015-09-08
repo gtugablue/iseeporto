@@ -1,3 +1,13 @@
+# Drop existing tables
+DROP TABLE IF EXISTS PoIVisits;
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS UserAchievements;
+DROP TABLE IF EXISTS Achievement;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS PointsOfInterest;
+DROP TABLE IF EXISTS Region;
+DROP TABLE IF EXISTS TypeOfPoI;
+
 # Type of Points of Interest
 CREATE TABLE TypeOfPoI
 (
@@ -12,6 +22,13 @@ CREATE TABLE Region
   name TEXT NOT NULL
 );
 
+# Users
+CREATE TABLE User
+(
+  idFacebook INT PRIMARY KEY NOT NULL,
+  points INT NOT NULL
+);
+
 # Points of Interest
 CREATE TABLE PointsOfInterest
 (
@@ -21,19 +38,16 @@ CREATE TABLE PointsOfInterest
   regionId INT NOT NULL,
   name VARCHAR(256) NOT NULL,
   description TEXT NOT NULL,
+  address TEXT NOT NULL,
   latitude DOUBLE NOT NULL,
   longitude DOUBLE NOT NULL,
   creationDate DATE NOT NULL,
+  numLikes INT NOT NULL,
+  numDislikes INT NOT NULL,
+  rating DOUBLE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(id),
   CONSTRAINT FOREIGN KEY (regionId) REFERENCES Region(id)
-);
-
-# Users
-CREATE TABLE User
-(
-  idFacebook INT PRIMARY KEY NOT NULL,
-  points INT NOT NULL
 );
 
 # Achievements
