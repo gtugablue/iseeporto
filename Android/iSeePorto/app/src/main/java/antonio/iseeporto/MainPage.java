@@ -1,25 +1,19 @@
 package antonio.iseeporto;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.lang.reflect.Array;
 
 public class MainPage extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -34,6 +28,22 @@ public class MainPage extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    //pages
+    private final int PERFIL = 1;
+    private final int SUGGESTIONS = 2;
+    private final int VISITED = 3;
+    private final int NEAR_ME = 4;
+    private final int FRIENDS = 5;
+    private final int QRCODE = 6;
+
+    //fragments
+    Perfil perfilFrag;
+    Suggestions suggestionsFrag;
+    Visited visitedFrag;
+    NearMe nearMeFrag;
+    Friends friendsFrag;
+    Place placeFrag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +57,23 @@ public class MainPage extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        fragInit();
+
+        //temporario
+        android.app.FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.container, placeFrag, "Place");
+        transaction.commit();
+    }
+
+    private void fragInit() {
+        suggestionsFrag = new Suggestions();
+        placeFrag = new Place();
+        perfilFrag = new Perfil();
+        visitedFrag = new Visited();
+        nearMeFrag = new NearMe();
+        friendsFrag = new Friends();
     }
 
     @Override
@@ -63,6 +90,49 @@ public class MainPage extends ActionBarActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle(mTitle);
+
+        pageHandler(number);
+    }
+
+    private void pageHandler(int number) {
+
+        boolean isPlace = false;
+        android.app.FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        switch (number)
+        {
+            case PERFIL:
+                //transaction.add(R.id.container, suggestionsFrag, "Test");
+                transaction.replace(R.id.container, placeFrag, "Place");
+                isPlace = true;
+                break;
+            case SUGGESTIONS:
+                transaction.replace(R.id.container, suggestionsFrag, "Suggestions");
+                break;
+            case VISITED:
+                transaction.replace(R.id.container, visitedFrag, "Visited");
+                break;
+            case NEAR_ME:
+                transaction.replace(R.id.container, nearMeFrag, "NearMe");
+                break;
+            case FRIENDS:
+                transaction.replace(R.id.container, friendsFrag, "Friends");
+                break;
+            case QRCODE:
+                transaction.replace(R.id.container, placeFrag, "Place");
+                isPlace = true;
+                break;
+            default:
+                Log.e("Page Error", "Page Index out of bounds!");
+                break;
+        }
+
+        transaction.commit();
+
+        if (isPlace) {
+            placeFrag.createVisitFrag();
+        }
     }
 
     public void restoreActionBar() {
