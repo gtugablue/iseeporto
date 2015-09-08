@@ -54,7 +54,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">iSee Porto</a>
+                <a class="navbar-brand" href="index.php">iSee Porto</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -91,7 +91,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Painel de Controlo</a>
+                                <i class="fa fa-dashboard"></i>  <a href="index.php">Painel de Controlo</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-table"></i> Os meus PoIs

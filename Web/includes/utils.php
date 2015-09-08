@@ -6,6 +6,8 @@
  * Time: 16:45
  */
 
+require_once "config.php";
+
 /**
  * Calculates the great-circle distance between two points, with
  * the Haversine formula.
@@ -30,6 +32,50 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
             cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
+}
+
+function db_query($query, $parameters, $typeParameters) {
+    // Create prepared statement
+    global $db_connection;
+
+    $prepStatement = $db_connection->stmt_init();
+    if(!$prepStatement->prepare($query))
+    {
+        print "Failed to prepare statement\n";
+    }
+
+    $queryParams[] = $typeParameters;
+    foreach($parameters as $id => $term)
+        $queryParams[] = &$parameters[$id];
+
+    call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
+
+    // database query
+    $prepStatement->execute();
+
+    return $prepStatement->get_result();
+}
+
+function login($accessToken)
+{
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $sql = "SELECT idFacebook FROM User WHERE idFacebook = ?";
+    $parameters = array();
+    $parameters[0] = $userNode->getID();
+    $typeParameters = "i";
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result) return false;
+    if ($result->num_rows > 0)
+        return true;
+
+    // Create account
+    $sql = "INSERT INTO User (idFacebook, points) VALUES (?, 0)";
+    $parameters = array();
+    $parameters[0] = $userNode->getID();
+    $typeParameters = "i";
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result) return false;
 }
 
 function getFacebookGraphUser($fb, $accessToken)

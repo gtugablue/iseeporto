@@ -1,5 +1,6 @@
 <?php
 require_once "includes/config.php";
+require_once "includes/utils.php";
 
 $helper = $fb->getRedirectLoginHelper();
 
@@ -17,10 +18,10 @@ try {
 
 if (isset($accessToken)) {
     // Logged in!
+    login($accessToken);
     $_SESSION['facebook_access_token'] = (string) $accessToken;
 
-    $response = $fb->get("/me", $accessToken);
-    $userNode = $response->getGraphUser();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
 
     $url = "http://graph.facebook.com/".$userNode->getId()."/picture?type=large";
 

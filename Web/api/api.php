@@ -7,30 +7,7 @@
  */
 
 require_once "../includes/config.php";
-require_once "../includes/db_connect.php";
 require_once "../includes/utils.php";
-
-function db_query($query, $parameters, $typeParameters) {
-    // Create prepared statement
-    global $db_connection;
-
-    $prepStatement = $db_connection->stmt_init();
-    if(!$prepStatement->prepare($query))
-    {
-        print "Failed to prepare statement\n";
-    }
-
-    $queryParams[] = $typeParameters;
-    foreach($parameters as $id => $term)
-        $queryParams[] = &$parameters[$id];
-
-    call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
-
-    // database query
-    $prepStatement->execute();
-
-    return $prepStatement->get_result();
-}
 
 function get_PoI_info($id)
 {
@@ -88,12 +65,35 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
     return array_map("utf8_encode", $data);
 }
 
+function set_visited($id)
+{
+    if (!isset($_SESSION["facebook_access_token"])) return null;
+    $sql = "INSERTO INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE())";
+    $parameters = array();
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "ii";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
+}
+
 $value = "An error has occurred";
 
 if (isset($_GET["action"]))
 {
     switch (strtolower($_GET["action"]))
     {
+        case "login":
+            if (isset($_GET["accessToken"]))
+                $value = login($_GET["accessToken"]);
+            else
+                $value = "Missing argument.";
+            break;
         case "get_reviews":
             if (isset($_GET["id"]))
                 $value = get_reviews($_GET["id"]);
@@ -115,6 +115,11 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
+        case "set_visited":
+            if (isset($_GET["id"]))
+                $value = set_visited($_GET["id"]);
+            else
+                $value = "Missing argument";
         default:
             $value = "Unknown request.";
     }

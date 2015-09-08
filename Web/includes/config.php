@@ -22,4 +22,6 @@ define ('DB_USER', "iseeporto");
 define ('DB_PASSWORD', "iseeporto2015");
 define ('DB_DATABASE', "iseeporto");
 define ('DB_HOST', "iseeporto.revtut.net");
+
+require_once "db_connect.php";
 ?>
