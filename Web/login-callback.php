@@ -2,6 +2,7 @@
 require_once "includes/config.php";
 
 $helper = $fb->getRedirectLoginHelper();
+
 try {
     $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {

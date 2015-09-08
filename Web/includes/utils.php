@@ -32,4 +32,10 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
     return $angle * $earthRadius;
 }
 
+function getFacebookGraphUser($fb, $accessToken)
+{
+    $response = $fb->get("/me", $accessToken);
+    return $response->getGraphUser();
+}
+
 ?>
