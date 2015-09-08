@@ -23,7 +23,6 @@ function db_query($query, $parameters, $typeParameters) {
     $queryParams[] = $typeParameters;
     foreach($parameters as $id => $term)
         $queryParams[] = &$parameters[$id];
-    print_r($queryParams);
 
     call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
 
@@ -71,7 +70,6 @@ function get_achievements()
 
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
-    echo "Curr Lat: " . $currLat . " | Curr Lon: " . $currLon . " | Min Distance: " . $minDist . " | Max Distance: " . $maxDist . "\n";
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
             POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating
