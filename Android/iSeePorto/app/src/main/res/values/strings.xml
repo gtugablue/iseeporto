@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main_page">MainPage</string>
 
+    <string name="report"><u>Report</u></string>
+
     <string-array
         name="menu_options">
         <item>Perfil</item>
