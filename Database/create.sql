@@ -1,8 +1,8 @@
 # Type of Points of Interest
 CREATE TABLE TypeOfPoI
 (
-  type TEXT PRIMARY KEY NOT NULL,
-  CONSTRAINT unique_type UNIQUE (type)
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  type VARCHAR(100) NOT NULL UNIQUE
 );
 
 # Region of the Points of Interest
@@ -17,13 +17,13 @@ CREATE TABLE Region
 CREATE TABLE PointsOfInterest
 (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  typeId TEXT NOT NULL,
+  typeId INT NOT NULL,
   regionId INT NOT NULL,
   name VARCHAR(256) NOT NULL,
   description TEXT NOT NULL,
   latitude DOUBLE NOT NULL,
   longitude DOUBLE NOT NULL,
-  CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(type),
+  CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(id),
   CONSTRAINT FOREIGN KEY (regionId) REFERENCES Region(id)
 );
 
@@ -58,8 +58,8 @@ CREATE TABLE Reviews
   userId INT NOT NULL,
   poiId INT NOT NULL,
   comment TEXT NOT NULL,
-  like TINYINT NOT NULL,
-  CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook, points),
+  `like` TINYINT NOT NULL,
+  CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id)
 );
 
