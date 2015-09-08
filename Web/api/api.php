@@ -15,13 +15,16 @@ function db_get() {
         return null;
 
     // Get arguments
-    $type = '';
     $argList=func_get_args();
     $query = (string) $argList[0];
 
     global $db_connection;
 
-    $prepStatement = $db_connection->prepare($query);
+    $prepStatement = $db_connection->stmt_init();
+    if(!$prepStatement->prepare($query))
+    {
+        print "Failed to prepare statement\n";
+    }
 
     for($i=1;$i<$numArgs;$i++) {
         $prepStatement->bind_param("s", $argList[$i]);
@@ -30,40 +33,19 @@ function db_get() {
     // database query
     $prepStatement->execute();
 
-    // Throw an exception if the result metadata cannot be retrieved
-    if (!$meta = $prepStatement->result_metadata())
-    {
-        throw new Exception($prepStatement->error);
-    }
+    $result = $prepStatement->get_result();
 
-    // The data array
-    $data = array();
+    if (!$result || $result->num_rows == 0) return null;
 
-    // The references array
-    $refs = array();
+    $row = $result->fetch_array(MYSQLI_ASSOC);
 
-    // Iterate over the fields and set a reference
-    while ($name = $meta->fetch_field())
-    {
-        $refs[] =& $data[$name->name];
-    }
-
-    // Free the metadata result
-    $meta->free_result();
-
-    // Throw an exception if the result cannot be bound
-    if (!call_user_func_array(array($prepStatement, 'bind_result'), $refs))
-    {
-        throw new Exception($prepStatement->error);
-    }
-
-    return array_map("utf8_encode", $data);
+    return array_map("utf8_encode", $row);
 }
 
 function get_PoI_info($id)
 {
     $sql = "SELECT typeId, regionId, name, description, latitude, longitude FROM PointsOfInterest WHERE id = ?";
-    return db_get_test($sql, $id);
+    return db_get($sql, $id);
 }
 
 function get_reviews($id)

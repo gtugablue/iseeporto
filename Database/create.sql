@@ -16,12 +16,15 @@ CREATE TABLE Region
 CREATE TABLE PointsOfInterest
 (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  userId INT NOT NULL,
   typeId INT NOT NULL,
   regionId INT NOT NULL,
   name VARCHAR(256) NOT NULL,
   description TEXT NOT NULL,
   latitude DOUBLE NOT NULL,
   longitude DOUBLE NOT NULL,
+  creationDate DATE NOT NULL,
+  CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(id),
   CONSTRAINT FOREIGN KEY (regionId) REFERENCES Region(id)
 );
