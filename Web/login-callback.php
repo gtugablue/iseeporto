@@ -21,7 +21,16 @@ if (isset($accessToken)) {
     $response = $fb->get("/me", $accessToken);
     $userNode = $response->getGraphUser();
 
+    $url = "http://graph.facebook.com/".$userNode->getId()."/picture?type=large";
+
+    $headers = get_headers($url, 1);
+
+    if( isset($headers['Location']) )
+        echo '<img src="'.$headers['Location'].'" alt="Profile picture"/>'; // string
+    echo "<br />";
     echo "Hello " . $userNode->getId() . " you've been successfully logged in!";
+} else {
+    echo "Failed to login...";
 }
 
 ?>

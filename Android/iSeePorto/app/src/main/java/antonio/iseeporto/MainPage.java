@@ -60,6 +60,9 @@ public class MainPage extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         mTitle = getResources().getStringArray(R.array.menu_options)[number-1];
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(mTitle);
     }
 
     public void restoreActionBar() {
