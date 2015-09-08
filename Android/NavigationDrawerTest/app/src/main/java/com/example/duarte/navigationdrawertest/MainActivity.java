@@ -1,10 +1,10 @@
 package com.example.duarte.navigationdrawertest;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        ListView suggestedList = (ListView) findViewById(R.id.suggestedList);
-        Log.i("suggesteList", (suggestedList == null) + "");
-        suggestedList.setAdapter(new SuggestedPlacesAdapter(this));
+//        Fragment fragment = (Fragment) getFragmentManager().findFragmentById(R.layout.fragment_main);
+
+
 
     }
 
@@ -137,6 +137,11 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            ListView suggestedList = (ListView) rootView.findViewById(R.id.suggestedList);
+            Log.i("suggesteList", (suggestedList == null) + "");
+            suggestedList.setAdapter(new SuggestedPlacesAdapter(this.getContext()));
+
             return rootView;
         }
 
