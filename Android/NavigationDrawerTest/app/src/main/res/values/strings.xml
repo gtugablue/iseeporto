@@ -28,9 +28,38 @@
             >Clerigos 4</item>
         <item
             >Clerigos 5</item>
+        <item
+            >Clerigos 1</item>
+        <item
+            >Clerigos 2</item>
+        <item
+            >Clerigos 3</item>
+        <item
+            >Clerigos 4</item>
+        <item
+            >Clerigos 5</item>
     </string-array>
 
     <string-array name="suggested_visitors_friends">
+        <item>
+            Ricardo
+        </item>
+
+        <item>
+            José
+        </item>
+
+          <item>
+            Ricardo
+        </item>
+
+        <item>
+            José
+        </item>
+
+        <item>
+            Ricardo
+        </item>
         <item>
             Ricardo
         </item>
@@ -58,6 +87,11 @@
         <item>300</item>
         <item>400</item>
         <item>500</item>
+        <item>600</item>
+        <item>600</item>
+        <item>600</item>
+        <item>600</item>
+        <item>600</item>
         <item>600</item>
     </integer-array>
 
