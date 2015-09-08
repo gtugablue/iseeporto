@@ -98,10 +98,11 @@ if (isset($_GET["action"]))
             $value = get_achievements();
             break;
         case "get_suggested_pois":
-            if (isset($_GET["currLat"]) && iseet($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
-                $value = get_suggestions($_GET["currLat"], $_GET["currLong"], $_GET["minDist"], $_GET["maxDist"]);
+            if (isset($_GET["currLat"]) && isset($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
+                $value = get_suggestions($_GET["currLat"], $_GET["currLon"], $_GET["minDist"], $_GET["maxDist"]);
             else
                 $value = "Missing argument";
+            break;
         default:
             $value = "Unknown request.";
     }
