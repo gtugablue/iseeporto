@@ -46,7 +46,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         Log.i("executado:" , "getCount");
-        return 1;
+        return poiName.size();
     }
 
     @Override
@@ -66,20 +66,20 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         Log.i("getView", "Init");
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View row ;
+        row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
 
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
-            row = new View(this.context);
+
+        /*if (convertView == null) {
             convertView.setTag(row);
             Log.i("Caso", "a");
         } else {
             row = (View) convertView.getTag();
             Log.i("Caso", "b");
-        }
-
+        }*/
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
+        Log.i("TextView name null", (name == null) + "");
         name.setText(poiName.get(position));
 //        name.setText("Clerigos");
 
