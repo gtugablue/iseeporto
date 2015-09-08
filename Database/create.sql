@@ -69,6 +69,6 @@ CREATE TABLE PoIVisits
   userId INT NOT NULL,
   poiId INT NOT NULL,
   visitDate DATE NOT NULL,
-  CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook, points),
+  CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id)
 );
