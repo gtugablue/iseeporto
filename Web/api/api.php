@@ -6,6 +6,9 @@
  * Time: 09:34
  */
 
+require_once "../includes/config.php";
+require_once "../includes/db_connect.php";
+
 function get_PoI_info_by_ID($id)
 {
     $PoI_info = array();
@@ -60,5 +63,7 @@ if (isset($_GET["action"]))
 }
 
 //return JSON array
-exit(json_encode($value));
+echo json_encode($value);
+
+require_once "../includes/db_disconnect.php";
 ?>
