@@ -110,9 +110,7 @@ public class MainPage extends ActionBarActivity
         switch (number)
         {
             case PERFIL:
-                //transaction.add(R.id.container, suggestionsFrag, "Test");
-                transaction.replace(R.id.container, placeFrag, "Place");
-                isPlace = true;
+                transaction.replace(R.id.container, perfilFrag, "Perfil");
                 break;
             case SUGGESTIONS:
                 transaction.replace(R.id.container, suggestionsFrag, "Suggestions");
@@ -127,6 +125,7 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, friendsFrag, "Friends");
                 break;
             case QRCODE:
+                //abre QR code
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
                 intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
                 startActivityForResult(intent, 0);
@@ -153,6 +152,7 @@ public class MainPage extends ActionBarActivity
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 // Handle successful scan
 
+                //abre o mapa
                 double latitude = 41.183239; double longitude = -8.601390;
                 Intent intent1 = new Intent(android.content.Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
