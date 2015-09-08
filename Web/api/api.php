@@ -45,7 +45,7 @@ function db_query() {
 function get_PoI_info($id)
 {
     $sql = "SELECT typeId, regionId, name, description, latitude, longitude FROM PointsOfInterest WHERE id = ?";
-    return db_get($sql, $id);
+    return db_query($sql, $id);
 }
 
 function get_reviews($id)
