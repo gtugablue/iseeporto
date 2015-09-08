@@ -2,6 +2,8 @@ package antonio.iseeporto;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.Locale;
 
 public class MainPage extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -120,6 +127,10 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, friendsFrag, "Friends");
                 break;
             case QRCODE:
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                startActivityForResult(intent, 0);
+
                 transaction.replace(R.id.container, placeFrag, "Place");
                 isPlace = true;
                 break;
@@ -133,6 +144,26 @@ public class MainPage extends ActionBarActivity
         if (isPlace) {
             placeFrag.createVisitFrag();
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                // Handle successful scan
+
+                double latitude = 41.183239; double longitude = -8.601390;
+                Intent intent1 = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
+                startActivity(intent1);
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // Handle cancel
+            }
+        }
+
+        onSectionAttached(PERFIL);
     }
 
     public void restoreActionBar() {
