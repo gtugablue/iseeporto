@@ -9,7 +9,7 @@ error_reporting(-1);
 session_start();
 
 // Facebook
-define('FACEBOOK_SDK_SRC_DIR', './libs/facebook/');
+define('FACEBOOK_SDK_SRC_DIR', __DIR__ . '/..' . '/libs/facebook/');
 require_once FACEBOOK_SDK_SRC_DIR . 'autoload.php';
 $fb = new Facebook\Facebook([
     'app_id' => '1657545704515352',

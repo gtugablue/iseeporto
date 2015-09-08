@@ -88,7 +88,7 @@ $loginUrl = $helper->getLoginUrl('http://'.$_SERVER['SERVER_NAME'] . $_SERVER['R
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">In nominae solenissima praxis, cara de cus fagotis est.</h3>
                 </div>
             </div>
             <div class="row text-center">
