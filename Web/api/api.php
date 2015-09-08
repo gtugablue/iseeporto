@@ -9,7 +9,7 @@
 require_once "../includes/config.php";
 require_once "../includes/db_connect.php";
 
-function db_get() {
+function db_query() {
     $numArgs=func_num_args();
     if($numArgs < 1)
         return null;
@@ -51,7 +51,7 @@ function get_PoI_info($id)
 function get_reviews($id)
 {
     $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ?";
-    return db_get($sql, $id);
+    return db_query($sql, $id);
 }
 
 $value = "An error has occurred";
