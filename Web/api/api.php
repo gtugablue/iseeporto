@@ -8,6 +8,7 @@
 
 require_once "../includes/config.php";
 require_once "../includes/db_connect.php";
+require_once "../includes/utils.php";
 
 function db_query() {
     $numArgs=func_num_args();
@@ -33,25 +34,46 @@ function db_query() {
     // database query
     $prepStatement->execute();
 
-    $result = $prepStatement->get_result();
-
-    if (!$result || $result->num_rows == 0) return null;
-
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-
-    return array_map("utf8_encode", $row);
+    return $prepStatement->get_result();
 }
 
 function get_PoI_info($id)
 {
     $sql = "SELECT typeId, regionId, name, description, latitude, longitude FROM PointsOfInterest WHERE id = ?";
-    return db_query($sql, $id);
+    $result = db_query($sql, $id);
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
 }
 
 function get_reviews($id)
 {
     $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ?";
-    return db_query($sql, $id);
+    $result = db_query($sql, $id);
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
+}
+
+function get_achievements()
+{
+    $sql = "SELECT id, name, description FROM Achievement";
+    $result = db_query($sql);
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
+}
+
+function get_suggestions($currLat, $currLon, $minDist, $maxDist)
+{
+    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
+            (POW(69.1 * (latitude - ?), 2) +
+            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance
+            FROM PointsOfInterest WHERE distance BETWEEN ? AND ? ORDER BY ranking DESC)";
+    $result = db_query($sql, $currLat, $currLon, pow($minDist, 2), pow($maxDist, 2));
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
 }
 
 $value = "An error has occurred";
@@ -72,6 +94,14 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
+        case "get_achievements":
+            $value = get_achievements();
+            break;
+        case "get_suggested_pois":
+            if (isset($_GET["currLat"]) && iseet($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
+                $value = get_suggestions($_GET["currLat"], $_GET["currLong"], $_GET["minDist"], $_GET["maxDist"]);
+            else
+                $value = "Missing argument";
         default:
             $value = "Unknown request.";
     }
