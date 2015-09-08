@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Navigation Drawer Test</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string-array name="menu_names"
+        >
+        <item
+            >Suggestions</item>
+        <item
+            >Visited</item>
+        <item
+            >Near Me</item>
+        <item
+            >Friends</item>
+    </string-array>
+
+    <string-array name="suggested_pois">
+        <item
+            >Clerigos 1</item>
+        <item
+            >Clerigos 2</item>
+        <item
+            >Clerigos 3</item>
+        <item
+            >Clerigos 4</item>
+        <item
+            >Clerigos 5</item>
+    </string-array>
+
+    <string-array name="suggested_visitors_friends">
+        <item>
+            Ricardo
+        </item>
+
+        <item>
+            José
+        </item>
+
+          <item>
+            Ricardo
+        </item>
+
+        <item>
+            José
+        </item>
+
+        <item>
+            Ricardo
+        </item>
+    </string-array>
+
+    <integer-array name="distances"
+        >
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+    </integer-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
