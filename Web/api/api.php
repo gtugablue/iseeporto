@@ -9,7 +9,7 @@
 require_once "../includes/config.php";
 require_once "../includes/db_connect.php";
 
-function db_get_test() {
+function db_get() {
     $numArgs=func_num_args();
     if($numArgs < 1)
         return null;
@@ -18,38 +18,46 @@ function db_get_test() {
     $type = '';
     $argList=func_get_args();
     $query = (string) $argList[0];
-    $queryArgs = array();
+
+    global $db_connection;
+
+    $prepStatement = $db_connection->prepare($query);
+
     for($i=1;$i<$numArgs;$i++) {
-        $type = $type . 's';
-        $queryArgs[$i]=$argList[$i];
+        $prepStatement->bind_param("s", $argList[$i]);
     }
 
     // database query
-    global $db_connection;
-    echo $db_connection->get_connection_stats();
+    $prepStatement->execute();
 
-    $prepStatement = $db_connection->prepare($query);
-    $prepStatement->bind_param($type, $queryArgs);
-    $result = $prepStatement->execute();
+    // Throw an exception if the result metadata cannot be retrieved
+    if (!$meta = $prepStatement->result_metadata())
+    {
+        throw new Exception($prepStatement->error);
+    }
 
-    if (!$result || mysqli_num_rows($result) == 0) return null;
+    // The data array
+    $data = array();
 
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    // The references array
+    $refs = array();
 
-    return array_map("utf8_encode", $row);
-}
+    // Iterate over the fields and set a reference
+    while ($name = $meta->fetch_field())
+    {
+        $refs[] =& $data[$name->name];
+    }
 
-function db_get($query)
-{
-    global $db_connection;
+    // Free the metadata result
+    $meta->free_result();
 
-    $result = mysqli_query($db_connection, $query);
+    // Throw an exception if the result cannot be bound
+    if (!call_user_func_array(array($prepStatement, 'bind_result'), $refs))
+    {
+        throw new Exception($prepStatement->error);
+    }
 
-    if (!$result || mysqli_num_rows($result) == 0) return null;
-
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-    return array_map("utf8_encode", $row);
+    return array_map("utf8_encode", $data);
 }
 
 function get_PoI_info($id)
@@ -60,8 +68,8 @@ function get_PoI_info($id)
 
 function get_reviews($id)
 {
-    $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ".$id;
-    return db_get($sql);
+    $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ?";
+    return db_get($sql, $id);
 }
 
 $value = "An error has occurred";
@@ -72,7 +80,7 @@ if (isset($_GET["action"]))
     {
         case "get_reviews":
             if (isset($_GET["id"]))
-                $value = get_reviews(mysqli_real_escape_string($db_connection, $_GET["id"]));
+                $value = get_reviews($_GET["id"]);
             else
                 $value = "Missing argument";
             break;
