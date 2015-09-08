@@ -12,7 +12,6 @@ CREATE TABLE Region
   name TEXT NOT NULL
 );
 
-
 # Points of Interest
 CREATE TABLE PointsOfInterest
 (
