@@ -26,6 +26,7 @@ CREATE TABLE PointsOfInterest
   CONSTRAINT FOREIGN KEY (regionId) REFERENCES Region(id)
 );
 
+
 # Users
 CREATE TABLE User
 (
