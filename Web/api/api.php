@@ -10,15 +10,8 @@ require_once "../includes/config.php";
 require_once "../includes/db_connect.php";
 require_once "../includes/utils.php";
 
-function db_query() {
-    $numArgs=func_num_args();
-    if($numArgs < 1)
-        return null;
-
-    // Get arguments
-    $argList=func_get_args();
-    $query = (string) $argList[0];
-
+function db_query($query, $parameters, $typeParameters) {
+    // Create prepared statement
     global $db_connection;
 
     $prepStatement = $db_connection->stmt_init();
@@ -27,9 +20,12 @@ function db_query() {
         print "Failed to prepare statement\n";
     }
 
-    for($i=1;$i<$numArgs;$i++) {
-        $prepStatement->bind_param("s", $argList[$i]);
-    }
+    $queryParams[] = $typeParameters;
+    foreach($parameters as $id => $term)
+        $queryParams[] = &$parameters[$id];
+    print_r($queryParams);
+
+    call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
 
     // database query
     $prepStatement->execute();
@@ -40,7 +36,11 @@ function db_query() {
 function get_PoI_info($id)
 {
     $sql = "SELECT typeId, regionId, name, description, latitude, longitude FROM PointsOfInterest WHERE id = ?";
-    $result = db_query($sql, $id);
+    $parameters = array();
+    $parameters[0] = $id;
+    $typeParameters = "i";
+
+    $result = db_query($sql, $parameters, $typeParameters);
     if (!$result || $result->num_rows == 0) return null;
     $data = $result->fetch_array(MYSQLI_ASSOC);
     return array_map("utf8_encode", $data);
@@ -49,7 +49,11 @@ function get_PoI_info($id)
 function get_reviews($id)
 {
     $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ?";
-    $result = db_query($sql, $id);
+    $parameters = array();
+    $parameters[0] = $id;
+    $typeParameters = "i";
+
+    $result = db_query($sql, $parameters, $typeParameters);
     if (!$result || $result->num_rows == 0) return null;
     $data = $result->fetch_array(MYSQLI_ASSOC);
     return array_map("utf8_encode", $data);
@@ -58,6 +62,7 @@ function get_reviews($id)
 function get_achievements()
 {
     $sql = "SELECT id, name, description FROM Achievement";
+
     $result = db_query($sql);
     if (!$result || $result->num_rows == 0) return null;
     $data = $result->fetch_array(MYSQLI_ASSOC);
@@ -66,11 +71,20 @@ function get_achievements()
 
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
+    echo "Curr Lat: " . $currLat . " | Curr Lon: " . $currLon . " | Min Distance: " . $minDist . " | Max Distance: " . $maxDist . "\n";
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance
-            FROM PointsOfInterest WHERE distance BETWEEN ? AND ? ORDER BY ranking DESC)";
-    $result = db_query($sql, $currLat, $currLon, pow($minDist, 2), pow($maxDist, 2));
+            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating
+            FROM PointsOfInterest HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
+
+    $parameters = array();
+    $parameters[0] = $currLat;
+    $parameters[1] = $currLon;
+    $parameters[2] = pow($minDist, 2);
+    $parameters[3] = pow($maxDist, 2);
+    $typeParameters = "dddd";
+
+    $result = db_query($sql, $parameters, $typeParameters);
     if (!$result || $result->num_rows == 0) return null;
     $data = $result->fetch_array(MYSQLI_ASSOC);
     return array_map("utf8_encode", $data);
