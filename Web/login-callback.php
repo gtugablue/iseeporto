@@ -31,6 +31,7 @@ if (isset($accessToken)) {
         echo '<img src="'.$headers['Location'].'" alt="Profile picture"/>'; // string
     echo "<br />";
     echo "Hello " . $userNode->getId() . " you've been successfully logged in!";
+    header("Location: account/");
 } else {
     echo "Failed to login...";
 }
