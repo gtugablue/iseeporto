@@ -2,12 +2,14 @@
 ALTER DATABASE iseeporto CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # Drop existing tables
+DROP TRIGGER IF EXISTS MakeReview;
+DROP FUNCTION IF EXISTS CALCULATE_RATING;
 DROP TABLE IF EXISTS PoIVisits;
 DROP TABLE IF EXISTS Reviews;
 DROP TABLE IF EXISTS UserAchievements;
 DROP TABLE IF EXISTS Achievement;
-DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS PointsOfInterest;
+DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS Region;
 DROP TABLE IF EXISTS TypeOfPoI;
 
@@ -68,7 +70,8 @@ CREATE TABLE UserAchievements
   achievementId INT NOT NULL,
   unlockedDate DATE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
-  CONSTRAINT FOREIGN KEY (achievementId) REFERENCES Achievement(id)
+  CONSTRAINT FOREIGN KEY (achievementId) REFERENCES Achievement(id),
+  CONSTRAINT PRIMARY KEY (userId, achievementId)
 );
 
 # Reviews
@@ -77,9 +80,10 @@ CREATE TABLE Reviews
   userId VARCHAR(64) NOT NULL,
   poiId INT NOT NULL,
   comment TEXT NOT NULL,
-  `like` TINYINT NOT NULL,
+  `like` BOOL NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
-  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id)
+  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id),
+  CONSTRAINT PRIMARY KEY (userId, poiId)
 );
 
 # Visits to Points of Interest
@@ -89,7 +93,8 @@ CREATE TABLE PoIVisits
   poiId INT NOT NULL,
   visitDate DATE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
-  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id)
+  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id),
+  CONSTRAINT PRIMARY KEY (userId, poiId)
 );
 
 DELIMITER //
