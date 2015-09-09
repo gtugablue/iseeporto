@@ -61,25 +61,41 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result || $result->num_rows == 0) return null;
-    $data = $result->fetch_array(MYSQLI_ASSOC);
-    return array_map("utf8_encode", $data);
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map("utf8_encode_array", $data);
+}
+
+function get_visited()
+{
+    if (!isset($_SESSION["facebook_access_token"])) return null;
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id AND PoIVisits.userId = ?";
+    $parameters = array();
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
+    $parameters[0] = $userNode->getID();
+    $typeParameters = "s";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result || $result->num_rows == 0) return null;
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
 }
 
 function set_visited($id)
 {
     if (!isset($_SESSION["facebook_access_token"])) return null;
-    $sql = "INSERTO INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE())";
+    $sql = "INSERT INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE)";
     $parameters = array();
     global $fb;
     $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
     $parameters[0] = $userNode->getID();
     $parameters[1] = $id;
-    $typeParameters = "ii";
+    $typeParameters = "si";
 
     $result = db_query($sql, $parameters, $typeParameters);
-    if (!$result || $result->num_rows == 0) return null;
-    $data = $result->fetch_array(MYSQLI_ASSOC);
-    return array_map("utf8_encode", $data);
+    if (!$result) return false;
+    return true;
 }
 
 $value = "An error has occurred";
@@ -115,11 +131,15 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
+        case "get_visited":
+                $value = get_visited();
+            break;
         case "set_visited":
             if (isset($_GET["id"]))
                 $value = set_visited($_GET["id"]);
             else
                 $value = "Missing argument";
+            break;
         default:
             $value = "Unknown request.";
     }
