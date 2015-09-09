@@ -15,7 +15,7 @@
         android:src="@mipmap/clerigos" />
 
     <TextView
-        android:id="@+id/visitors"
+        android:id="@+id/visitation_date"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
