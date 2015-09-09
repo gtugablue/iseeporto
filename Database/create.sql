@@ -91,3 +91,34 @@ CREATE TABLE PoIVisits
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id)
 );
+
+DELIMITER //
+CREATE FUNCTION CALCULATE_RATING(positive INT, negative INT)
+  RETURNS DOUBLE
+  BEGIN
+    DECLARE rating DOUBLE;
+    IF (positive + negative <= 0) THEN
+      RETURN 0;
+    END IF;
+    SET rating = ((positive + 1.9208) / (positive + negative) -
+                  1.96 * SQRT((positive * negative) / (positive + negative) + 0.9604) /
+                  (positive + negative)) / (1 + 3.8416 / (positive + negative));
+    RETURN rating;
+  END //
+DELIMITER ;
+
+CREATE TRIGGER MakeReview
+AFTER INSERT ON Reviews
+FOR EACH ROW
+  BEGIN
+    SET @positive = (SELECT numLikes FROM PointsOfInterest WHERE PointsOfInterest.id = NEW.poiId);
+    SET @negative = (SELECT numDislikes FROM PointsOfInterest WHERE PointsOfInterest.id = NEW.poiId);
+    IF NEW.like = true THEN
+      SET @positive = @positive + 1;
+      UPDATE PointsOfInterest SET numLikes = @positive WHERE PointsOfInterest.id = NEW.poiId;
+    ELSE
+      SET @negative = @negative + 1;
+      UPDATE PointsOfInterest SET numDislikes = @negative WHERE PointsOfInterest.id = NEW.poiId;
+    END IF;
+    UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
+  END;
