@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Nome"
-                android:id="@+id/textView8"
+                android:id="@+id/nomeId"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp"
