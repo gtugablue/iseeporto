@@ -1,3 +1,6 @@
+# Charset
+ALTER DATABASE iseeporto CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 # Drop existing tables
 DROP TABLE IF EXISTS PoIVisits;
 DROP TABLE IF EXISTS Reviews;
