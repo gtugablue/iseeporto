@@ -15,7 +15,7 @@
         android:src="@mipmap/clerigos" />
 
     <TextView
-        android:id="@+id/visitors"
+        android:id="@+id/visitation_date"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
@@ -23,21 +23,14 @@
         android:layout_toRightOf="@id/poi_image"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:text="José e Ricardo já visitaram"
+        android:text="07/09/2015"
         android:textSize="12sp" />
 
     <TextView
-<<<<<<< HEAD
-        android:id="@+id/poi_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/poi_name"
-=======
         android:id="@+id/feed_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/feed_text"
->>>>>>> Duarte
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
@@ -46,20 +39,14 @@
         android:text="Clérigos"
         android:textSize="16sp" />
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="200m"
-        android:id="@+id/distance"
-<<<<<<< HEAD
-        android:layout_alignBottom="@+id/poi_name"
-        android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/poi_name" />
-=======
+        android:id="@+id/thumb"
         android:layout_alignBottom="@+id/feed_text"
         android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/feed_text" />
->>>>>>> Duarte
+        android:layout_alignRight="@+id/feed_text"
+        android:src="@mipmap/thumbs_up" />
 
 </RelativeLayout>

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(int number) {
+<<<<<<< HEAD
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -70,11 +71,17 @@ public class MainActivity extends AppCompatActivity
                 mTitle = getString(R.string.title_section3);
                 break;
         }
+=======
+        mTitle = getResources().getStringArray(R.array.menu_names)[number-1];
+>>>>>>> Duarte
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
+<<<<<<< HEAD
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+=======
+>>>>>>> Duarte
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -95,7 +102,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+<<<<<<< HEAD
         // Handle action bar item clicks here. The action bar will
+=======
+        /*// Handle action bar item clicks here. The action bar will
+>>>>>>> Duarte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
@@ -105,7 +116,12 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+<<<<<<< HEAD
         return super.onOptionsItemSelected(item);
+=======
+        return super.onOptionsItemSelected(item);*/
+        return true;
+>>>>>>> Duarte
     }
 
     /**
@@ -139,8 +155,12 @@ public class MainActivity extends AppCompatActivity
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             ListView suggestedList = (ListView) rootView.findViewById(R.id.suggestedList);
+<<<<<<< HEAD
             Log.i("suggesteList", (suggestedList == null) + "");
             suggestedList.setAdapter(new SuggestedPlacesAdapter(this.getContext()));
+=======
+            suggestedList.setAdapter(new FeedAdapter(this.getContext()));
+>>>>>>> Duarte
 
             return rootView;
         }
