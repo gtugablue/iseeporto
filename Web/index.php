@@ -101,15 +101,15 @@ header('Content-Type: text/html; charset=utf-8');
                         <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Social</h4>
-                <p class="text-muted">Visita os locais que os teus amigos mais gostaram! Partilha a tua apreciaÁ„o de novos locais socialmente.</p>
+                <p class="text-muted">Visita os locais que os teus amigos mais gostaram! Partilha a tua aprecia√ß√£o de novos locais socialmente.</p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
                     </span>
-                <h4 class="service-heading">IntÌmo</h4>
-                <p class="text-muted">Os pontos de interesse existentes na aplicaÁ„o foram adicionados com a melhor intenÁ„o, por pessoas como tu!</p>
+                <h4 class="service-heading">√çntimo</h4>
+                <p class="text-muted">Os pontos de interesse existentes na aplica√ß√£o foram adicionados com a melhor inten√ß√£o, por pessoas como tu!</p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -117,7 +117,7 @@ header('Content-Type: text/html; charset=utf-8');
                         <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Simples</h4>
-                <p class="text-muted">Nada de menus confusos, nem opÁıes escondidas. Tudo o que È preciso est· bem ‡ vista de uma forma excelentemente organizada.</p>
+                <p class="text-muted">Nada de menus confusos, nem op√ß√µes escondidas. Tudo o que √© preciso est√° bem √† vista de uma forma excelentemente organizada.</p>
             </div>
         </div>
     </div>
@@ -360,9 +360,9 @@ header('Content-Type: text/html; charset=utf-8');
             </div>
             <div class="col-md-4">
                 <ul class="list-inline quicklinks">
-                    <li><a href="#">PolÌtica de Privacidade</a>
+                    <li><a href="#">Pol√≠tica de Privacidade</a>
                     </li>
-                    <li><a href="#">Termos de UtilizaÁ„o</a>
+                    <li><a href="#">Termos de Utiliza√ß√£o</a>
                     </li>
                 </ul>
             </div>

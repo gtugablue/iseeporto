@@ -14,7 +14,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
 <head>
 
-    <!--<meta charset="utf-8">-->
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -112,7 +112,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                             </div>
 
                             <div class="form-group">
-                                <label>Descrição</label>
+                                <label>Descriï¿½ï¿½o</label>
                                 <textarea class="form-control" rows="3"></textarea>
                             </div>
 
