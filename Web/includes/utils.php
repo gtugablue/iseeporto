@@ -48,11 +48,13 @@ function db_query($query, $parameters, $typeParameters) {
         print "Failed to prepare statement\n" . $db_connection->error;
     }
 
-    $queryParams[] = $typeParameters;
-    foreach($parameters as $id => $term)
-        $queryParams[] = &$parameters[$id];
+    if(count($parameters) > 0) {
+        $queryParams[] = $typeParameters;
+        foreach ($parameters as $id => $term)
+            $queryParams[] = &$parameters[$id];
 
-    call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
+        call_user_func_array(array($prepStatement, 'bind_param'), $queryParams);
+    }
 
     // database query
     $prepStatement->execute();

@@ -112,7 +112,24 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
                             <div class="form-group">
                                 <label>Descrição</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" rows="5"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tipo</label>
+                                <select class="form-control">
+                                    <?php
+                                    $sql = "SELECT id, type FROM TypeOfPoI";
+                                    $parameters = array();
+                                    $typeParameters = "";
+                                    $result = db_query($sql, $parameters, $typeParameters);
+                                    if ($result && $result->num_rows > 0) {
+                                        $rows = $result->fetch_all();
+                                        foreach($rows as $row)
+                                            echo "<option value=$row[0]> $row[1]</option>";
+                                    }
+                                    ?>
+                                </select>
                             </div>
 
                             <div class="form-group">
