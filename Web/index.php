@@ -11,8 +11,7 @@ header('Content-Type: text/html; charset=utf-8');
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -302,7 +301,7 @@ header('Content-Type: text/html; charset=utf-8');
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading">Contacte-nos</h2>
-                <h3 class="section-subheading text-muted">Expıe as tuas d˙vidas e/ou sugestıes.</h3>
+                <h3 class="section-subheading text-muted">Exp√µe as tuas d√∫vidas e/ou sugest√µes.</h3>
             </div>
         </div>
         <div class="row">
@@ -315,11 +314,11 @@ header('Content-Type: text/html; charset=utf-8');
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Email *" id="email" required data-validation-required-message="Por favor insira o seu endereÁo de email.">
+                                <input type="email" class="form-control" placeholder="Email *" id="email" required data-validation-required-message="Por favor insira o seu endere√ßo de email.">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="tel" class="form-control" placeholder="TelemÛvel *" id="phone" required data-validation-required-message="Por favor insira o seu n˙mero de telemÛvel.">
+                                <input type="tel" class="form-control" placeholder="Telem√≥vel *" id="phone" required data-validation-required-message="Por favor insira o seu n√∫mero de telem√≥vel.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
