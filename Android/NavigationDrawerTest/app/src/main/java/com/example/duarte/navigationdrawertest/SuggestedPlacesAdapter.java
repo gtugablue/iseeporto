@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,66 +23,66 @@ import java.util.List;
 public class SuggestedPlacesAdapter extends BaseAdapter {
 
     private final Context context;
-    private List<String> poiName;
 
-    private List<String> visitorFriends;
+    public class SuggestedPoiData{
+        protected String poiName;
+        protected String visitorFriends;
+        protected int distance;
 
-    private int[] distanceArray;
+        SuggestedPoiData(String poiName,String visitorFriends,int distance){
+            this.poiName = poiName;
+            this.visitorFriends = visitorFriends;
+            this.distance = distance;
+        }
+    }
+
+    private List<SuggestedPoiData> data;
+
 
     public SuggestedPlacesAdapter(Context context){
-        Log.i("Começa a criar adapter", "Init");
         this.context = context;
-        poiName =Arrays.asList(context.getResources().getStringArray(R.array.suggested_pois));
-        for(String name : poiName)
-            Log.i("name:" , name);
-        visitorFriends = Arrays.asList(context.getResources().getStringArray(R.array.suggested_visitors_friends));
-        for(String name : visitorFriends)
-            Log.i("friend:" , name);
-        distanceArray = context.getResources().getIntArray(R.array.distances);
-        for(Integer i : distanceArray)
-            Log.i("dist:" , i.toString());
-        Log.i("Criou adapter", "Suc");
+        ArrayList<SuggestedPoiData> data = new ArrayList<SuggestedPoiData>();
+        List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.suggested_pois));
+        List<String> visitors = Arrays.asList(context.getResources().getStringArray(R.array.suggested_visitors_friends));
+        int[] distances = context.getResources().getIntArray(R.array.distances);
+
+        for(int i = 0; i< distances.length; i++){
+            data.add(new SuggestedPoiData(names.get(i), visitors.get(i), distances[i]));
+        }
+
+        this.data = data;
+    }
+
+    public SuggestedPlacesAdapter(Context context, ArrayList<SuggestedPoiData> data){
+        this.context = context;
+        this.data = data;
     }
 
     @Override
     public int getCount() {
-        Log.i("executado:" , "getCount");
-        return poiName.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        Log.i("executado:" , "getItem " + position);
         return null;
     }
 
     @Override
     public long getItemId(int position) {
-        Log.i("executado:" , "getItemId " +position);
         return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.i("getView", "Init");
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View row ;
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
 
-
-        /*if (convertView == null) {
-            convertView.setTag(row);
-            Log.i("Caso", "a");
-        } else {
-            row = (View) convertView.getTag();
-            Log.i("Caso", "b");
-        }*/
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
-        Log.i("TextView name null", (name == null) + "");
-        name.setText(poiName.get(position));
-//        name.setText("Clerigos");
+        name.setText(data.get(position).poiName.toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
         /*if(visitorFriends.get(position).length == 2)
@@ -91,13 +92,11 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         if(visitorFriends.get(position).length == 0)
             visitors.setText("");*/
 
-        visitors.setText(visitorFriends.get(position) + " visitou este local");
-//        visitors.setText("José" + "visitou este local");
+        visitors.setText(data.get(position).visitorFriends + " visitou este local");
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
-        distance.setText(distanceArray[position] + "m");
-//        distance.setText("200" + "m");
-        Log.i("retorna a row", "Suc");
+        distance.setText(data.get(position).distance + "m");
+
 
         return row;
     }
