@@ -115,55 +115,25 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                        <td>$321.33</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/about.html</td>
-                                        <td>261</td>
-                                        <td>33.3%</td>
-                                        <td>$234.12</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/sales.html</td>
-                                        <td>665</td>
-                                        <td>21.3%</td>
-                                        <td>$16.34</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog.html</td>
-                                        <td>9516</td>
-                                        <td>89.3%</td>
-                                        <td>$1644.43</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/404.html</td>
-                                        <td>23</td>
-                                        <td>34.3%</td>
-                                        <td>$23.52</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/services.html</td>
-                                        <td>421</td>
-                                        <td>60.3%</td>
-                                        <td>$724.32</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog/post.html</td>
-                                        <td>1233</td>
-                                        <td>93.2%</td>
-                                        <td>$126.34</td>
-                                        <td>$321.33</td>
-                                    </tr>
+                                <?php
+                                $sql = "SELECT name, description, address, latitude, longitude, type FROM PointsOfInterest INNER JOIN TypeOfPoI WHERE typeId = TypeOfPoI.id AND userId = ?";
+                                $parameters = array();
+                                $parameters[0] = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"])->getID();
+                                $typeParameters = "s";
+
+                                $result = db_query($sql, $parameters, $typeParameters);
+                                if (!$result || $result->num_rows == 0) return null;
+                                while ($row = $result->fetch_row(MYSQLI_ASSOC))
+                                {
+                                    echo "<tr>";
+                                    echo "<td>" . $row["name"] . "</td>";
+                                    echo "<td>" . $row["description"] . "</td>";
+                                    echo "<td>" . $row["address"] . "</td>";
+                                    echo "<td>" . $row["latitude"] . " " . $row["longitude"] . "</td>";
+                                    echo "<td>" . $row["type"] . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
                                 </tbody>
                             </table>
                         </div>
