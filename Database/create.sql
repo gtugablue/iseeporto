@@ -25,7 +25,7 @@ CREATE TABLE Region
 # Users
 CREATE TABLE User
 (
-  idFacebook INT PRIMARY KEY NOT NULL,
+  idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
   points INT NOT NULL
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE User
 CREATE TABLE PointsOfInterest
 (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  userId INT NOT NULL,
+  userId VARCHAR(64) NOT NULL,
   typeId INT NOT NULL,
   regionId INT NOT NULL,
   name VARCHAR(256) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE Achievement
 # User achievements
 CREATE TABLE UserAchievements
 (
-  userId INT NOT NULL,
+  userId VARCHAR(64) NOT NULL,
   achievementId INT NOT NULL,
   unlockedDate DATE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
@@ -71,7 +71,7 @@ CREATE TABLE UserAchievements
 # Reviews
 CREATE TABLE Reviews
 (
-  userId INT NOT NULL,
+  userId VARCHAR(64) NOT NULL,
   poiId INT NOT NULL,
   comment TEXT NOT NULL,
   `like` TINYINT NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE Reviews
 # Visits to Points of Interest
 CREATE TABLE PoIVisits
 (
-  userId INT NOT NULL,
+  userId VARCHAR(64) NOT NULL,
   poiId INT NOT NULL,
   visitDate DATE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),

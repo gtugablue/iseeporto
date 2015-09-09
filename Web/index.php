@@ -301,8 +301,8 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Contact Us</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <h2 class="section-heading">Contacte-nos</h2>
+                <h3 class="section-subheading text-muted">Expõe as tuas dúvidas e/ou sugestões.</h3>
             </div>
         </div>
         <div class="row">
@@ -311,28 +311,28 @@ header('Content-Type: text/html; charset=utf-8');
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Nome *" id="name" required data-validation-required-message="Por favor insira o seu nome.">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Your Email *" id="email" required data-validation-required-message="Please enter your email address.">
+                                <input type="email" class="form-control" placeholder="Email *" id="email" required data-validation-required-message="Por favor insira o seu endereço de email.">
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" required data-validation-required-message="Please enter your phone number.">
+                                <input type="tel" class="form-control" placeholder="Telemóvel *" id="phone" required data-validation-required-message="Por favor insira o seu número de telemóvel.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <textarea class="form-control" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                                <textarea class="form-control" placeholder="Mensagem *" id="message" required data-validation-required-message="Por favor escreva a sua mensagem."></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-lg-12 text-center">
                             <div id="success"></div>
-                            <button type="submit" class="btn btn-xl">Send Message</button>
+                            <button type="submit" class="btn btn-xl">Enviar</button>
                         </div>
                     </div>
                 </form>
@@ -386,7 +386,7 @@ header('Content-Type: text/html; charset=utf-8');
 <script src="js/contact_me.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="js/agency.js"></script>
+<script src="js/onepage.js"></script>
 
 </body>
 
