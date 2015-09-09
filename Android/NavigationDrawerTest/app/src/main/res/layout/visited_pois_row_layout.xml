@@ -46,6 +46,7 @@
         android:id="@+id/thumb"
         android:layout_alignBottom="@+id/poi_name"
         android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/poi_name" />
+        android:layout_alignRight="@+id/poi_name"
+        android:src="@mipmap/thumbs_up" />
 
 </RelativeLayout>
