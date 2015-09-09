@@ -27,17 +27,10 @@
         android:textSize="12sp" />
 
     <TextView
-<<<<<<< HEAD
-        android:id="@+id/poi_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/poi_name"
-=======
         android:id="@+id/feed_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/feed_text"
->>>>>>> Duarte
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
@@ -52,14 +45,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="200m"
         android:id="@+id/distance"
-<<<<<<< HEAD
-        android:layout_alignBottom="@+id/poi_name"
-        android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/poi_name" />
-=======
         android:layout_alignBottom="@+id/feed_text"
         android:layout_alignParentEnd="true"
         android:layout_alignRight="@+id/feed_text" />
->>>>>>> Duarte
 
 </RelativeLayout>
