@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main_page">MainPage</string>
+    <string name="facebook_app_id">1657545704515352</string>
 
     <string name="report"><u>Report</u></string>
 
