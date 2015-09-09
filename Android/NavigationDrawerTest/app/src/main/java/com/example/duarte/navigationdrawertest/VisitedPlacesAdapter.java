@@ -105,7 +105,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
 
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
 
-        TextView name = (TextView) row.findViewById(R.id.poi_name);
+        TextView name = (TextView) row.findViewById(R.id.feed_text);
         name.setText(data.get(position).getPoiName().toString());
 
         TextView date = (TextView) row.findViewById(R.id.visitation_date);

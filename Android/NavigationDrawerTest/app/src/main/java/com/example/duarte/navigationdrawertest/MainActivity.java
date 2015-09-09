@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             ListView suggestedList = (ListView) rootView.findViewById(R.id.suggestedList);
-            suggestedList.setAdapter(new SuggestedPlacesAdapter(this.getContext()));
+            suggestedList.setAdapter(new FeedAdapter(this.getContext()));
 
             return rootView;
         }

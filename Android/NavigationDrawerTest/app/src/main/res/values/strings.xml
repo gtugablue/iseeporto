@@ -40,7 +40,7 @@
             >Clerigos 10</item>
     </string-array>
 
-    <string-array name="suggested_visitors_friends">
+    <string-array name="friends_list">
         <item>
             Ricardo
         </item>

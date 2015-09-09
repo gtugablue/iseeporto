@@ -58,7 +58,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         ArrayList<SuggestedPoiData> data;
         data = new ArrayList<>();
         List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
-        List<String> visitors = Arrays.asList(context.getResources().getStringArray(R.array.suggested_visitors_friends));
+        List<String> visitors = Arrays.asList(context.getResources().getStringArray(R.array.friends_list));
         int[] distances = context.getResources().getIntArray(R.array.distances);
 
         for(int i = 0; i< distances.length; i++){
@@ -96,7 +96,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
 
-        TextView name = (TextView) row.findViewById(R.id.poi_name);
+        TextView name = (TextView) row.findViewById(R.id.feed_text);
         name.setText(data.get(position).getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
