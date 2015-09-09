@@ -19,3 +19,6 @@ INSERT INTO PointsOfInterest(userId, typeId, regionId, name, description, addres
                                                                                                                                                              "Terreiro da Sé, 4050-573 Porto",
                                                                                                                                                              41.142826, -8.6111836,
                                                                                                                                                              "2015-09-08", 0, 0, 0);
+
+# Reviews
+INSERT INTO Reviews(userId, poiId, comment, like) VALUES (1109369355758471, 1, "Adorei!!!", true);
