@@ -116,7 +116,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                             </thead>
                             <tbody>
                             <?php
-                            $sql = "SELECT name, description, address, latitude, longitude, type FROM PointsOfInterest INNER JOIN TypeOfPoI WHERE typeId = TypeOfPoI.id AND userId = ?";
+                            $sql = "SELECT name, description, address, latitude, longitude, type FROM PointsOfInterest INNER JOIN TypeOfPoI WHERE active = true AND typeId = TypeOfPoI.id AND userId = ?";
                             $parameters = array();
                             $parameters[0] = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"])->getID();
                             $typeParameters = "s";

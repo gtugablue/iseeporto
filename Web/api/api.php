@@ -11,7 +11,7 @@ require_once "../includes/utils.php";
 
 function get_PoI_info($id)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ?";
+    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -33,7 +33,7 @@ function get_PoI_info($id)
 
 function get_reviews($id)
 {
-    $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ?";
+    $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -67,7 +67,7 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
             POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating
-            FROM PointsOfInterest HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
+            FROM PointsOfInterest HAVING distance BETWEEN ? AND ? ORDER BY rating DESC WHERE active = true";
 
     $parameters = array();
     $parameters[0] = $currLat;
@@ -106,7 +106,7 @@ function get_visited($accessToken)
         $typeParameters .= "s";
     }
     $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE PoIVisits.userId IN (" . $list .")";
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId IN (" . $list .")";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
