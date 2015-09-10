@@ -2,7 +2,7 @@
 require_once "includes/config.php";
 $helper = $fb->getRedirectLoginHelper();
 $permissions = ['email', 'user_friends']; // optional
-$loginUrl = $helper->getLoginUrl('http://'.$_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']).'login-callback.php', $permissions);
+$loginUrl = $helper->getLoginUrl('https://'.$_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']).'login-callback.php', $permissions);
 
 header('Content-Type: text/html; charset=utf-8');
 ?>
@@ -376,7 +376,7 @@ header('Content-Type: text/html; charset=utf-8');
 <script src="js/bootstrap.min.js"></script>
 
 <!-- Plugin JavaScript -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="js/classie.js"></script>
 <script src="js/cbpAnimatedHeader.js"></script>
 
