@@ -16,28 +16,14 @@
         android:layout_centerHorizontal="true"
         android:textSize="60dp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login with Facebook"
-        android:id="@+id/loginButton"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:textSize="20dp"
-        android:backgroundTint="#2e4dff"
-        android:background="#755aff"
-        android:textColor="#ffffff" />
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="72dp"
-        android:layout_below="@+id/loginButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"

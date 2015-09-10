@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -35,21 +37,21 @@ public class LoginPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //printHashKey();
+        /*AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if(accessToken != null){
+            Singleton.getInstance().setIdToken(accessToken.getToken());
+
+            Intent loginIntent = new Intent(LoginPage.this, MainPage.class);
+            loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(loginIntent);
+        }*/
+
+//        printHashKey();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_login_page);
-
-        final Button loginButton1 = (Button) findViewById(R.id.loginButton);
-
-        loginButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginPage.this, MainPage.class));
-            }
-        });
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
         info = (TextView) findViewById(R.id.info);
@@ -58,13 +60,20 @@ public class LoginPage extends ActionBarActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 info.setText(
-                    "User ID: "
-                            + loginResult.getAccessToken().getUserId()
-                            + "\n" +
-                            "Auth Token: "
-                            + loginResult.getAccessToken().getToken()
-            );
-                startActivity(new Intent(LoginPage.this, MainPage.class));
+                        "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken()
+                );
+
+                Singleton.getInstance().setIdToken(loginResult.getAccessToken().getToken());
+
+                Intent loginIntent = new Intent(LoginPage.this, MainPage.class);
+                loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(loginIntent);
+                finish();
+
             }
 
             @Override

@@ -54,7 +54,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = MainPage.MenuOptions.SUGGESTIONS;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -144,7 +144,7 @@ public class NavigationDrawerFragment extends Fragment {
                 if (!isAdded()) {
                     return;
                 }
-
+                selectItem(mCurrentSelectedPosition);
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 

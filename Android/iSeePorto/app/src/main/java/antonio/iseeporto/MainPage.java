@@ -16,11 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.util.Locale;
+import com.facebook.login.LoginManager;
 
 public class MainPage extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -35,19 +33,18 @@ public class MainPage extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-    //pages
-    private final int PERFIL = 1;
-    private final int SUGGESTIONS = 2;
-    private final int VISITED = 3;
-    private final int NEAR_ME = 4;
-    private final int FRIENDS = 5;
-    private final int QRCODE = 6;
+    protected abstract class MenuOptions{
+        public final static int PERFIL = 0;
+        public final static int SUGGESTIONS = 1;
+        public final static int VISITED = 2;
+        public final static int FRIENDS = 3;
+        public final static int QRCODE = 4;
+    }
 
     //fragments
     Perfil perfilFrag;
-    Suggestions suggestionsFrag;
+    SuggestedMenu suggestionsFrag;
     Visited visitedFrag;
-    NearMe nearMeFrag;
     Friends friendsFrag;
     Place placeFrag;
 
@@ -67,19 +64,19 @@ public class MainPage extends ActionBarActivity
 
         fragInit();
 
-        //temporario
-        android.app.FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.container, placeFrag, "Place");
-        transaction.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        LoginManager.getInstance().logOut();
+        super.onStop();
     }
 
     private void fragInit() {
-        suggestionsFrag = new Suggestions();
+        suggestionsFrag = new SuggestedMenu();
         placeFrag = new Place();
         perfilFrag = new Perfil();
         visitedFrag = new Visited();
-        nearMeFrag = new NearMe();
         friendsFrag = new Friends();
     }
 
@@ -93,12 +90,16 @@ public class MainPage extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
+        setMTitle(number);
+
+        pageHandler(number);
+    }
+
+    private void setMTitle(int number) {
         mTitle = getResources().getStringArray(R.array.menu_options)[number-1];
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle(mTitle);
-
-        pageHandler(number);
     }
 
     private void pageHandler(int number) {
@@ -107,24 +108,21 @@ public class MainPage extends ActionBarActivity
         android.app.FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
-        switch (number)
+        switch (number-1)
         {
-            case PERFIL:
+            case MenuOptions.PERFIL:
                 transaction.replace(R.id.container, perfilFrag, "Perfil");
                 break;
-            case SUGGESTIONS:
+            case MenuOptions.SUGGESTIONS:
                 transaction.replace(R.id.container, suggestionsFrag, "Suggestions");
                 break;
-            case VISITED:
+            case MenuOptions.VISITED:
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
-            case NEAR_ME:
-                transaction.replace(R.id.container, nearMeFrag, "NearMe");
-                break;
-            case FRIENDS:
+            case MenuOptions.FRIENDS:
                 transaction.replace(R.id.container, friendsFrag, "Friends");
                 break;
-            case QRCODE:
+            case MenuOptions.QRCODE:
                 startQRCode();
                 transaction.replace(R.id.container, placeFrag, "Place");
                 isPlace = true;
@@ -158,12 +156,13 @@ public class MainPage extends ActionBarActivity
                 double latitude = 41.183239; double longitude = -8.601390;
                 openNavigation(latitude, longitude);
 
-            } else if (resultCode == RESULT_CANCELED) {
-                // Handle cancel
+            } else {
+                if (resultCode == RESULT_CANCELED)
+                    Toast.makeText(getApplicationContext(), "QR Code read error!", Toast.LENGTH_SHORT).show();
             }
         }
 
-        onSectionAttached(PERFIL);
+        onSectionAttached(MenuOptions.PERFIL);
     }
 
     private void openNavigation(double latitude, double longitude) {
@@ -175,9 +174,10 @@ public class MainPage extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
     }
 
 
@@ -211,6 +211,8 @@ public class MainPage extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -239,8 +241,7 @@ public class MainPage extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_page, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main_page, container, false);
         }
 
         @Override
@@ -250,5 +251,7 @@ public class MainPage extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+
 
 }
