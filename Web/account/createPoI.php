@@ -8,52 +8,56 @@ if (!isset($_SESSION['facebook_access_token'])) {
 // Logged in!
 require_once "../includes/utils.php";
 $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
-
+$formError = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $sql = "INSERT INTO PointsOfInterest (userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, active) VALUES (?, ?, 1, ?, ?, ?, ?, ?, CURRENT_DATE, true)";
-    $parameters = array();
-    $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
-    $parameters[0] = $userNode->getID();
-    $parameters[2] = $_POST["type"];
-    $parameters[3] = $_POST["name"];
-    $parameters[4] = $_POST["description"];
-    $parameters[5] = $_POST["address"];
-    $parameters[6] = $_POST["latitude"];
-    $parameters[7] = $_POST["longitude"];
-    $typeParameters = "sisssdd";
+    if (!empty($_POST["type"]) && !empty($_POST["name"]) && !empty($_POST["description"]) && !empty($_POST["address"]) && !empty($_POST["latitude"]) && !empty($_POST["longitude"])) {
+        $sql = "INSERT INTO PointsOfInterest (userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, active) VALUES (?, ?, 1, ?, ?, ?, ?, ?, CURRENT_DATE, true)";
+        $parameters = array();
+        $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
+        $parameters[0] = $userNode->getID();
+        $parameters[2] = $_POST["type"];
+        $parameters[3] = $_POST["name"];
+        $parameters[4] = $_POST["description"];
+        $parameters[5] = $_POST["address"];
+        $parameters[6] = $_POST["latitude"];
+        $parameters[7] = $_POST["longitude"];
+        $typeParameters = "sisssdd";
 
-    $result = db_query($sql, $parameters, $typeParameters);
-    if ($result) {
-        $allowedExts = array("jpg", "jpeg", "gif", "png");
-        $photoName = explode(".", $_FILES["photo"]["name"]);
-        $extension = end($photoName);
+        $result = db_query($sql, $parameters, $typeParameters);
+        if ($result) {
+            $allowedExts = array("jpg", "jpeg", "gif", "png");
+            $photoName = explode(".", $_FILES["photo"]["name"]);
+            $extension = end($photoName);
 
-        if ($_FILES["photo"]["type"] == "image/gif" || $_FILES["photo"]["type"] == "image/jpg" || $_FILES["photo"]["type"] == "image/jpeg" || $_FILES["photo"]["type"] == "image/png" && $_FILES["photo"]["size"] < 2500000 && in_array($extension, $allowedExts)) {
-            if ($_FILES["photo"]["error"] != UPLOAD_ERR_OK) {
-                echo "Error: " . $_FILES["photo"]["error"] . "<br />";
-            } else {
-                global $db_connection;
-                $fname = '../uploads/PoI_photos/' . mysqli_insert_id($db_connection) . '.jpg';
-                move_uploaded_file($_FILES["photo"]["tmp_name"], $fname);
-                $image = '';
+            if ($_FILES["photo"]["type"] == "image/gif" || $_FILES["photo"]["type"] == "image/jpg" || $_FILES["photo"]["type"] == "image/jpeg" || $_FILES["photo"]["type"] == "image/png" && $_FILES["photo"]["size"] < 2500000 && in_array($extension, $allowedExts)) {
+                if ($_FILES["photo"]["error"] != UPLOAD_ERR_OK) {
+                    $formError = "Erro: " . $_FILES["photo"]["error"] . "<br />";
+                } else {
+                    global $db_connection;
+                    $fname = '../uploads/PoI_photos/' . mysqli_insert_id($db_connection) . '.jpg';
+                    move_uploaded_file($_FILES["photo"]["tmp_name"], $fname);
+                    $image = '';
 
-                switch ($_FILES["photo"]["type"]) {
-                    case "image/gif":
-                        $image = imagecreatefromgif($fname);
-                        break;
-                    case "image/jpg":
-                    case "image/jpeg":
-                        $image = imagecreatefromjpeg($fname);
-                        break;
-                    case "image/png":
-                        $image = imagecreatefrompng($fname);
-                        break;
+                    switch ($_FILES["photo"]["type"]) {
+                        case "image/gif":
+                            $image = imagecreatefromgif($fname);
+                            break;
+                        case "image/jpg":
+                        case "image/jpeg":
+                            $image = imagecreatefromjpeg($fname);
+                            break;
+                        case "image/png":
+                            $image = imagecreatefrompng($fname);
+                            break;
+                    }
+                    imagejpeg($image, $fname);
                 }
-                imagejpeg($image, $fname);
+            } else {
+                $formError = "Erro: ocorreu um problema ao enviar a fotografia.";
             }
-        } else {
-            echo "Invalid file type";
         }
+    } else {
+        $formError = "Ocorreu um erro. Por favor certifique-se que preencheu corretamente todos os campos.";
     }
 }
 ?>
@@ -153,19 +157,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <form role="multipart/form-data" action="createPoI.php" method="post" enctype="multipart/form-data">
 
+                            <?php
+                            if ($formError != "") {
+                                ?>
+                                <div class="form-group">
+                                    <label><?php echo $formError; ?></label>
+                                </div>
+                                <?php
+                            }
+                            ?>
+
                             <div class="form-group">
                                 <label>Nome</label>
-                                <input name="name" class="form-control">
+                                <input name="name" class="form-control" <?php if (isset($_POST["name"])) echo 'value='.$_POST["name"]; ?>>
                             </div>
 
                             <div class="form-group">
                                 <label>Descrição</label>
-                                <textarea name="description" class="form-control" rows="5"></textarea>
+                                <textarea name="description" class="form-control" rows="5"><?php if (isset($_POST["description"])) echo $_POST["description"]; ?></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Endereço</label>
-                                <input name="address" class="form-control">
+                                <input name="address" class="form-control" <?php if (isset($_POST["address"])) echo 'value='.$_POST["address"]; ?>>
                             </div>
 
                             <div class="form-group">
@@ -178,8 +192,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $result = db_query($sql, $parameters, $typeParameters);
                                     if ($result && $result->num_rows > 0) {
                                         $rows = $result->fetch_all();
-                                        foreach($rows as $row)
+                                        foreach($rows as $row) {
                                             echo "<option value=$row[0]> $row[1]</option>";
+                                        }
                                     }
                                     ?>
                                 </select>
@@ -187,9 +202,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group">
                                 <label>Latitude</label>
-                                <input name="latitude" class="form-control" placeholder="41.1579407">
+                                <input name="latitude" class="form-control" placeholder="41.1579407" <?php if (isset($_POST["latitude"])) echo 'value='.$_POST["latitude"]; ?>>
                                 <label>Longitude</label>
-                                <input name="longitude" class="form-control" placeholder="-8.6291025">
+                                <input name="longitude" class="form-control" placeholder="-8.6291025" <?php if (isset($_POST["longitude"])) echo 'value='.$_POST["longitude"]; ?>>
                             </div>
 
                             <div class="form-group">
