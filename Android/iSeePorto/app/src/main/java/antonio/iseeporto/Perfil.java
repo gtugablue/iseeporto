@@ -70,23 +70,16 @@ public class Perfil extends Fragment {
                 // StatusLine stat = response.getStatusLine();
                 int status = response.getStatusLine().getStatusCode();
 
-                Log.d("---------><--------", "Antes!!!!!!!");
                 if (status == 200) {
                     HttpEntity entity = response.getEntity();
-                    Log.d("---------><--------", "1!!!!!!!");
                     String data = EntityUtils.toString(entity);
-                    Log.d("---------><--------", "2!!!!!!!");
 
                     JSONObject jsono = new JSONObject(data);
-                    Log.d("---------><--------", "3!!!!!!!");
 
                     rec = jsono.getString("name");
-                    Log.d("---------><--------", "4!!!!!!!");
-                    Log.d("---------><--------", "Depois!!!!!!!");
 
                     return true;
                 }
-                Log.d("---------><--------", "--------------!!!!!!!");
 
                 //------------------>>
 
