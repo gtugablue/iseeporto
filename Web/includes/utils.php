@@ -66,6 +66,18 @@ function db_query($query, $parameters, $typeParameters) {
     return $prepStatement->get_result();
 }
 
+function validate_access_token($fb, $accessToken)
+{
+    try {
+        $result = getFacebookGraphUser($fb, $accessToken);
+        return true;
+    }
+    catch (Facebook\Exceptions\FacebookResponseException $e)
+    {
+        return false;
+    }
+}
+
 function login($accessToken)
 {
     global $fb;
