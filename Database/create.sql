@@ -49,6 +49,7 @@ CREATE TABLE PointsOfInterest
   creationDate DATE NOT NULL,
   numLikes INT NOT NULL,
   numDislikes INT NOT NULL,
+  numVisits INT NOT NULL,
   rating DOUBLE NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(id),
