@@ -1,7 +1,7 @@
 <?php
 require_once "includes/config.php";
 $helper = $fb->getRedirectLoginHelper();
-$permissions = ['email']; // optional
+$permissions = ['email', 'user_friends']; // optional
 $loginUrl = $helper->getLoginUrl('http://'.$_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']).'login-callback.php', $permissions);
 
 header('Content-Type: text/html; charset=utf-8');

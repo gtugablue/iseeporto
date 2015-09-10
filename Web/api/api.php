@@ -67,14 +67,21 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 
 function get_visited()
 {
-    if (!isset($_SESSION["facebook_access_token"])) return null;
-    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id AND PoIVisits.userId = ?";
-    $parameters = array();
     global $fb;
+    if (!isset($_SESSION["facebook_access_token"])) return null;
+    $friends = getFacebookFriends($fb, $_SESSION["facebook_access_token"]);
+    $list = "?";
+    $parameters = array();
     $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
     $parameters[0] = $userNode->getID();
     $typeParameters = "s";
+    foreach ($friends as $friend) {
+        $list .= ", ?";
+        array_push($parameters, $friend["id"]);
+        $typeParameters .= "s";
+    }
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE PoIVisits.userId IN (" . $list .")";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result || $result->num_rows == 0) return null;
