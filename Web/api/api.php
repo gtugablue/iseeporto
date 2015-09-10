@@ -11,7 +11,7 @@ require_once "../includes/utils.php";
 
 function get_PoI_info($id)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes FROM PointsOfInterest WHERE id = ?";
+    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ?";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";

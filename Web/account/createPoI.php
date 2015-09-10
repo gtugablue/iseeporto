@@ -8,6 +8,10 @@ if (!isset($_SESSION['facebook_access_token'])) {
 // Logged in!
 require_once "../includes/utils.php";
 $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    print_r($_POST);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,21 +107,21 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                 <div class="row">
                     <div class="col-lg-6">
 
-                        <form role="form">
+                        <form role="form" action="createPoI.php" method="post">
 
                             <div class="form-group">
                                 <label>Nome</label>
-                                <input class="form-control">
+                                <input name="name" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label>Descrição</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <textarea name="description" class="form-control" rows="5"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Tipo</label>
-                                <select class="form-control">
+                                <select name="type" class="form-control">
                                     <?php
                                     $sql = "SELECT id, type FROM TypeOfPoI";
                                     $parameters = array();
@@ -134,18 +138,17 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
                             <div class="form-group">
                                 <label>Latitude</label>
-                                <input class="form-control" placeholder="41.1579407">
+                                <input name="latitude" class="form-control" placeholder="41.1579407">
                                 <label>Longitude</label>
-                                <input class="form-control" placeholder="-8.6291025">
+                                <input name="longitude" class="form-control" placeholder="-8.6291025">
                             </div>
 
                             <div class="form-group">
                                 <label>Fotografia</label>
-                                <input type="file">
+                                <input name="photo" type="file">
                             </div>
 
-                            <button type="submit" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
+                            <button type="submit" class="btn btn-default">Submit</button>
 
                         </form>
 
