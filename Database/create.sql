@@ -31,7 +31,9 @@ CREATE TABLE Region
 CREATE TABLE User
 (
   idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
-  points INT NOT NULL
+  points INT NOT NULL,
+  numVisits INT NOT NULL,
+  numAchievements INT NULL
 );
 
 # Points of Interest
@@ -51,6 +53,7 @@ CREATE TABLE PointsOfInterest
   numDislikes INT NOT NULL,
   numVisits INT NOT NULL,
   rating DOUBLE NOT NULL,
+  active BOOL NOT NULL,
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (typeId) REFERENCES TypeOfPoI(id),
   CONSTRAINT FOREIGN KEY (regionId) REFERENCES Region(id)
