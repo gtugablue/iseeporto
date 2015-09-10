@@ -10,7 +10,51 @@ require_once "../includes/utils.php";
 $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    print_r($_POST);
+    $sql = "INSERT INTO PointsOfInterest (userId, typeId, regionId, name, description, address, latitude, longitude, creationDate) VALUES (?, ?, 1, ?, ?, ?, ?, ?, CURRENT_DATE)";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
+    $parameters[0] = $userNode->getID();
+    $parameters[2] = $_POST["type"];
+    $parameters[3] = $_POST["name"];
+    $parameters[4] = $_POST["description"];
+    $parameters[5] = $_POST["address"];
+    $parameters[6] = $_POST["latitude"];
+    $parameters[7] = $_POST["longitude"];
+    $typeParameters = "sisssdd";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if ($result) {
+        $allowedExts = array("jpg", "jpeg", "gif", "png");
+        $photoName = explode(".", $_FILES["photo"]["name"]);
+        $extension = end($photoName);
+
+        if ($_FILES["photo"]["type"] == "image/gif" || $_FILES["photo"]["type"] == "image/jpg" || $_FILES["photo"]["type"] == "image/jpeg" || $_FILES["photo"]["type"] == "image/png" && $_FILES["photo"]["size"] < 2500000 && in_array($extension, $allowedExts)) {
+            if ($_FILES["photo"]["error"] != UPLOAD_ERR_OK) {
+                echo "Error: " . $_FILES["photo"]["error"] . "<br />";
+            } else {
+                global $db_connection;
+                $fname = '../uploads/PoI_photos/' . mysqli_insert_id($db_connection) . '.jpg';
+                move_uploaded_file($_FILES["photo"]["tmp_name"], $fname);
+                $image = '';
+
+                switch ($_FILES["photo"]["type"]) {
+                    case "image/gif":
+                        $image = imagecreatefromgif($fname);
+                        break;
+                    case "image/jpg":
+                    case "image/jpeg":
+                        $image = imagecreatefromjpeg($fname);
+                        break;
+                    case "image/png":
+                        $image = imagecreatefrompng($fname);
+                        break;
+                }
+                imagejpeg($image, $fname);
+            }
+        } else {
+            echo "Invalid file type";
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -107,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="row">
                     <div class="col-lg-6">
 
-                        <form role="form" action="createPoI.php" method="post">
+                        <form role="multipart/form-data" action="createPoI.php" method="post" enctype="multipart/form-data">
 
                             <div class="form-group">
                                 <label>Nome</label>
@@ -117,6 +161,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-group">
                                 <label>Descrição</label>
                                 <textarea name="description" class="form-control" rows="5"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Endereço</label>
+                                <input name="address" class="form-control">
                             </div>
 
                             <div class="form-group">
@@ -145,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group">
                                 <label>Fotografia</label>
-                                <input name="photo" type="file">
+                                <input id="photo" name="photo" type="file">
                             </div>
 
                             <button type="submit" class="btn btn-default">Submit</button>

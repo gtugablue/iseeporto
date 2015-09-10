@@ -121,24 +121,24 @@ function get_visited($accessToken)
 function set_visited($accessToken, $id)
 {
     global $fb;
-        if (!validate_access_token($fb, $accessToken))
-        {
-            http_response_code(401);
-            return null;
-        }
-        $sql = "INSERT INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE)";
-        $parameters = array();
-        global $fb;
-        $userNode = getFacebookGraphUser($fb, $accessToken);
-        $parameters[0] = $userNode->getID();
-        $parameters[1] = $id;
-        $typeParameters = "si";
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+    $sql = "INSERT INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE)";
+    $parameters = array();
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
 
-        $result = db_query($sql, $parameters, $typeParameters);
-        if (!$result)
-        {
-            http_response_code(500);
-            return null;
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
     }
     return true;
 }
