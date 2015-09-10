@@ -164,3 +164,17 @@ FOR EACH ROW
     END IF;
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
   END;
+
+CREATE TRIGGER MakeVisit
+AFTER INSERT ON PoIVisits
+FOR EACH ROW
+  BEGIN
+    UPDATE PointsOfInterest SET numVisits = numVisits + 1 WHERE PointsOfInterest.id = NEW.poiId;
+  END;
+
+CREATE TRIGGER RemoveVisit
+AFTER DELETE ON PoIVisits
+FOR EACH ROW
+  BEGIN
+    UPDATE PointsOfInterest SET numVisits = numVisits - 1 WHERE PointsOfInterest.id = OLD.poiId;
+  END;
