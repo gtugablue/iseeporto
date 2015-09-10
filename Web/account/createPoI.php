@@ -10,7 +10,7 @@ require_once "../includes/utils.php";
 $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $sql = "INSERT INTO PointsOfInterest (userId, typeId, regionId, name, description, address, latitude, longitude, creationDate) VALUES (?, ?, 1, ?, ?, ?, ?, ?, CURRENT_DATE)";
+    $sql = "INSERT INTO PointsOfInterest (userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, active) VALUES (?, ?, 1, ?, ?, ?, ?, ?, CURRENT_DATE, true)";
     $parameters = array();
     $userNode = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
     $parameters[0] = $userNode->getID();
