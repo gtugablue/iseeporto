@@ -94,4 +94,10 @@ function getFacebookGraphUser($fb, $accessToken)
     return $response->getGraphUser();
 }
 
+function getFacebookFriends($fb, $accessToken)
+{
+    $friends = $fb->get("/me/friends", $accessToken);
+    return $friends->getGraphEdge();
+}
+
 ?>
