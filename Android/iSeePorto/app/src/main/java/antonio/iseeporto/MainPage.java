@@ -125,11 +125,7 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, friendsFrag, "Friends");
                 break;
             case QRCODE:
-                //abre QR code
-                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                startActivityForResult(intent, 0);
-
+                startQRCode();
                 transaction.replace(R.id.container, placeFrag, "Place");
                 isPlace = true;
                 break;
@@ -145,6 +141,12 @@ public class MainPage extends ActionBarActivity
         }
     }
 
+    private void startQRCode() {
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
@@ -154,9 +156,7 @@ public class MainPage extends ActionBarActivity
 
                 //abre o mapa
                 double latitude = 41.183239; double longitude = -8.601390;
-                Intent intent1 = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
-                startActivity(intent1);
+                openNavigation(latitude, longitude);
 
             } else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
@@ -164,6 +164,13 @@ public class MainPage extends ActionBarActivity
         }
 
         onSectionAttached(PERFIL);
+    }
+
+    private void openNavigation(double latitude, double longitude) {
+        //o ponto de partida é o local onde o utilizador está
+        Intent intent1 = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
+        startActivity(intent1);
     }
 
     public void restoreActionBar() {

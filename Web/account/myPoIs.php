@@ -7,6 +7,7 @@ if (!isset($_SESSION['facebook_access_token'])) {
 }
 // Logged in!
 require_once "../includes/utils.php";
+header("Content-Type: text/html; charset=UTF-8");
 $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 ?>
 <!DOCTYPE html>
@@ -132,11 +133,11 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                             } else {
                                 while ($row = $result->fetch_row()) {
                                     echo "<tr>";
-                                    echo "<td>" . $row[0] . "</td>";
-                                    echo "<td>" . $row[1] . "</td>";
-                                    echo "<td>" . $row[2] . "</td>";
-                                    echo "<td>" . $row[3] . " " . $row[4] . "</td>";
-                                    echo "<td>" . $row[5] . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[0])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[1])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[2])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[3])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
                                     echo "</tr>";
                                 }
                             }

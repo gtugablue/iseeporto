@@ -128,3 +128,40 @@ FOR EACH ROW
     END IF;
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
   END;
+
+CREATE TRIGGER RemoveReview
+AFTER DELETE ON Reviews
+FOR EACH ROW
+  BEGIN
+    SET @positive = (SELECT numLikes FROM PointsOfInterest WHERE PointsOfInterest.id = OLD.poiId);
+    SET @negative = (SELECT numDislikes FROM PointsOfInterest WHERE PointsOfInterest.id = OLD.poiId);
+    IF OLD.like = true THEN
+      SET @positive = @positive - 1;
+      UPDATE PointsOfInterest SET numLikes = @positive WHERE PointsOfInterest.id = OLD.poiId;
+    ELSE
+      SET @negative = @negative - 1;
+      UPDATE PointsOfInterest SET numDislikes = @negative WHERE PointsOfInterest.id = OLD.poiId;
+    END IF;
+    UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = OLD.poiId;
+  END;
+
+CREATE TRIGGER ChangeReview
+AFTER UPDATE ON Reviews
+FOR EACH ROW
+  BEGIN
+    SET @positive = (SELECT numLikes FROM PointsOfInterest WHERE PointsOfInterest.id = NEW.poiId);
+    SET @negative = (SELECT numDislikes FROM PointsOfInterest WHERE PointsOfInterest.id = NEW.poiId);
+    IF OLD.like = true THEN
+      SET @positive = @positive - 1;
+    ELSE
+      SET @negative = @negative - 1;
+    END IF;
+    IF NEW.like = true THEN
+      SET @positive = @positive + 1;
+      UPDATE PointsOfInterest SET numLikes = @positive WHERE PointsOfInterest.id = NEW.poiId;
+    ELSE
+      SET @negative = @negative + 1;
+      UPDATE PointsOfInterest SET numDislikes = @negative WHERE PointsOfInterest.id = NEW.poiId;
+    END IF;
+    UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
+  END;

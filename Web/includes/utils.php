@@ -34,6 +34,10 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
     return $angle * $earthRadius;
 }
 
+function utf8_encode_array($array) {
+    return array_map('utf8_encode', $array);
+}
+
 function db_query($query, $parameters, $typeParameters) {
     // Create prepared statement
     global $db_connection;
@@ -41,17 +45,23 @@ function db_query($query, $parameters, $typeParameters) {
     $prepStatement = $db_connection->stmt_init();
     if(!$prepStatement->prepare($query))
     {
-        print "Failed to prepare statement\n";
+        print "Failed to prepare statement\n" . $db_connection->error;
     }
 
-    $queryParams[] = $typeParameters;
-    foreach($parameters as $id => $term)
-        $queryParams[] = &$parameters[$id];
+    if(count($parameters) > 0) {
+        $queryParams[] = $typeParameters;
+        foreach ($parameters as $id => $term)
+            $queryParams[] = &$parameters[$id];
 
-    call_user_func_array(array($prepStatement,'bind_param'),$queryParams);
+        call_user_func_array(array($prepStatement, 'bind_param'), $queryParams);
+    }
 
     // database query
     $prepStatement->execute();
+
+    // In case the query was for example in an insertion
+    if($prepStatement->affected_rows != -1)
+        return true;
 
     return $prepStatement->get_result();
 }
@@ -82,6 +92,12 @@ function getFacebookGraphUser($fb, $accessToken)
 {
     $response = $fb->get("/me", $accessToken);
     return $response->getGraphUser();
+}
+
+function getFacebookFriends($fb, $accessToken)
+{
+    $friends = $fb->get("/me/friends", $accessToken);
+    return $friends->getGraphEdge();
 }
 
 ?>
