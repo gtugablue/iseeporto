@@ -1,6 +1,7 @@
 package antonio.iseeporto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,22 +24,27 @@ import java.util.Locale;
 public class VisitedPlacesAdapter extends BaseAdapter {
 
     private final Context context;
+    View row;
 
     public class VisitedPoiData{
-        public int getPoiID() {
-            return poiID;
-        }
 
-        public int poiID;
+
+        protected int poiID;
+        protected String poiImageURL;
         protected String poiName;
         protected Date date;
         protected boolean liked;
 
-        VisitedPoiData(int poiID, String poiName, Date date, boolean liked){
+        VisitedPoiData(int poiID, String poiImageURL , String poiName, Date date, boolean liked){
+            this.poiImageURL = poiImageURL;
             this.poiID = poiID;
             this.poiName = poiName;
             this.date = date;
             this.liked = liked;
+        }
+
+        public int getPoiID() {
+            return poiID;
         }
 
         public String getPoiName() {
@@ -52,6 +58,16 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         public boolean isLiked() {
             return liked;
         }
+
+        public String getPoiImageURL() {
+            return poiImageURL;
+        }
+
+        public void setPoiImageURL(String poiImageURL) {
+            this.poiImageURL = poiImageURL;
+        }
+
+
     }
 
     private List<VisitedPoiData> data;
@@ -68,7 +84,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         for(int i = 0; i < names.size(); i++)
             try {
                 Date date = format.parse(dates.get(i));
-                data.add(new VisitedPoiData(i, names.get(i), date, feedback[i] == 1 ? true : false));
+                data.add(new VisitedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/19.jpg", names.get(i), date, feedback[i] == 1 ? true : false));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -100,21 +116,36 @@ public class VisitedPlacesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        View row ;
         row = inflater.inflate(R.layout.visited_pois_row_layout, parent, false);
 
-        ImageView image = (ImageView) row.findViewById(R.id.achievement_image);
+        VisitedPoiData rowData = data.get(position);
 
-        TextView name = (TextView) row.findViewById(R.id.achievement_name);
-        name.setText(data.get(position).getPoiName().toString());
+        ImageView image = (ImageView) row.findViewById(R.id.poi_image);
+        DownloadImageTask downloadImageTask = new DownloadImageTask(image){
+
+            @Override
+            protected void onPostExecute(final Bitmap result) {
+                row.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bmImage.setImageBitmap(result);
+                    }
+                });
+            }
+        };
+
+        downloadImageTask.execute(rowData.getPoiImageURL());
+
+        TextView name = (TextView) row.findViewById(R.id.poi_name);
+        name.setText(rowData.getPoiName().toString());
 
         TextView date = (TextView) row.findViewById(R.id.visitation_date);
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        String dateString = format.format(data.get(position).getDate());
+        String dateString = format.format(rowData.getDate());
         date.setText(dateString);
 
         ImageView like = (ImageView) row.findViewById(R.id.thumb);
-        if(data.get(position).isLiked())
+        if(rowData.isLiked())
             like.setImageResource(R.mipmap.thumbs_up);
         else
             like.setImageResource(R.mipmap.thumbs_down);

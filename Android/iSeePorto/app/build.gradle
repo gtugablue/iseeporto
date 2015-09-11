@@ -40,6 +40,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'com.makeramen:roundedimageview:2.2.0'
 }
 
 repositories { mavenCentral() }

@@ -4,15 +4,20 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,11 +27,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -34,41 +40,60 @@ import java.util.concurrent.ExecutionException;
  */
 public class Perfil extends Fragment {
 
-    String rec;
     View view;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.perfil, container, false);
-        AsyncTask task = new JSONAsyncTask().execute("http://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=1");
 
+        final AccessToken tempToken = Singleton.getInstance().getAccessToken();
 
-        ImageView tempImage = (ImageView) view.findViewById(R.id.profile_pic_big);
-
-        DownloadImageTask downloadImageTask = new DownloadImageTask(tempImage){
-
-            @Override
-            protected void onPostExecute(final Bitmap result) {
-                view.post(new Runnable() {
+        //obtem as informacoes do facebook
+        GraphRequest request = GraphRequest.newMeRequest(
+                tempToken,
+                new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void run() {
-                        bmImage.setImageBitmap(result);
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        // Application code
+                        //Log.e("response", "response" + object.toString());
+                        try {
+                            ((TextView) getView().findViewById(R.id.nomeId)).setText(object.getString("name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
-            }
-        };
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
+        request.setParameters(parameters);
+        request.executeAsync();
 
-        downloadImageTask.execute("https://iseeporto.revtut.net/uploads/PoI_photos/1.jpg");
+        ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
+        ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
+        achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
+        listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
 
+        startInfoTransfer();
 
         return view;
+    }
+
+    protected void startInfoTransfer()
+    {
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_user_info&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+        if (SingletonUserId.getInstance().getIdUser() == null)
+            new JSONAsyncTask().execute(url);
+        else
+            new JSONAsyncTask().execute(url + "&id=" + SingletonUserId.getInstance().getIdUser());
     }
 
     class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
         ProgressDialog dialog;
+        JSONObject jsono;
 
         @Override
         protected void onPreExecute() {
@@ -96,9 +121,7 @@ public class Perfil extends Fragment {
                     HttpEntity entity = response.getEntity();
                     String data = EntityUtils.toString(entity);
 
-                    JSONObject jsono = new JSONObject(data);
-
-                    rec = jsono.getString("name");
+                    jsono = new JSONObject(data);
 
                     return true;
                 }
@@ -122,7 +145,32 @@ public class Perfil extends Fragment {
             getView().post(new Runnable() {
                 @Override
                 public void run() {
-                    ((TextView)(getView().findViewById(R.id.nomeId))).setText(rec);
+                    ImageView tempImage = (ImageView) view.findViewById(R.id.profile_pic_big);
+
+                    //define a imagem do utilizador
+                    final DownloadImageTask downloadImageTask = new DownloadImageTask(tempImage){
+                        @Override
+                        protected void onPostExecute(final Bitmap result) {
+                            view.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bmImage.setImageBitmap(result);
+                                }
+                            });
+                        }
+                    };
+
+                    try {
+                        if (jsono != null)
+                        {
+                            ((TextView) view.findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + jsono.getString("numVisits"));
+                            ((TextView) view.findViewById(R.id.pointsId)).setText("Points: " + jsono.getString("points"));
+                            downloadImageTask.execute("https://graph.facebook.com/" + jsono.getString("idFacebook") + "/picture?width=500&height=500");
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

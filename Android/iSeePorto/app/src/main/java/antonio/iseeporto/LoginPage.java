@@ -67,7 +67,7 @@ public class LoginPage extends ActionBarActivity {
                                 + loginResult.getAccessToken().getToken()
                 );
 
-                Singleton.getInstance().setIdToken(loginResult.getAccessToken().getToken());
+                Singleton.getInstance().setAccessToken(loginResult.getAccessToken());
 
                 Intent loginIntent = new Intent(LoginPage.this, MainPage.class);
                 loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

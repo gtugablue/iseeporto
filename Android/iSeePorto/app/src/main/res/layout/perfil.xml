@@ -15,12 +15,14 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5">
 
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/profile_pic_big"
-                android:src="@drawable/exemplo"
-                android:scaleType="fitXY" />
+                android:src="@mipmap/blank_image"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -45,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Visited Places: "
-                android:id="@+id/textView9"
+                android:id="@+id/visitedPlacesId"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textSize="15dp"
@@ -56,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Points: "
-                android:id="@+id/textView10"
+                android:id="@+id/pointsId"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textSize="15dp"
@@ -73,6 +75,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listView2" />
+            android:id="@+id/achievements_list_view"
+            android:layout_marginTop="15dp" />
     </LinearLayout>
 </LinearLayout>

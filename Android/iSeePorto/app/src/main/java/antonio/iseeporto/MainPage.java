@@ -42,11 +42,11 @@ public class MainPage extends ActionBarActivity
     }
 
     //fragments
-    Perfil perfilFrag;
-    SuggestedMenu suggestionsFrag;
-    VisitedMenu visitedFrag;
-    FeedMenu friendsFrag;
-    Place placeFrag;
+    final Perfil perfilFrag = new Perfil();
+    final SuggestedMenu suggestionsFrag = new SuggestedMenu();
+    final VisitedMenu visitedFrag = new VisitedMenu();
+    final FeedMenu friendsFrag = new FeedMenu();
+    final Place placeFrag = new Place();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +62,12 @@ public class MainPage extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        fragInit();
-
     }
 
     @Override
     protected void onStop() {
         LoginManager.getInstance().logOut();
         super.onStop();
-    }
-
-    private void fragInit() {
-        suggestionsFrag = new SuggestedMenu();
-        placeFrag = new Place();
-        perfilFrag = new Perfil();
-        visitedFrag = new VisitedMenu();
-        friendsFrag = new FeedMenu();
     }
 
     @Override
@@ -111,6 +101,7 @@ public class MainPage extends ActionBarActivity
         switch (number-1)
         {
             case MenuOptions.PERFIL:
+                SingletonUserId.getInstance().setIdUser(null);
                 transaction.replace(R.id.container, perfilFrag, "Perfil");
                 break;
             case MenuOptions.SUGGESTIONS:
