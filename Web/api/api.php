@@ -31,6 +31,65 @@ function get_PoI_info($id)
     return array_map("utf8_encode", $data);
 }
 
+function get_self_user_info($accessToken)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+    $friends = getFacebookFriends($fb, $accessToken);
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    return get_user_info($accessToken, $userNode->getID());
+}
+
+function get_user_info($accessToken, $id)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken)) {
+        http_response_code(401);
+        return null;
+    }
+    $friends = getFacebookFriends($fb, $accessToken);
+    $list = "?";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $found = ($userNode->getID() == $id); // Self profile
+    if (!$found) {
+        foreach ($friends as $friend) {
+            echo "id: " . $id . " friendID: " . $friend["id"];
+            if ($friend["id"] == $id) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found)
+        {
+            http_response_code(401);
+            return null;
+        }
+    }
+    $sql = "SELECT idFacebook, points, numVisits, numAchievements FROM User WHERE idFacebook = ?";
+    $parameters = array();
+    $parameters[0] = $id;
+    $typeParameters = "s";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    if ($result->num_rows == 0)
+    {
+        http_response_code(404);
+        return null;
+    }
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
+}
+
 function get_reviews($id)
 {
     $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ? AND active = true";
@@ -220,11 +279,77 @@ function delete_review($accessToken, $id)
     return true;
 }
 
+function find_pois_by_name($name)
+{
+    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits
+FROM PointsOfInterest WHERE active = true AND name LIKE ?";
+    $parameters = array();
+    $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
+    $name_encoded = htmlentities($name,ENT_NOQUOTES,'UTF-8');
+    $name = preg_replace($accents,'$1',$name_encoded);
+    $parameters[0] = '%'.$name.'%';
+    $typeParameters = "s";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
+function find_friends_by_name($name, $accessToken)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+    $friends = getFacebookFriends($fb, $accessToken);
+    $list = "?";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $typeParameters = "s";
+    $first = true;
+    foreach ($friends as $friend) {
+        if ($first)
+            $list = "?";
+        else
+        {
+            $list .= ", ?";
+            $first = true;
+        }
+        array_push($parameters, $friend["id"]);
+        $typeParameters .= "s";
+    }
+
+    $sql = "SELECT idFacebook, points, numVisits, numAchievements FROM User WHERE idFacebook IN (?)";
+    $parameters = array();
+    $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
+    $name_encoded = htmlentities($name,ENT_NOQUOTES,'UTF-8');
+    $name = preg_replace($accents,'$1',$name_encoded);
+    $parameters[0] = '%'.$name.'%';
+    $typeParameters = "s";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
 $value = "An error has occurred";
 
 if (isset($_GET["action"]))
 {
-    if (isset($_SESSION["facebook_access_token"])) echo "Access Token: ".$_SESSION["facebook_access_token"];
+    //if (isset($_SESSION["facebook_access_token"])) echo "Access Token: ".$_SESSION["facebook_access_token"];
     switch (strtolower($_GET["action"]))
     {
         case "get_reviews":
@@ -238,6 +363,14 @@ if (isset($_GET["action"]))
                 $value = get_PoI_info($_GET["id"]);
             else
                 $value = "Missing argument";
+            break;
+        case "get_user_info":
+            if (isset($_GET["accessToken"])) {
+                if (isset($_GET["id"]))
+                    $value = get_user_info($_GET["accessToken"], $_GET["id"]);
+                else
+                    $value = get_self_user_info($_GET["accessToken"]);
+            } else $value = "Missing argument";
             break;
         case "get_achievements":
             $value = get_achievements();
@@ -271,11 +404,25 @@ if (isset($_GET["action"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"], $_GET["comment"], $_GET["like"]);
             else
                 $value = "Missing argument";
+            break;
         case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
+            break;
+        case "find_pois_by_name":
+            if (isset($_GET["name"]))
+                $value = find_poi_by_name($_GET["name"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "find_friends_by_name":
+            if (isset($_GET["name"]) && isset($_GET["accessToken"]))
+                $value = find_friends_by_name($_GET["name"], $_GET["accessToken"]);
+            else
+                $value = "Missing argument";
+            break;
         default:
             $value = "Unknown request.";
     }
