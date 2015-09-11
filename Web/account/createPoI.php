@@ -196,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     if ($result && $result->num_rows > 0) {
                                         $rows = $result->fetch_all();
                                         foreach($rows as $row) {
-                                            echo "<option value=$row[0]> $row[1]</option>";
+                                            echo "<option value=$row[0]>".htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[1]))."</option>";
                                         }
                                     }
                                     ?>
