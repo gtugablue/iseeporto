@@ -2,6 +2,7 @@
 ALTER DATABASE iseeporto CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # Drop existing tables
+DROP FUNCTION IF EXISTS USER_HAS_ACHIEVEMENT;
 DROP TRIGGER IF EXISTS MakeReview;
 DROP FUNCTION IF EXISTS CALCULATE_RATING;
 DROP TABLE IF EXISTS Reports;
@@ -196,7 +197,7 @@ AFTER INSERT ON PoIVisits
 FOR EACH ROW
   BEGIN
     UPDATE PointsOfInterest SET numVisits = numVisits + 1 WHERE PointsOfInterest.id = NEW.poiId;
-    UPDATE User SET points = points + 1 WHERE idFacebook = New.userId;
+    UPDATE User SET points = points + 1, numVisits = numVisits + 1 WHERE idFacebook = New.userId;
 
     # Achievement 1
     IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 1)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) THEN
