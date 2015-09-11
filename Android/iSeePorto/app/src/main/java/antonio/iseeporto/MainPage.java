@@ -3,7 +3,6 @@ package antonio.iseeporto;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -48,6 +47,11 @@ public class MainPage extends ActionBarActivity
     final FeedMenu friendsFrag = new FeedMenu();
     final Place placeFrag = new Place();
 
+    public static Activity getActivity()
+    {
+        return getActivity();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,7 @@ public class MainPage extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        SingletonStringId.getInstance().setId("1");
     }
 
     @Override
@@ -101,7 +106,7 @@ public class MainPage extends ActionBarActivity
         switch (number-1)
         {
             case MenuOptions.PERFIL:
-                SingletonUserId.getInstance().setIdUser(null);
+                SingletonStringId.getInstance().setId(null);
                 transaction.replace(R.id.container, perfilFrag, "Perfil");
                 break;
             case MenuOptions.SUGGESTIONS:
@@ -111,7 +116,8 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
             case MenuOptions.FRIENDS:
-                transaction.replace(R.id.container, friendsFrag, "Friends");
+                //transaction.replace(R.id.container, friendsFrag, "Friends");
+                transaction.replace(R.id.container, placeFrag, "Friends");
                 break;
             case MenuOptions.QRCODE:
                 startQRCode();
@@ -143,10 +149,6 @@ public class MainPage extends ActionBarActivity
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 // Handle successful scan
 
-                //abre o mapa
-                double latitude = 41.183239; double longitude = -8.601390;
-                openNavigation(latitude, longitude);
-
             } else {
                 if (resultCode == RESULT_CANCELED)
                     Toast.makeText(getApplicationContext(), "QR Code read error!", Toast.LENGTH_SHORT).show();
@@ -154,13 +156,6 @@ public class MainPage extends ActionBarActivity
         }
 
         onSectionAttached(MenuOptions.PERFIL);
-    }
-
-    private void openNavigation(double latitude, double longitude) {
-        //o ponto de partida é o local onde o utilizador está
-        Intent intent1 = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
-        startActivity(intent1);
     }
 
     public void restoreActionBar() {
