@@ -41,15 +41,39 @@ function get_self_user_info($accessToken)
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $userNode = getFacebookGraphUser($fb, $accessToken);
-    return get_user_info($userNode->getID());
+    return get_user_info($accessToken, $userNode->getID());
 }
 
-function get_user_info($id)
+function get_user_info($accessToken, $id)
 {
+    global $fb;
+    if (!validate_access_token($fb, $accessToken)) {
+        http_response_code(401);
+        return null;
+    }
+    $friends = getFacebookFriends($fb, $accessToken);
+    $list = "?";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $found = ($userNode->getID() == $id); // Self profile
+    if (!$found) {
+        foreach ($friends as $friend) {
+            echo "id: " . $id . " friendID: " . $friend["id"];
+            if ($friend["id"] == $id) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found)
+        {
+            http_response_code(401);
+            return null;
+        }
+    }
     $sql = "SELECT idFacebook, points, numVisits, numAchievements FROM User WHERE idFacebook = ?";
     $parameters = array();
     $parameters[0] = $id;
-    $typeParameters = "i";
+    $typeParameters = "s";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
