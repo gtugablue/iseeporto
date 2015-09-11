@@ -1,6 +1,7 @@
 package antonio.iseeporto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,12 @@ public class FeedAdapter extends BaseAdapter {
 
     private final Context context;
     private List<FeedData> data;
+    View row ;
 
     public class FeedData{
 
-        protected int poiImage1;
-        protected int poiImage2;
+        protected String poiImage1;
+        protected String poiImage2;
         protected String poiName1;
         protected String poiName2;
         protected int friendID;
@@ -38,7 +40,7 @@ public class FeedAdapter extends BaseAdapter {
         protected String friendName;
         protected Date timestamp;
 
-        FeedData(int poiImage1, int poiImage2, String poiName1, String poiName2,int friendID, int friendImage, String friendName, Date timestamp){
+        FeedData(String poiImage1, String poiImage2, String poiName1, String poiName2,int friendID, int friendImage, String friendName, Date timestamp){
             this.poiImage1 = poiImage1;
             this.poiImage2 = poiImage2;
             this.poiName1 = poiName1;
@@ -49,11 +51,11 @@ public class FeedAdapter extends BaseAdapter {
             this.timestamp = timestamp;
         }
 
-        public int getPoiImage1() {
+        public String getPoiImage1() {
             return poiImage1;
         }
 
-        public int getPoiImage2() {
+        public String getPoiImage2() {
             return poiImage2;
         }
 
@@ -94,7 +96,7 @@ public class FeedAdapter extends BaseAdapter {
         for(int i = 0; i < friends.size(); i++){
             try {
                 Date date = format.parse(dates.get(i));
-                data.add(new FeedData(0,0,"Clérigos", "Ribeira",i,0, friends.get(i),date));
+                data.add(new FeedData("https://iseeporto.revtut.net/uploads/PoI_photos/19.jpg","https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg","Clérigos", "Ribeira",i,0, friends.get(i),date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -127,16 +129,45 @@ public class FeedAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        View row ;
         row = inflater.inflate(R.layout.feed_row_layout, parent, false);
         FeedData dataPosition = data.get(position);
 
-        ImageView image = (ImageView) row.findViewById(R.id.friend_user_image);
+
+        ImageView poiImage1 = (ImageView) row.findViewById(R.id.poi_image1);
+        DownloadImageTask downloadImageTask1 = new DownloadImageTask(poiImage1){
+
+            @Override
+            protected void onPostExecute(final Bitmap result) {
+                row.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bmImage.setImageBitmap(result);
+                    }
+                });
+            }
+        };
+
+        ImageView poiImage2 = (ImageView) row.findViewById(R.id.poi_image2);
+        DownloadImageTask downloadImageTask2 = new DownloadImageTask(poiImage2){
+
+            @Override
+            protected void onPostExecute(final Bitmap result) {
+                row.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bmImage.setImageBitmap(result);
+                    }
+                });
+            }
+        };
+
+        downloadImageTask1.execute(dataPosition.getPoiImage1());
+
+        downloadImageTask2.execute(dataPosition.getPoiImage2());
 
 
 
         TextView feedText = (TextView) row.findViewById(R.id.achievement_name);
-//        String text = "<b>"+ dataPosition.getFriendName() + "</b>" + " visited" + "<b>" + dataPosition.getPoiName1()+ "</b>" + " and " + "<b>" + dataPosition.getPoiName2()+ "</b>";
         String text = dataPosition.getFriendName() + " visited " + dataPosition.getPoiName1() +" and " + dataPosition.getPoiName2();
         feedText.setText(text);
 
