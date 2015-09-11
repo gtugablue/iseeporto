@@ -3,11 +3,9 @@ package antonio.iseeporto;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +25,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -84,10 +78,10 @@ public class Perfil extends Fragment {
     protected void startInfoTransfer()
     {
         String url = "https://iseeporto.revtut.net/api/api.php?action=get_user_info&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
-        if (SingletonUserId.getInstance().getIdUser() == null)
+        if (SingletonStringId.getInstance().getId() == null)
             new JSONAsyncTask().execute(url);
         else
-            new JSONAsyncTask().execute(url + "&id=" + SingletonUserId.getInstance().getIdUser());
+            new JSONAsyncTask().execute(url + "&id=" + SingletonStringId.getInstance().getId());
     }
 
     class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
