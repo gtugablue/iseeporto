@@ -1,12 +1,15 @@
 package antonio.iseeporto;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -68,6 +71,7 @@ public class FeedMenu extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feed_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.feed_list_view);
         listView.setAdapter(new FeedAdapter(inflater.getContext()));
+
 
         return  view;
     }
