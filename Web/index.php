@@ -221,7 +221,7 @@ header('Content-Type: text/html; charset=utf-8');
                         <a href="http://portosummerofcode.com/" target="_blank">Porto Summer of Code</a>
                     </li>
                     <li>
-                        <a href="https://github.com/portosummerofcode/iseeporto/" target="_blank">Github</a>
+                        <a href="https://github.com/portosummerofcode/iseeporto/" target="_blank"><i class="fa fa-github"></i> Github</a>
                     </li>
                 </ul>
             </div>
