@@ -373,6 +373,27 @@ function find_friends_by_name($name, $accessToken)
     return array_map('utf8_encode_array', $data);
 }
 
+function report($accessToken, $id)
+{
+    global $fb;
+    $sql = "INSERT INTO Reports (userId, poiId) VALUES (?, ?)";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+
+    $typeParameters = "si";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
 $value = "An error has occurred";
 
 if (isset($_GET["action"]))
@@ -454,6 +475,12 @@ if (isset($_GET["action"]))
         case "find_friends_by_name":
             if (isset($_GET["name"]) && isset($_GET["accessToken"]))
                 $value = find_friends_by_name($_GET["name"], $_GET["accessToken"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "report":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = report($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
