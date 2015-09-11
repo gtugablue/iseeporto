@@ -31,6 +31,19 @@ function get_PoI_info($id)
     return array_map("utf8_encode", $data);
 }
 
+function get_self_user_info($accessToken)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+    $friends = getFacebookFriends($fb, $accessToken);
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    return get_user_info($userNode->getID());
+}
+
 function get_user_info($id)
 {
     $sql = "SELECT idFacebook, points, numVisits, numAchievements FROM User WHERE idFacebook = ?";
@@ -328,10 +341,12 @@ if (isset($_GET["action"]))
                 $value = "Missing argument";
             break;
         case "get_user_info":
-            if (isset($_GET["id"]))
-                $value = get_user_info($_GET["id"]);
-            else
-                $value = "Missing argument";
+            if (isset($_GET["accessToken"])) {
+                if (isset($_GET["id"]))
+                    $value = get_user_info($_GET["accessToken"], $_GET["id"]);
+                else
+                    $value = get_self_user_info($_GET["accessToken"]);
+            } else $value = "Missing argument";
             break;
         case "get_achievements":
             $value = get_achievements();
