@@ -143,7 +143,7 @@ FOR EACH ROW
       UPDATE PointsOfInterest SET numDislikes = @negative WHERE PointsOfInterest.id = NEW.poiId;
     END IF;
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
-    UPDATE User SET points = points + 2 WHERE idFacebook = New.userId;
+    UPDATE User SET points = points + 2, numReviews = numReviews + 1 WHERE idFacebook = New.userId;
   END;
 
 CREATE TRIGGER RemoveReview
@@ -160,7 +160,7 @@ FOR EACH ROW
       UPDATE PointsOfInterest SET numDislikes = @negative WHERE PointsOfInterest.id = OLD.poiId;
     END IF;
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = OLD.poiId;
-    UPDATE User SET points = points - 2 WHERE idFacebook = Old.userId;
+    UPDATE User SET points = points - 2, numReviews = numReviews - 1 WHERE idFacebook = Old.userId;
   END;
 
 CREATE TRIGGER ChangeReview
@@ -217,14 +217,14 @@ CREATE TRIGGER CreatePoI
   AFTER INSERT ON PointsOfInterest
   FOR EACH ROW
   BEGIN
-    UPDATE User SET points = points + 5 WHERE idFacebook = New.userId;
+    UPDATE User SET points = points + 5, numPoIs = numPoIs + 1 WHERE idFacebook = New.userId;
   END;
 
 CREATE TRIGGER RemovePoI
 AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
-    UPDATE User SET points = points - 5 WHERE idFacebook = Old.userId;
+    UPDATE User SET points = points - 5, numPoIs = numPoIs + 1 WHERE idFacebook = Old.userId;
     DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
     DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
   END;
