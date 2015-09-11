@@ -100,6 +100,8 @@ function login($accessToken)
     if (!$result) return false;
 }
 
+
+
 function getFacebookGraphUser($fb, $accessToken)
 {
     $response = $fb->get("/me", $accessToken);

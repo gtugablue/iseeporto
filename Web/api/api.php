@@ -126,7 +126,7 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
             POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating
-            FROM PointsOfInterest HAVING distance BETWEEN ? AND ? ORDER BY rating DESC WHERE active = true";
+            FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
 
     $parameters = array();
     $parameters[0] = $currLat;
