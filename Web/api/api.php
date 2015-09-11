@@ -11,7 +11,7 @@ require_once "../includes/utils.php";
 
 function get_PoI_info($id)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ? AND active = true";
+    $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -123,9 +123,9 @@ function get_achievements()
 
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
+    $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating
+            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
             FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
 
     $parameters = array();
@@ -279,6 +279,34 @@ function delete_review($accessToken, $id)
     return true;
 }
 
+function delete_poi($accessToken, $id)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+
+    $sql = "DELETE FROM PointsOfInterest WHERE userId = ? AND id = ?";
+    $parameters = array();
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    if(isset($_SERVER['HTTP_REFERER']))
+        header("Location: {$_SERVER['HTTP_REFERER']}");
+    return true;
+}
+
 function find_pois_by_name($name)
 {
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits
@@ -334,6 +362,27 @@ function find_friends_by_name($name, $accessToken)
     $name = preg_replace($accents,'$1',$name_encoded);
     $parameters[0] = '%'.$name.'%';
     $typeParameters = "s";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
+function report($accessToken, $id)
+{
+    global $fb;
+    $sql = "INSERT INTO Reports (userId, poiId) VALUES (?, ?)";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+
+    $typeParameters = "si";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -405,9 +454,15 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
-        case "delete_review":
+            case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "delete_poi":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = delete_poi($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
@@ -420,6 +475,12 @@ if (isset($_GET["action"]))
         case "find_friends_by_name":
             if (isset($_GET["name"]) && isset($_GET["accessToken"]))
                 $value = find_friends_by_name($_GET["name"], $_GET["accessToken"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "report":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = report($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;

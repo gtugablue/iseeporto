@@ -115,11 +115,12 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                 <th>Endereço</th>
                                 <th>Coordenadas</th>
                                 <th>Tipo</th>
+                                <th>Ação</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            $sql = "SELECT name, description, address, latitude, longitude, type FROM PointsOfInterest INNER JOIN TypeOfPoI WHERE active = true AND typeId = TypeOfPoI.id AND userId = ?";
+                            $sql = "SELECT PointsOfInterest.id, name, description, address, latitude, longitude, type FROM PointsOfInterest INNER JOIN TypeOfPoI WHERE active = true AND typeId = TypeOfPoI.id AND userId = ?";
                             $parameters = array();
                             $parameters[0] = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"])->getID();
                             $typeParameters = "s";
@@ -136,11 +137,12 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                             } else {
                                 while ($row = $result->fetch_row()) {
                                     echo "<tr>";
-                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[0])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[1])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[2])) . "</td>";
-                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[3])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . "</td>";
-                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[3])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
+                                    echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[6])) . "</td>";
+                                    echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=" . $_SESSION['facebook_access_token'] . "'<i class='fa fa-remove' title='Remover PoI'></i></td>";
                                     echo "</tr>";
                                 }
                             }

@@ -4,6 +4,7 @@ ALTER DATABASE iseeporto CHARACTER SET utf8 COLLATE utf8_general_ci;
 # Drop existing tables
 DROP TRIGGER IF EXISTS MakeReview;
 DROP FUNCTION IF EXISTS CALCULATE_RATING;
+DROP TABLE IF EXISTS Reports;
 DROP TABLE IF EXISTS PoIVisits;
 DROP TABLE IF EXISTS Reviews;
 DROP TABLE IF EXISTS UserAchievements;
@@ -33,6 +34,8 @@ CREATE TABLE User
   idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
   points INT NOT NULL,
   numVisits INT NOT NULL,
+  numReviews INT NOT NULL,
+  numPoIs INT NOT NULL,
   numAchievements INT NULL
 );
 
@@ -99,6 +102,15 @@ CREATE TABLE PoIVisits
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id),
   CONSTRAINT PRIMARY KEY (userId, poiId)
+);
+
+# Reports Table
+CREATE TABLE Reports
+(
+  userId VARCHAR(64) NOT NULL,
+  poiId INT NOT NULL,
+  CONSTRAINT FOREIGN KEY (userId) REFERENCES User (idFacebook),
+  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest (id)
 );
 
 DELIMITER //
@@ -171,12 +183,25 @@ FOR EACH ROW
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
   END;
 
+DELIMITER //
+CREATE FUNCTION USER_HAS_ACHIEVEMENT(userId VARCHAR(64), achievementId INT)
+  RETURNS BOOLEAN
+  BEGIN
+    RETURN EXISTS(SELECT * FROM UserAchievements WHERE UserAchievements.userId = userId AND UserAchievements.achievementId = achievementId);
+  END //
+DELIMITER ;
+
 CREATE TRIGGER MakeVisit
 AFTER INSERT ON PoIVisits
 FOR EACH ROW
   BEGIN
     UPDATE PointsOfInterest SET numVisits = numVisits + 1 WHERE PointsOfInterest.id = NEW.poiId;
     UPDATE User SET points = points + 1 WHERE idFacebook = New.userId;
+
+    # Achievement 1
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 1)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 1, CURRENT_DATE());
+    END IF;
   END;
 
 CREATE TRIGGER RemoveVisit
@@ -199,4 +224,6 @@ AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
     UPDATE User SET points = points - 5 WHERE idFacebook = Old.userId;
+    DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
+    DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
   END;
