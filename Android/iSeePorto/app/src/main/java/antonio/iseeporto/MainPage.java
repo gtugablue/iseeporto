@@ -44,8 +44,8 @@ public class MainPage extends ActionBarActivity
     //fragments
     Perfil perfilFrag;
     SuggestedMenu suggestionsFrag;
-    Visited visitedFrag;
-    Friends friendsFrag;
+    VisitedMenu visitedFrag;
+    FeedMenu friendsFrag;
     Place placeFrag;
 
     @Override
@@ -76,8 +76,8 @@ public class MainPage extends ActionBarActivity
         suggestionsFrag = new SuggestedMenu();
         placeFrag = new Place();
         perfilFrag = new Perfil();
-        visitedFrag = new Visited();
-        friendsFrag = new Friends();
+        visitedFrag = new VisitedMenu();
+        friendsFrag = new FeedMenu();
     }
 
     @Override

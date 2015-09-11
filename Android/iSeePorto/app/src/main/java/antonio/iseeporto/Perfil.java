@@ -2,12 +2,16 @@ package antonio.iseeporto;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -20,6 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -27,12 +35,34 @@ import java.io.IOException;
 public class Perfil extends Fragment {
 
     String rec;
+    View view;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.perfil, container, false);
+        view = inflater.inflate(R.layout.perfil, container, false);
         AsyncTask task = new JSONAsyncTask().execute("http://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=1");
+
+
+        ImageView tempImage = (ImageView) view.findViewById(R.id.profile_pic_big);
+
+        DownloadImageTask downloadImageTask = new DownloadImageTask(tempImage){
+
+            @Override
+            protected void onPostExecute(final Bitmap result) {
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bmImage.setImageBitmap(result);
+                    }
+                });
+            }
+        };
+
+        downloadImageTask.execute("https://iseeporto.revtut.net/uploads/PoI_photos/1.jpg");
+
+
         return view;
     }
 
