@@ -135,12 +135,8 @@ public class FeedAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         row = inflater.inflate(R.layout.feed_row_layout, parent, false);
         FeedData dataPosition = data.get(position);
-//        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(R.attr.listPreferredItemHeight/2, R.attr.listPreferredItemHeight/2);
 
         ImageView poiImage1 = (ImageView) row.findViewById(R.id.poi_image1);
-        poiImage1.setMaxHeight(R.attr.listPreferredItemHeight/2);
-        poiImage1.setMaxWidth(R.attr.listPreferredItemHeight / 2);
-//        poiImage1.setLayoutParams(imageParams);
         DownloadImageTask downloadImageTask1 = new DownloadImageTask(poiImage1){
 
             @Override
@@ -156,9 +152,6 @@ public class FeedAdapter extends BaseAdapter {
 
 
         ImageView poiImage2 = (ImageView) row.findViewById(R.id.poi_image2);
-        poiImage2.setMaxHeight(R.attr.listPreferredItemHeight/2);
-        poiImage2.setMaxWidth(R.attr.listPreferredItemHeight/2);
-//        poiImage2.setLayoutParams(imageParams);
         DownloadImageTask downloadImageTask2 = new DownloadImageTask(poiImage2){
 
             @Override
