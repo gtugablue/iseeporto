@@ -279,6 +279,32 @@ function delete_review($accessToken, $id)
     return true;
 }
 
+function delete_poi($accessToken, $id)
+{
+    global $fb;
+    if (!validate_access_token($fb, $accessToken))
+    {
+        http_response_code(401);
+        return null;
+    }
+
+    $sql = "DELETE FROM PointsOfInterest WHERE userId = ? AND id = ?";
+    $parameters = array();
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    return true;
+}
+
 function find_pois_by_name($name)
 {
     $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits
@@ -408,6 +434,12 @@ if (isset($_GET["action"]))
         case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "delete_poi":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = delete_poi($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
