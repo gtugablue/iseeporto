@@ -119,14 +119,14 @@ fieldset[disabled] .btn-primary.active {
 
 .btn-xl {
     padding: 20px 40px;
-    border-color: #00CC00;
+    border-color: #fed136;
     border-radius: 3px;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 18px;
     font-weight: 700;
     color: #fff;
-    background-color: #33CC33;
+    background-color: #fed136;
 }
 
 .btn-xl:hover,
@@ -134,9 +134,9 @@ fieldset[disabled] .btn-primary.active {
 .btn-xl:active,
 .btn-xl.active,
 .open .dropdown-toggle.btn-xl {
-    border-color: #009933;
+    border-color: #fec503;
     color: #fff;
-    background-color: #009900;
+    background-color: #fec503;
 }
 
 .btn-xl:active,
@@ -268,6 +268,7 @@ header {
     background-image: url(../assets/img/header.jpg);
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -585,6 +586,7 @@ section#contact {
     background-image: url(../assets/img/map.jpg);
     background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
 }
 
 section#contact .section-heading {
@@ -777,6 +779,8 @@ ul.social-buttons li a:active {
 
 .circularImage {
     border-radius: 40rem;
+    width: 4.5rem;
+    height: 4.5rem;
 }
 
 .social_div {
