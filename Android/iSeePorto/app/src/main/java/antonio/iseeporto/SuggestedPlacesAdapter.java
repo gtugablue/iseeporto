@@ -94,9 +94,9 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         View row ;
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
 
-        ImageView image = (ImageView) row.findViewById(R.id.poi_image);
+        ImageView image = (ImageView) row.findViewById(R.id.achievement_image);
 
-        TextView name = (TextView) row.findViewById(R.id.feed_text);
+        TextView name = (TextView) row.findViewById(R.id.achievement_name);
         name.setText(data.get(position).getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);

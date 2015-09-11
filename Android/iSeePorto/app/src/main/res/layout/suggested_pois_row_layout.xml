@@ -5,7 +5,7 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/poi_image"
+        android:id="@+id/achievement_image"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -20,21 +20,21 @@
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/poi_image"
+        android:layout_toRightOf="@id/achievement_image"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="José e Ricardo já visitaram"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/feed_text"
+        android:id="@+id/achievement_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/feed_text"
+        android:layout_above="@id/achievement_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/poi_image"
+        android:layout_toRightOf="@id/achievement_image"
         android:gravity="center_vertical"
         android:text="Clérigos"
         android:textSize="16sp" />
@@ -45,8 +45,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="200m"
         android:id="@+id/distance"
-        android:layout_alignBottom="@+id/feed_text"
+        android:layout_alignBottom="@+id/achievement_name"
         android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/feed_text" />
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/achievement_name" />
 
 </RelativeLayout>

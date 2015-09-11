@@ -42,7 +42,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/feed_text"
+            android:id="@+id/achievement_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/poi_image2"
-            android:src="@mipmap/ribeira"
+            android:src="@mipmap/clerigos"
             android:layout_weight="0.5" />
 
     </LinearLayout>
