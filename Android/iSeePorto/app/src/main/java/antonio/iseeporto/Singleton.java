@@ -1,11 +1,14 @@
 package antonio.iseeporto;
 
+import com.facebook.AccessToken;
+
 /**
  * Created by Duarte on 10/09/2015.
  */
 public class Singleton {
     private static Singleton ourInstance = new Singleton();
 
+    protected AccessToken accessToken;
 
     protected String idToken;
 
@@ -16,12 +19,12 @@ public class Singleton {
     private Singleton() {
     }
 
-    public String getIdToken() {
-        return idToken;
+    public AccessToken getAccessToken() {
+        return accessToken;
     }
 
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
     }
 
 }
