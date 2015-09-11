@@ -265,9 +265,9 @@ header {
     text-align: center;
     color: #fff;
     background-attachment: scroll;
-    background-image: url(../img/header-bg.jpg);
+    background-image: url(../assets/img/header.jpg);
     background-position: center center;
-    background-repeat: none;
+    background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -582,7 +582,7 @@ aside.clients img {
 
 section#contact {
     background-color: #222;
-    background-image: url(../img/map-image.png);
+    background-image: url(../assets/img/map.jpg);
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -682,11 +682,13 @@ ul.social-buttons li a {
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     transition: all .3s;
+    text-align: center;
 }
 
 ul.social-buttons li a:hover,
 ul.social-buttons li a:focus,
 ul.social-buttons li a:active {
+    color: #ffffff !important;
     background-color: #fed136;
 }
 
@@ -771,6 +773,14 @@ ul.social-buttons li a:active {
 .portfolio-modal .modal-backdrop {
     display: none;
     opacity: 0;
+}
+
+.circularImage {
+    border-radius: 40rem;
+}
+
+.social_div {
+    padding-left: 3rem;
 }
 
 ::-moz-selection {
