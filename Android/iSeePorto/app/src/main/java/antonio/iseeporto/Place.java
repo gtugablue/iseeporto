@@ -176,6 +176,7 @@ public class Place extends android.app.Fragment {
 
     private void openNavigation(double latitude, double longitude) {
         //o ponto de partida é o local onde o utilizador está
+        Log.e("Touch navigation", "!!!!!!!!!!!!!!!!!!!!");
         Intent intent1 = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
         startActivity(intent1);
@@ -190,8 +191,7 @@ public class Place extends android.app.Fragment {
                 //abre o mapa
                 openNavigation(latitude, longitude);
 
-                //se chega aqui é porque alguma coisa falhou
-                return false;
+                return true;
             }
         });
 
