@@ -11,7 +11,7 @@ require_once "../includes/utils.php";
 
 function get_PoI_info($id)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ? AND active = true";
+    $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits FROM PointsOfInterest WHERE id = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -123,7 +123,7 @@ function get_achievements()
 
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude,
+    $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
             POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
             FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
