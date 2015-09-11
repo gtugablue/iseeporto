@@ -80,8 +80,8 @@ header('Content-Type: text/html; charset=utf-8');
                     $name = $user->getName();
                     $picUrl = "http://graph.facebook.com/".$user->getId()."/picture?type=large";
 
-                    echo "<li><a class=\"page-scroll\" href=\"http://iseeporto.revtut.net/account/\">$name</a></li>";
-                    echo "<li><img class=\"circularImage\" width='40rem' height='40rem' src=\"$picUrl\"/></li>";
+                    echo "<li><a class='page-scroll' href=\"http://iseeporto.revtut.net/account/\">$name</a></li>";
+                    echo "<li><img class=\"circularImage\" src=\"$picUrl\"/></li>";
                 }
                 ?>
 
@@ -111,8 +111,8 @@ header('Content-Type: text/html; charset=utf-8');
 <header>
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">Bem-vindo!</div>
-            <div class="intro-heading">Vem conhecer o Porto!</div>
+            <div class="intro-lead-in">Bem-Vindo! Embarca nas</div>
+            <div class="intro-heading">Descobertas de uma vida</div>
             <a href="#" class="page-scroll btn btn-xl">Android</a> <!-- TODO add android download link -->
         </div>
     </div>
@@ -131,26 +131,26 @@ header('Content-Type: text/html; charset=utf-8');
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                        <i class="fa fa-users fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Social</h4>
-                <p class="text-muted">Visita os locais que os teus amigos mais gostaram! Partilha a tua apreciação de novos locais socialmente.</p>
+                <p class="text-muted">Conhece novos locais através dos teus amigos, partilha a tua apreciação sobre eles e desbloqueia novas conquistas na aplicação!</p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+                        <i class="fa fa-heart fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Íntimo</h4>
-                <p class="text-muted">Os pontos de interesse existentes na aplicação foram adicionados com a melhor intenção, por pessoas como tu!</p>
+                <p class="text-muted">Os pontos de interesse que são sugeridos na aplicação foram adicionados com o maior carinho por pessoas como tu e o melhor é que também podes contribuir!</p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                        <i class="fa fa-home fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Simples</h4>
-                <p class="text-muted">Nada de menus confusos, nem opções escondidas. Tudo o que é preciso está bem à vista de uma forma excelentemente organizada.</p>
+                <p class="text-muted">Design confuso, opções escondidas e aplicações lentas é tudo coisa do passado! Ao usar a aplicação irás sentir-te como se em casa estivesses!</p>
             </div>
         </div>
     </div>
@@ -162,7 +162,7 @@ header('Content-Type: text/html; charset=utf-8');
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading">Contacte-nos</h2>
-                <h3 class="section-subheading text-muted">Expõe as tuas dúvidas e/ou sugestões.</h3>
+                <h3 class="section-subheading text-muted">Novas ideias? Melhorias a serem feitas? Estás no local perfeito!</h3>
             </div>
         </div>
         <div class="row">
