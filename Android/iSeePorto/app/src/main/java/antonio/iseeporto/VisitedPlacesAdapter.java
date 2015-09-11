@@ -103,9 +103,9 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         View row ;
         row = inflater.inflate(R.layout.visited_pois_row_layout, parent, false);
 
-        ImageView image = (ImageView) row.findViewById(R.id.poi_image);
+        ImageView image = (ImageView) row.findViewById(R.id.achievement_image);
 
-        TextView name = (TextView) row.findViewById(R.id.feed_text);
+        TextView name = (TextView) row.findViewById(R.id.achievement_name);
         name.setText(data.get(position).getPoiName().toString());
 
         TextView date = (TextView) row.findViewById(R.id.visitation_date);

@@ -15,7 +15,7 @@
         android:src="@mipmap/clerigos" />
 
     <TextView
-        android:id="@+id/visitors"
+        android:id="@+id/achievement_description"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
@@ -38,16 +38,5 @@
         android:gravity="center_vertical"
         android:text="Clérigos"
         android:textSize="16sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="200m"
-        android:id="@+id/distance"
-        android:layout_alignBottom="@+id/achievement_name"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignRight="@+id/achievement_name" />
 
 </RelativeLayout>

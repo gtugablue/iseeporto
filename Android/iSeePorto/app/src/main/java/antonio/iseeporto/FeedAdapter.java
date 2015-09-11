@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,7 +135,7 @@ public class FeedAdapter extends BaseAdapter {
 
 
 
-        TextView feedText = (TextView) row.findViewById(R.id.feed_text);
+        TextView feedText = (TextView) row.findViewById(R.id.achievement_name);
 //        String text = "<b>"+ dataPosition.getFriendName() + "</b>" + " visited" + "<b>" + dataPosition.getPoiName1()+ "</b>" + " and " + "<b>" + dataPosition.getPoiName2()+ "</b>";
         String text = dataPosition.getFriendName() + " visited " + dataPosition.getPoiName1() +" and " + dataPosition.getPoiName2();
         feedText.setText(text);
