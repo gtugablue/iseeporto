@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             break;
                     }
                     imagejpeg($image, $fname);
+                    resizeImage($fname, $fname, 350, 350);
                 }
             } else {
                 $formError = "Erro: ocorreu um problema ao enviar a fotografia.";
