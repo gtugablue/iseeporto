@@ -78,9 +78,9 @@ header('Content-Type: text/html; charset=utf-8');
                     global $fb;
                     $user = getFacebookGraphUser($fb, $_SESSION["facebook_access_token"]);
                     $name = $user->getName();
-                    $picUrl = "http://graph.facebook.com/".$user->getId()."/picture?type=large";
+                    $picUrl = "https://graph.facebook.com/".$user->getId()."/picture?type=large";
 
-                    echo "<li><a class='page-scroll' href=\"http://iseeporto.revtut.net/account/\">$name</a></li>";
+                    echo "<li><a class='page-scroll' href=\"http://iseeporto.revtut.net/account/\">A Minha Conta</a></li>";
                     echo "<li><img class=\"circularImage\" src=\"$picUrl\"/></li>";
                 }
                 ?>
@@ -161,7 +161,7 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Contacte-nos</h2>
+                <h2 class="section-heading">Contacta-nos</h2>
                 <h3 class="section-subheading text-muted">Novas ideias? Melhorias a serem feitas? Estás no local perfeito!</h3>
             </div>
         </div>

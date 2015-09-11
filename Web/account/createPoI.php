@@ -105,12 +105,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">iSee Porto</a>
+                <a class="navbar-brand" href="../">iSee Porto</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li>
-                    <a href="#"><i class="fa fa-user"></i> <?php echo $userNode->getName(); ?></a>
+                    <img class="circularImage" src="https://graph.facebook.com/<?php echo $userNode->getId(); ?>/picture?type=large"/>
+                </li>
+                <li>
+                    <a href="#"><?php echo $userNode->getName(); ?></a>
                 </li>
                 <li>
                     <a href="logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
