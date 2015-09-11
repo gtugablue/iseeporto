@@ -171,12 +171,25 @@ FOR EACH ROW
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
   END;
 
+DELIMITER //
+CREATE FUNCTION USER_HAS_ACHIEVEMENT(userId VARCHAR(64), achievementId INT)
+  RETURNS BOOLEAN
+  BEGIN
+    RETURN EXISTS(SELECT * FROM UserAchievements WHERE UserAchievements.userId = userId AND UserAchievements.achievementId = achievementId);
+  END //
+DELIMITER ;
+
 CREATE TRIGGER MakeVisit
 AFTER INSERT ON PoIVisits
 FOR EACH ROW
   BEGIN
     UPDATE PointsOfInterest SET numVisits = numVisits + 1 WHERE PointsOfInterest.id = NEW.poiId;
     UPDATE User SET points = points + 1 WHERE idFacebook = New.userId;
+
+    # Achievement 1
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 1)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 1, CURRENT_DATE());
+    END IF;
   END;
 
 CREATE TRIGGER RemoveVisit
