@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/profile_pic_big"
-                android:src="@drawable/exemplo"
+                android:src="@mipmap/blank_image"
                 />
         </LinearLayout>
 
@@ -75,6 +75,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/achievements_list_view" />
+            android:id="@+id/achievements_list_view"
+            android:layout_marginTop="15dp" />
     </LinearLayout>
 </LinearLayout>

@@ -63,11 +63,11 @@ public class Perfil extends Fragment {
             }
         };
 
-        downloadImageTask.execute("http://www.sunbeltsys.com/images/http_icon.jpg");
+        downloadImageTask.execute("https://iseeporto.revtut.net/uploads/PoI_photos/19.jpg");
 
         ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
         ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
-        achievementData.add(new AchievementsAdapter.AchievementData("http://www.sunbeltsys.com/images/http_icon.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
+        achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
         listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
 
 
