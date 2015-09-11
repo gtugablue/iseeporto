@@ -5,7 +5,7 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/achievement_image"
+        android:id="@+id/poi_image"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
@@ -20,21 +20,21 @@
         android:layout_height="26dip"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/achievement_image"
+        android:layout_toRightOf="@id/poi_image"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:text="07/09/2015"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/achievement_name"
+        android:id="@+id/poi_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/achievement_name"
+        android:layout_above="@id/poi_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/achievement_image"
+        android:layout_toRightOf="@id/poi_image"
         android:gravity="center_vertical"
         android:text="Clérigos"
         android:textSize="16sp" />
@@ -44,9 +44,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/thumb"
-        android:layout_alignBottom="@+id/achievement_name"
+        android:layout_alignBottom="@+id/poi_name"
         android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/achievement_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/poi_name"
         android:src="@mipmap/thumbs_up" />
 
 </RelativeLayout>

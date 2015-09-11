@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -27,6 +28,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -60,7 +63,13 @@ public class Perfil extends Fragment {
             }
         };
 
-        downloadImageTask.execute("https://iseeporto.revtut.net/uploads/PoI_photos/1.jpg");
+        downloadImageTask.execute("http://www.sunbeltsys.com/images/http_icon.jpg");
+
+        ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
+        ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
+        achievementData.add(new AchievementsAdapter.AchievementData("http://www.sunbeltsys.com/images/http_icon.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
+        listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
+
 
 
         return view;

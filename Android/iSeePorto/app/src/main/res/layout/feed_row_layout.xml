@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="0">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/friend_user_image"
-            android:layout_width="wrap_content"
+            android:layout_width="?android:attr/listPreferredItemHeight"
             android:layout_height="fill_parent"
             android:layout_marginRight="6dip"
             android:contentDescription="TODO"
@@ -23,7 +23,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="0.1">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,25 +54,27 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0">
-
-        <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:layout_gravity="right">
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/poi_image1"
             android:src="@mipmap/clerigos"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:layout_gravity="center_horizontal" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/poi_image2"
             android:src="@mipmap/clerigos"
-            android:layout_weight="0.5" />
+            android:layout_weight="0.5"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
