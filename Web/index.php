@@ -150,7 +150,7 @@ header('Content-Type: text/html; charset=utf-8');
                         <i class="fa fa-home fa-stack-1x fa-inverse"></i>
                     </span>
                 <h4 class="service-heading">Simples</h4>
-                <p class="text-muted">Design confuso, opções escondidas e aplicações lentas é tudo coisa do passado! Ao usar a aplicação irás sentir-te como se em casa estivesses!</p>
+                <p class="text-muted">Design confuso, opções escondidas e aplicações lentas é tudo coisa do passado! Ao usar a aplicação irás-te sentir como se estivesses em casa!</p>
             </div>
         </div>
     </div>
