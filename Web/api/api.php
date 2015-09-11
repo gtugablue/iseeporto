@@ -302,6 +302,8 @@ function delete_poi($accessToken, $id)
         http_response_code(500);
         return null;
     }
+    if(isset($_SERVER['HTTP_REFERER']))
+        header("Location: {$_SERVER['HTTP_REFERER']}");
     return true;
 }
 
@@ -431,7 +433,7 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
-        case "delete_review":
+            case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"]);
             else

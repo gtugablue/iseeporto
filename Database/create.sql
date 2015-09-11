@@ -4,6 +4,7 @@ ALTER DATABASE iseeporto CHARACTER SET utf8 COLLATE utf8_general_ci;
 # Drop existing tables
 DROP TRIGGER IF EXISTS MakeReview;
 DROP FUNCTION IF EXISTS CALCULATE_RATING;
+DROP TABLE IF EXISTS Reports;
 DROP TABLE IF EXISTS PoIVisits;
 DROP TABLE IF EXISTS Reviews;
 DROP TABLE IF EXISTS UserAchievements;
@@ -33,6 +34,8 @@ CREATE TABLE User
   idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
   points INT NOT NULL,
   numVisits INT NOT NULL,
+  numReviews INT NOT NULL,
+  numPoIs INT NOT NULL,
   numAchievements INT NULL
 );
 
@@ -99,6 +102,15 @@ CREATE TABLE PoIVisits
   CONSTRAINT FOREIGN KEY (userId) REFERENCES User(idFacebook),
   CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest(id),
   CONSTRAINT PRIMARY KEY (userId, poiId)
+);
+
+# Reports Table
+CREATE TABLE Reports
+(
+  userId VARCHAR(64) NOT NULL,
+  poiId INT NOT NULL,
+  CONSTRAINT FOREIGN KEY (userId) REFERENCES User (idFacebook),
+  CONSTRAINT FOREIGN KEY (poiId) REFERENCES PointsOfInterest (id)
 );
 
 DELIMITER //
@@ -199,4 +211,6 @@ AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
     UPDATE User SET points = points - 5 WHERE idFacebook = Old.userId;
+    DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
+    DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
   END;
