@@ -39,7 +39,7 @@ public class Place extends android.app.Fragment {
                     return;
                 }
                 objInfo = jsono;
-                shortcut(result);
+                shortcut();
             }
         };
         temp.setActivity(getActivity());
@@ -60,6 +60,17 @@ public class Place extends android.app.Fragment {
 
     public void visitarLocal()
     {
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_visited&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
         EvaluateThumbs avaliacao = new EvaluateThumbs();
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
@@ -69,6 +80,28 @@ public class Place extends android.app.Fragment {
 
     public void retirarVisita()
     {
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
+        temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_not_visited&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
         VisitButton v = new VisitButton();
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
@@ -76,7 +109,7 @@ public class Place extends android.app.Fragment {
         transaction.commit();
     }
 
-    private void shortcut(Boolean result)
+    private void shortcut()
     {
         getView().post(new Runnable() {
             @Override

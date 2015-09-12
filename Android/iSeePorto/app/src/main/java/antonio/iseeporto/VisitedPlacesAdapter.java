@@ -84,7 +84,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         for(int i = 0; i < names.size(); i++)
             try {
                 Date date = format.parse(dates.get(i));
-                data.add(new VisitedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", names.get(i), date, feedback[i] == 1 ? true : false));
+                data.add(new VisitedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", names.get(i), date, feedback[i] == 1));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
