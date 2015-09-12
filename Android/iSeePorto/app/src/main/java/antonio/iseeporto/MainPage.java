@@ -116,8 +116,8 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
             case MenuOptions.FRIENDS:
-                //transaction.replace(R.id.container, friendsFrag, "Friends");
-                transaction.replace(R.id.container, placeFrag, "Friends");
+                transaction.replace(R.id.container, friendsFrag, "Friends");
+//                transaction.replace(R.id.container, placeFrag, "Friends");
                 break;
             case MenuOptions.QRCODE:
                 startQRCode();
