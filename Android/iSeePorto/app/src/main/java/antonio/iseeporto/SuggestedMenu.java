@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -114,7 +117,9 @@ public class SuggestedMenu extends Fragment {
 
     public void startInfoTransfer()
     {
-        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=1&currLon=1&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+        double latitude = 41.1488208;
+        double longitude = -8.6115876;
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=" + latitude + "&currLon=" + longitude + "&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
         System.out.println("URL: " + url);
         task.execute(url);
     }
@@ -150,7 +155,7 @@ public class SuggestedMenu extends Fragment {
             SuggestedPlacesAdapter.SuggestedPoiData spd =
                     new SuggestedPlacesAdapter.SuggestedPoiData(
                             sPoI.getInt("id"),
-                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("id") + ".jpg",
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
                             stringCrop(sPoI.getString("name"), 25),
                             sPoI.getString("address"),
                             (int)sPoI.getDouble("distance"));

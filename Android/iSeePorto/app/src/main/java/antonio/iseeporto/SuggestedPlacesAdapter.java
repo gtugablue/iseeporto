@@ -29,12 +29,11 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
     public static class SuggestedPoiData{
         protected int poiID;
-
-
         protected String poiImageURL;
         protected String poiName;
         protected String visitorFriends;
         protected int distance;
+        protected Bitmap[] bitmapArray = new Bitmap[1];
 
         SuggestedPoiData(int poiID,String poiImageURL,String poiName,String visitorFriends,int distance){
             this.poiID = poiID;
@@ -42,6 +41,8 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
             this.poiName = poiName;
             this.visitorFriends = visitorFriends;
             this.distance = distance;
+            DownloadImageTask downloadImageTask = new DownloadImageTask(bitmapArray);
+            downloadImageTask.execute(poiImageURL);
         }
 
         public int getPoiID() {
@@ -110,20 +111,12 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
 
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
-        DownloadImageTask downloadImageTask = new DownloadImageTask(image){
 
-            @Override
-            protected void onPostExecute(final Bitmap result) {
-                row.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmImage.setImageBitmap(result);
-                    }
-                });
-            }
-        };
-
-        downloadImageTask.execute(poiData.poiImageURL);
+        if (poiData.bitmapArray[0] != null)
+        {
+            System.out.println("      NOT NULL     ");
+            image.setImageBitmap(poiData.bitmapArray[0]);
+        } else System.out.println("      NULL     ");
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
         name.setText(poiData.getPoiName().toString());
