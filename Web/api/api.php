@@ -214,14 +214,13 @@ function get_visited($accessToken)
         http_response_code(401);
     }
 
-    $friends = getFacebookFriends($fb, $accessToken);
-    $list = "?";
     $parameters = array();
     $userNode = getFacebookGraphUser($fb, $accessToken);
     $parameters[0] = $userNode->getID();
     $typeParameters = "s";
-    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes, comment, `like`, visitDate
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id INNER JOIN Reviews ON Reviews.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId = ?";
+    $sql = "SELECT PoIVisits.poiId, PointsOfInterest.name, PoIVisits.visitDate FROM PoIVisits
+            INNER JOIN PointsOfInterest ON PointsOfInterest.id = PoIVisits.poiId
+            WHERE active = true AND PoIVisits.userId = ?";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
