@@ -47,11 +47,6 @@ public class MainPage extends ActionBarActivity
     final FeedMenu friendsFrag = new FeedMenu();
     final Place placeFrag = new Place();
 
-    public static Activity getActivity()
-    {
-        return getActivity();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
