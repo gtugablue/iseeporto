@@ -3,7 +3,8 @@
     package="antonio.iseeporto" >
 
     <uses-feature android:name="android.hardware.camera" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -34,13 +35,22 @@
             android:label="@string/title_activity_main_page" >
         </activity>
         <activity
-            android:name=".Search"
+            android:name=".SearchUser"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name=".SearchResult"
+            android:name=".SearchUserResult"
             android:label="@string/title_activity_search_result" >
         </activity>
+        <activity
+            android:name=".SearchPoiResult"
+            android:label="@string/title_activity_search_poi_result" >
+        </activity>
+        <activity
+            android:name=".SearchPoi"
+            android:label="@string/title_activity_search_poi">
+        </activity>
+
     </application>
 
 </manifest>

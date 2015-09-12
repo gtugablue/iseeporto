@@ -29,19 +29,20 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
     public static class SuggestedPoiData{
         protected int poiID;
-
-
         protected String poiImageURL;
         protected String poiName;
-        protected String visitorFriends;
+        protected String address;
         protected int distance;
+        protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        SuggestedPoiData(int poiID,String poiImageURL,String poiName,String visitorFriends,int distance){
+        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, String address,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
-            this.visitorFriends = visitorFriends;
+            this.address = address;
             this.distance = distance;
+            DownloadImageTask downloadImageTask = new DownloadImageTask(bitmapArray);
+            downloadImageTask.execute(poiImageURL);
         }
 
         public int getPoiID() {
@@ -52,8 +53,8 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
             return poiName;
         }
 
-        public String getVisitorFriends() {
-            return visitorFriends;
+        public String getAddress() {
+            return address;
         }
 
         public int getDistance() {
@@ -71,14 +72,14 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         this.context = context;
         ArrayList<SuggestedPoiData> data;
         data = new ArrayList<>();
-        List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
+       /* List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
         List<String> visitors = Arrays.asList(context.getResources().getStringArray(R.array.friends_list));
         int[] distances = context.getResources().getIntArray(R.array.distances);
 
         for(int i = 0; i< distances.length; i++){
             data.add(new SuggestedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", names.get(i), visitors.get(i), distances[i]));
         }
-
+        */
         this.data = data;
     }
 
@@ -108,28 +109,28 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
         SuggestedPoiData poiData = data.get(position);
 
+        if (poiData.bitmapArray[0] == null) {
+            ImageView image = (ImageView) row.findViewById(R.id.poi_image);
+            DownloadImageTask downloadImageTask = new DownloadImageTask(image) {
 
-        ImageView image = (ImageView) row.findViewById(R.id.poi_image);
-        DownloadImageTask downloadImageTask = new DownloadImageTask(image){
-
-            @Override
-            protected void onPostExecute(final Bitmap result) {
-                row.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmImage.setImageBitmap(result);
-                    }
-                });
-            }
-        };
-
-        downloadImageTask.execute(poiData.poiImageURL);
+                @Override
+                protected void onPostExecute(final Bitmap result) {
+                    row.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bmImage.setImageBitmap(result);
+                        }
+                    });
+                }
+            };
+            downloadImageTask.execute(poiData.poiImageURL);
+        }
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
         name.setText(poiData.getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
-        visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends() + " visited this place");
+        visitors.setText(data.get(position).getAddress());
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
         distance.setText(poiData.getDistance() + "m");
