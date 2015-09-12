@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,6 +63,7 @@ public class MainPage extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         SingletonStringId.getInstance().setId("1");
+
     }
 
     @Override

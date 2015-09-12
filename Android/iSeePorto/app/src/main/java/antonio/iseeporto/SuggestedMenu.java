@@ -80,7 +80,6 @@ public class SuggestedMenu extends Fragment {
         }
 
 
-
     }
 
     @Override
