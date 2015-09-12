@@ -1,17 +1,13 @@
 package antonio.iseeporto;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -78,7 +74,7 @@ public class FeedMenu extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent = new Intent(inflater.getContext(), Search.class);
+                Intent searchIntent = new Intent(inflater.getContext(), SearchUser.class);
                 startActivity(searchIntent);
             }
         });

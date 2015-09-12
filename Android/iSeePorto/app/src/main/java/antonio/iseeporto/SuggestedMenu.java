@@ -99,7 +99,7 @@ public class SuggestedMenu extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent = new Intent(inflater.getContext(), Search.class);
+                Intent searchIntent = new Intent(inflater.getContext(), SearchPoi.class);
                 startActivity(searchIntent);
             }
         });
