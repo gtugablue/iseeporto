@@ -220,7 +220,7 @@ AFTER DELETE ON PoIVisits
 FOR EACH ROW
   BEGIN
     UPDATE PointsOfInterest SET numVisits = numVisits - 1 WHERE PointsOfInterest.id = OLD.poiId;
-    UPDATE User SET points = points - 1 WHERE idFacebook = Old.userId;
+    UPDATE User SET points = points - 1, numVisits = numVisits - 1 WHERE idFacebook = Old.userId;
   END;
 
 CREATE TRIGGER CreatePoI
@@ -244,7 +244,7 @@ CREATE TRIGGER RemovePoI
 AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
-    UPDATE User SET points = points - 5, numPoIs = numPoIs + 1 WHERE idFacebook = Old.userId;
+    UPDATE User SET points = points - 5, numPoIs = numPoIs - 1 WHERE idFacebook = Old.userId;
     DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
     DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
   END;
