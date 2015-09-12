@@ -15,8 +15,8 @@ INSERT INTO TypeOfPoI(type) VALUES ("Diversão");
 INSERT INTO Region(name) VALUES ("Porto");
 
 # Utilizadores
-INSERT INTO User(idFacebook, points, numVisits, numReviews, numPoIs, numAchievements) VALUES (1109369355758471, 0, 0, 0, 0, 0);
-INSERT INTO User(idFacebook, points, numVisits, numReviews, numPoIs, numAchievements) VALUES (1037259616297913, 0, 0, 0, 0, 0);
+INSERT INTO User(idFacebook, name, points, numVisits, numReviews, numPoIs, numAchievements) VALUES (1109369355758471, "Joao Silva",0, 0, 0, 0, 0);
+INSERT INTO User(idFacebook, name, points, numVisits, numReviews, numPoIs, numAchievements) VALUES (1037259616297913, "Gustavo Silva", 0, 0, 0, 0, 0);
 
 # Pontos de Interesse
 INSERT INTO PointsOfInterest(userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes, numVisits, rating, active) VALUES (1037259616297913, 1, 1, "Clérigos",
