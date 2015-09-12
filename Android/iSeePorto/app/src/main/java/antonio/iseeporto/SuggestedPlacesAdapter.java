@@ -31,15 +31,15 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         protected int poiID;
         protected String poiImageURL;
         protected String poiName;
-        protected String visitorFriends;
+        protected int numFriendsThatVisited;
         protected int distance;
         protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName,String visitorFriends,int distance){
+        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, int numFriendsThatVisited,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
-            this.visitorFriends = visitorFriends;
+            this.numFriendsThatVisited = numFriendsThatVisited;
             this.distance = distance;
             DownloadImageTask downloadImageTask = new DownloadImageTask(bitmapArray);
             downloadImageTask.execute(poiImageURL);
@@ -53,8 +53,8 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
             return poiName;
         }
 
-        public String getVisitorFriends() {
-            return visitorFriends;
+        public int getNumFriendsThatVisited() {
+            return numFriendsThatVisited;
         }
 
         public int getDistance() {
@@ -130,8 +130,8 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         name.setText(poiData.getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
-        //visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends() + " visited this place");
-        visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends());
+        int num = data.get(position).getNumFriendsThatVisited();
+        visitors.setText(num == 1 ? "1 friend" : (num + " friends visited this place"));
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
         distance.setText(poiData.getDistance() + "m");
