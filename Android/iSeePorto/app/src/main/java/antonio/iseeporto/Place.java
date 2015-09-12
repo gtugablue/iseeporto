@@ -40,7 +40,7 @@ public class Place extends android.app.Fragment {
                 }
                 try {
                     objInfo = new JSONObject(data);
-                    shortcut(result);
+                    shortcut();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
