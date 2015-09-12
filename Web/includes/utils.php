@@ -70,7 +70,7 @@ function validate_access_token($fb, $accessToken)
 {
     try {
         $result = getFacebookGraphUser($fb, $accessToken);
-        return true;
+        return $result;
     }
     catch (Facebook\Exceptions\FacebookResponseException $e)
     {
