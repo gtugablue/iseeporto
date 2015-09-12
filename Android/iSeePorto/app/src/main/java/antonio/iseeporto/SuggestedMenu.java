@@ -108,7 +108,6 @@ public class SuggestedMenu extends Fragment {
             }
         });
 
-        task.setActivity(this.getActivity());
         startInfoTransfer();
 
         return view;
@@ -120,29 +119,36 @@ public class SuggestedMenu extends Fragment {
         double longitude = -8.6115876;
         String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=" + latitude + "&currLon=" + longitude + "&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
         System.out.println("URL: " + url);
-        task.execute(url);
+        executeUrl(url);
     }
 
-    private JSONAsyncTask task = new JSONAsyncTask() {
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (!result) {
-                System.err.println("Error reading data from the server.");
-                return;
-            }
-            try {
-                if (data == null)
-                {
+    void executeUrl(String url)
+    {
+        JSONAsyncTask task = new JSONAsyncTask() {
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                if (!result) {
                     System.err.println("Error reading data from the server.");
                     return;
                 }
-                JSONArray jsona = new JSONArray(data);
-                shortcut(jsona);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                try {
+                    if (data == null)
+                    {
+                        System.err.println("Error reading data from the server.");
+                        return;
+                    }
+                    JSONArray jsona = new JSONArray(data);
+                    shortcut(jsona);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-    };
+        };
+        task.setActivity(getActivity());
+
+        task.execute(url);
+    }
+
 
     public void shortcut(JSONArray jsona) throws JSONException {
         data.clear();
@@ -157,7 +163,7 @@ public class SuggestedMenu extends Fragment {
                             "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
                             stringCrop(sPoI.getString("name"), 25),
                             sPoI.getString("address"),
-                            (int)sPoI.getDouble("distance"));
+                            (int)(sPoI.getDouble("distance") * 1000));
             data.add(spd);
         }
         spAdapter.notifyDataSetChanged();
