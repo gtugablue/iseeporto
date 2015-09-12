@@ -20,9 +20,14 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
     private final Context context;
     View row ;
+
+    public List<SuggestedPoiData> getData() {
+        return data;
+    }
+
     private List<SuggestedPoiData> data;
 
-    public class SuggestedPoiData{
+    public static class SuggestedPoiData{
         protected int poiID;
 
 

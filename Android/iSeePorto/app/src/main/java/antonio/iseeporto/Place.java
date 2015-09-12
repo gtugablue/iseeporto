@@ -1,13 +1,10 @@
 package antonio.iseeporto;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -26,15 +24,32 @@ public class Place extends android.app.Fragment {
     String id;
     DownloaderImage downloadImage = new DownloaderImage();
     TextView addressText, reportText;
+    JSONObject objInfo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewTemp = inflater.inflate(R.layout.place, container, false);
-        getInfoTask.setActivity(getActivity());
-        createVisitFrag();
+
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                if (!result) {
+                    return;
+                }
+                try {
+                    objInfo = new JSONObject(data);
+                    shortcut();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        temp.setActivity(getActivity());
+
         report = false;
-        getInfoTask.execute("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
         return viewTemp;
     }
 
@@ -42,13 +57,24 @@ public class Place extends android.app.Fragment {
     {
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
-        Visitar v = new Visitar();
-        transaction.add(R.id.avaliacao, v, "Visitar");
+        VisitButton v = new VisitButton();
+        transaction.add(R.id.avaliacao, v, "VisitButton");
         transaction.commit();
     }
 
     public void visitarLocal()
     {
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_visited&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
         EvaluateThumbs avaliacao = new EvaluateThumbs();
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
@@ -58,52 +84,68 @@ public class Place extends android.app.Fragment {
 
     public void retirarVisita()
     {
-        Visitar v = new Visitar();
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
+        temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_not_visited&id="
+                + SingletonStringId.getInstance().getId()
+                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+
+        VisitButton v = new VisitButton();
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.avaliacao, v, "Visitar");
+        transaction.replace(R.id.avaliacao, v, "VisitButton");
         transaction.commit();
     }
 
-    private JSONAsyncTask getInfoTask = new JSONAsyncTask() {
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (!result) {
-                return;
-            }
+    private void shortcut()
+    {
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
 
-            getView().post(new Runnable() {
-                @Override
-                public void run() {
-
-                    if (!report) {
-                        try {
-                            if (jsono != null) {
-                                ((TextView) getView().findViewById(R.id.namePlaceId)).setText(jsono.getString("name"));
-                                addressText = (TextView) getView().findViewById(R.id.idAddress);
-                                addressText.setText(jsono.getString("address"));
-                                reportText = (TextView) getView().findViewById(R.id.reportId);
-                                ((TextView) getView().findViewById(R.id.idDescription)).setText(jsono.getString("description"));
-                                latitude = Double.parseDouble(jsono.getString("latitude"));
-                                longitude = Double.parseDouble(jsono.getString("longitude"));
-                                ((TextView) getView().findViewById(R.id.placeInfoId)).setText(
-                                        jsono.getString("numVisits") + " visits, " +
-                                                jsono.getString("numLikes") + " likes and " +
-                                                jsono.getString("numDislikes") + " dislikes");
-                                id = jsono.getString("id");
-                                downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + id + ".jpg");
-                                setClicks();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                if (!report) {
+                    try {
+                        if (objInfo != null) {
+                            ((TextView) getView().findViewById(R.id.namePlaceId)).setText(objInfo.getString("name"));
+                            addressText = (TextView) getView().findViewById(R.id.idAddress);
+                            addressText.setText(objInfo.getString("address"));
+                            reportText = (TextView) getView().findViewById(R.id.reportId);
+                            ((TextView) getView().findViewById(R.id.idDescription)).setText(objInfo.getString("description"));
+                            latitude = Double.parseDouble(objInfo.getString("latitude"));
+                            longitude = Double.parseDouble(objInfo.getString("longitude"));
+                            ((TextView) getView().findViewById(R.id.placeInfoId)).setText(
+                                    objInfo.getString("numVisits") + " visits, " +
+                                            objInfo.getString("numLikes") + " likes and " +
+                                            objInfo.getString("numDislikes") + " dislikes");
+                            id = objInfo.getString("id");
+                            downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + id + ".jpg");
+                            setClicks();
+                            createVisitFrag();
                         }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-            });
-        }
-    };
+            }
+        });
+    }
 
     private void openNavigation(double latitude, double longitude) {
         //o ponto de partida é o local onde o utilizador está

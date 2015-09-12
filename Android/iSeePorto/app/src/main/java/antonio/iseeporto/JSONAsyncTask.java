@@ -25,7 +25,8 @@ import java.io.IOException;
 class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     ProgressDialog dialog;
-    JSONObject jsono;
+    public String data;
+
     Activity act;
 
     public void setActivity(Activity temp)
@@ -57,9 +58,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
             if (status == 200) {
                 HttpEntity entity = response.getEntity();
-                String data = EntityUtils.toString(entity);
-
-                jsono = new JSONObject(data);
+                data = EntityUtils.toString(entity);
 
                 return true;
             }
@@ -67,8 +66,6 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
             //------------------>>
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
         return false;
