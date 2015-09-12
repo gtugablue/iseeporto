@@ -2,15 +2,11 @@ package antonio.iseeporto;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -39,34 +35,34 @@ public class FeedAdapter extends BaseAdapter {
         protected String poiName1;
         protected String poiName2;
         protected int friendID;
-        protected int friendImage;
+        protected String friendImageURL;
         protected String friendName;
         protected Date timestamp;
 
-        FeedData(String poiImage1, String poiImage2, String poiName1, String poiName2,int friendID, int friendImage, String friendName, Date timestamp){
+        FeedData(String poiImage1, String poiImage2, String poiName1, String poiName2,int friendID, String friendImageURL, String friendName, Date timestamp){
             this.poiImage1 = poiImage1;
             this.poiImage2 = poiImage2;
             this.poiName1 = poiName1;
             this.poiName2 = poiName2;
             this.friendID = friendID;
-            this.friendImage = friendImage;
+            this.friendImageURL = friendImageURL;
             this.friendName = friendName;
             this.timestamp = timestamp;
         }
 
-        FeedData(String poiName1,String poiName2,int friendID, int friendImage, String friendName, Date timestamp){
+        FeedData(String poiName1,String poiName2,int friendID, String friendImageURL, String friendName, Date timestamp){
             this.poiName1 = poiName1;
             this.poiName2 = poiName2;
             this.friendID = friendID;
-            this.friendImage = friendImage;
+            this.friendImageURL = friendImageURL;
             this.friendName = friendName;
             this.timestamp = timestamp;
         }
 
-        FeedData(String poiName1,int friendID, int friendImage, String friendName, Date timestamp){
+        FeedData(String poiName1,int friendID, String friendImageURL, String friendName, Date timestamp){
             this.poiName1 = poiName1;
             this.friendID = friendID;
-            this.friendImage = friendImage;
+            this.friendImageURL = friendImageURL;
             this.friendName = friendName;
             this.timestamp = timestamp;
         }
@@ -92,8 +88,8 @@ public class FeedAdapter extends BaseAdapter {
             return friendID;
         }
 
-        public int getFriendImage() {
-            return friendImage;
+        public String getFriendImageURL() {
+            return friendImageURL;
         }
 
         public String getFriendName() {
@@ -117,7 +113,7 @@ public class FeedAdapter extends BaseAdapter {
         for(int i = 0; i < friends.size(); i++){
             try {
                 Date date = format.parse(dates.get(i));
-                data.add(new FeedData("Clérigos", "Ribeira",i,0, friends.get(i),date));
+                data.add(new FeedData("Clérigos", "Ribeira",i, "https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", friends.get(i),date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -186,6 +182,21 @@ public class FeedAdapter extends BaseAdapter {
 //
 //        downloadImageTask2.execute(dataPosition.getPoiImage2());
 
+        ImageView friendImage = (ImageView) row.findViewById(R.id.friend_user_image);
+        DownloadImageTask downloadImageTask = new DownloadImageTask(friendImage){
+
+            @Override
+            protected void onPostExecute(final Bitmap result) {
+                row.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bmImage.setImageBitmap(result);
+                    }
+                });
+            }
+        };
+
+        downloadImageTask.execute(dataPosition.getFriendImageURL());
 
 
         TextView feedText = (TextView) row.findViewById(R.id.achievement_name);
@@ -206,7 +217,6 @@ public class FeedAdapter extends BaseAdapter {
                 timestamp.setText(hours + "h");
         }else
             timestamp.setText(days + " days");
-
 
         return row;
     }

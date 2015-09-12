@@ -135,6 +135,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                 echo "<td>----</td>";
                                 echo "</tr>";
                             } else {
+                                $token = $_SESSION['facebook_access_token'];
                                 while ($row = $result->fetch_row()) {
                                     echo "<tr>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[1])) . "</td>";
@@ -142,8 +143,8 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[3])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[6])) . "</td>";
-                                    echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=" . $_SESSION['facebook_access_token'] . "'<i class='fa fa-remove' title='Remover PoI'></i></a></td>";
-                                    echo "<td><a data-toggle='modal' data-target='#qrCode' data-id='$row[0]'<i class='fa fa-qrcode' title='Gerar QR Code'></i></a></td>";
+                                    echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=$token'> <i class='fa fa-remove' title='Remover PoI'></i> </a></td>";
+                                    echo "<td><a data-toggle='modal' data-target='#qrCode' data-id='$row[0]'> <i class='fa fa-qrcode' title='Gerar QR Code'></i> </a></td>";
                                     echo "</tr>";
                                 }
                             }
@@ -184,7 +185,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="print_qr">Print</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="print_qr">Save</button>
                 </div>
             </div>
         </div>
@@ -199,14 +200,14 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
         });
     </script>
 
-    <!-- Print QR Code -->
-
+    <!-- Save QR Code -->
     <script type="application/javascript">
         $('#print_qr').click(function() {
-            w=window.open();
-            w.document.write($('#qr_code_div').html());
-            w.print();
-            w.close();
+            var link = document.createElement('a');
+            link.href = $("#qr_code_pic").attr("src");
+            link.download = 'QRCode.png';
+            document.body.appendChild(link);
+            link.click();
 
             $('#qrCode').modal('hide');
         });
