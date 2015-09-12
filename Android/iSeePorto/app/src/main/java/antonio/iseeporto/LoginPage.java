@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -111,6 +112,8 @@ public class LoginPage extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login_page, menu);
+        ActionBar actionBar =  getSupportActionBar();
+        actionBar.hide();
         return true;
     }
 
