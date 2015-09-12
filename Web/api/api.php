@@ -152,6 +152,33 @@ function get_visited($accessToken)
     {
         http_response_code(401);
     }
+
+    $friends = getFacebookFriends($fb, $accessToken);
+    $list = "?";
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $typeParameters = "s";
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId = ?";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
+function get_friends_visited($accessToken)
+{
+    global $fb;
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
     $friends = getFacebookFriends($fb, $accessToken);
     $list = "?";
     $parameters = array();
@@ -225,7 +252,6 @@ function set_not_visited($accessToken, $id)
 
 function make_review($accessToken, $id, $comment, $like)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -251,7 +277,6 @@ function make_review($accessToken, $id, $comment, $like)
 
 function delete_review($accessToken, $id)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -276,7 +301,6 @@ function delete_review($accessToken, $id)
 
 function delete_poi($accessToken, $id)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -296,6 +320,7 @@ function delete_poi($accessToken, $id)
         http_response_code(500);
         return null;
     }
+
     if(isset($_SERVER['HTTP_REFERER']))
         header("Location: {$_SERVER['HTTP_REFERER']}");
     return true;
@@ -406,7 +431,6 @@ $value = "An error has occurred";
 
 if (isset($_GET["action"]))
 {
-    //if (isset($_SESSION["facebook_access_token"])) echo "Access Token: ".$_SESSION["facebook_access_token"];
     switch (strtolower($_GET["action"]))
     {
         case "get_reviews":
@@ -438,9 +462,9 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
-        case "get_visited":
+        case "get_friends_visited":
             if (isset($_GET["accessToken"]))
-                $value = get_visited($_GET["accessToken"]);
+                $value = get_friends_visited($_GET["accessToken"]);
             else
                 $value = "Missing argument";
             break;

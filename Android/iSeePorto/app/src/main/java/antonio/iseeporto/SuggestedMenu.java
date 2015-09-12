@@ -22,10 +22,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,6 +50,7 @@ public class SuggestedMenu extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private List<SuggestedPlacesAdapter.SuggestedPoiData> data;
 
     /**
      * Use this factory method to create a new instance of
@@ -88,6 +91,8 @@ public class SuggestedMenu extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_suggested_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.suggested_list_view);
+        SuggestedPlacesAdapter spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
+        data = spAdapter.getData();
         listView.setAdapter(new SuggestedPlacesAdapter(inflater.getContext()));
 
         FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
@@ -99,8 +104,32 @@ public class SuggestedMenu extends Fragment {
             }
         });
 
+        task.setActivity(this.getActivity());
+        startInfoTransfer();
+
         return view;
     }
+
+    public void startInfoTransfer()
+    {
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=1&currLon=1&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+        System.out.println("URL: " + url);
+        task.execute(url);
+    }
+
+    private JSONAsyncTask task = new JSONAsyncTask() {
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (!result) {
+                return;
+            }
+            try {
+                JSONArray jsona = new JSONArray(data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

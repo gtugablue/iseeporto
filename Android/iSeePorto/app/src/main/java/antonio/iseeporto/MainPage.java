@@ -113,12 +113,12 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
             case MenuOptions.FRIENDS:
-                transaction.replace(R.id.container, friendsFrag, "Friends");
-//                transaction.replace(R.id.container, placeFrag, "Friends");
+//                transaction.replace(R.id.container, friendsFrag, "Friends");
+                transaction.replace(R.id.container, placeFrag, "Place");
                 break;
             case MenuOptions.QRCODE:
                 startQRCode();
-                transaction.replace(R.id.container, placeFrag, "Place");
+                //transaction.replace(R.id.container, placeFrag, "Place");
                 isPlace = true;
                 break;
             default:
@@ -152,7 +152,7 @@ public class MainPage extends ActionBarActivity
             }
         }
 
-        onSectionAttached(MenuOptions.PERFIL);
+//        onSectionAttached(MenuOptions.PERFIL);
     }
 
     public void restoreActionBar() {

@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 /**
  * Created by Antonio on 08-09-2015.
  */
-public class Visitar extends Fragment {
+public class VisitButton extends Fragment {
 
     ImageButton visitarB;
 
