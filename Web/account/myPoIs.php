@@ -144,7 +144,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[6])) . "</td>";
                                     echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=$token'> <i class='fa fa-remove' title='Remover PoI'></i> </a></td>";
-                                    //echo "<td><a data-toggle='modal' data-target='#qrCode' data-id='$row[0]'> <i class='fa fa-qrcode' title='Gerar QR Code'></i> </a></td>";
+                                    echo "<td><a data-toggle='modal' data-target='#qrCode' data-id='$row[0]'> <i class='fa fa-qrcode' title='Gerar QR Code'></i> </a></td>";
                                     echo "</tr>";
                                 }
                             }

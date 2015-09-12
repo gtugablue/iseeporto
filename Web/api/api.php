@@ -321,8 +321,8 @@ function delete_poi($accessToken, $id)
         return null;
     }
 
-    //if(isset($_SERVER['HTTP_REFERER']))
-    //    header("Location: {$_SERVER['HTTP_REFERER']}");
+    if(isset($_SERVER['HTTP_REFERER']))
+        header("Location: {$_SERVER['HTTP_REFERER']}");
     return true;
 }
 
