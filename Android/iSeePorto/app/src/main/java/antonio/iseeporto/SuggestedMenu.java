@@ -2,11 +2,13 @@ package antonio.iseeporto;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,15 +78,28 @@ public class SuggestedMenu extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_suggested_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.suggested_list_view);
         listView.setAdapter(new SuggestedPlacesAdapter(inflater.getContext()));
+
+        FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(inflater.getContext(), Search.class);
+                startActivity(searchIntent);
+            }
+        });
+
         return view;
     }
 
