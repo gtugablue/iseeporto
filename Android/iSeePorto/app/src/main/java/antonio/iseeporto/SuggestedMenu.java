@@ -163,7 +163,7 @@ public class SuggestedMenu extends Fragment {
                             sPoI.getInt("id"),
                             "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
                             stringCrop(sPoI.getString("name"), 25),
-                            sPoI.getString("address"),
+                            sPoI.getInt("numFriendsThatVisited"),
                             (int)(sPoI.getDouble("distance") * 1000));
             data.add(spd);
         }
