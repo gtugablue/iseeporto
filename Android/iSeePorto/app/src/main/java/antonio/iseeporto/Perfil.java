@@ -27,6 +27,7 @@ public class Perfil extends Fragment {
 
     DownloaderImage downloadImage = new DownloaderImage();
     private ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
+    private AchievementsAdapter aAdapter;
 
     @Nullable
     @Override
@@ -37,8 +38,8 @@ public class Perfil extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
         achievementData = new ArrayList<>();
-        achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
-        listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
+        aAdapter = new AchievementsAdapter(inflater.getContext(), achievementData);
+        listView.setAdapter(aAdapter);
 
         startInfoTransfer();
 
@@ -92,6 +93,24 @@ public class Perfil extends Fragment {
         };
         temp.setActivity(getActivity());
 
+        JSONAsyncTask temp2 = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                try {
+                    System.out.println("POOOOOOOOST");
+                    JSONArray arrayInfo = new JSONArray(data);
+                    shortcut2(arrayInfo);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        temp2.setActivity(getActivity());
+        String url2 = "https://iseeporto.revtut.net/api/api.php?action=get_user_achievements&id=" + Singleton.getInstance().getAccessToken().getUserId();
+        System.out.println(url2);
+        temp2.execute(url2);
+
         if (SingletonStringId.getInstance().getId() == null)
             temp.execute(url);
         else
@@ -122,25 +141,21 @@ public class Perfil extends Fragment {
             }
         });
     }
-/*
+
     void shortcut2(JSONArray jsona) throws JSONException {
         achievementData.clear();
-        System.out.println("Success??");
+        System.out.println("Cenas " + jsona.length());
         for (int i = 0; i < jsona.length(); i++)
         {
             JSONObject sPoI = jsona.getJSONObject(i);
             AchievementsAdapter.AchievementData ad =
-                    new AchievementsAdapter.AchievementData()
-            SuggestedPlacesAdapter.SuggestedPoiData spd =
-                    new SuggestedPlacesAdapter.SuggestedPoiData(
-                            getView(),
-                            sPoI.getInt("id"),
-                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
-                            stringCrop(sPoI.getString("name"), 25),
-                            sPoI.getString("address"),
-                            (int)(sPoI.getDouble("distance")));
-            data.add(spd);
+                    new AchievementsAdapter.AchievementData(
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("achievementId") + ".jpg",
+                            sPoI.getInt("userId"),
+                            sPoI.getString("name"),
+                            sPoI.getString("description"));
+            achievementData.add(ad);
         }
-        spAdapter.notifyDataSetChanged();
-    }*/
+        aAdapter.notifyDataSetChanged();
+    }
 }
