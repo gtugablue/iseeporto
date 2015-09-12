@@ -433,7 +433,7 @@ $value = "An error has occurred";
 
 if (isset($_GET["action"]))
 {
-    if (isset($_SESSION["facebook_access_token"])) echo "Access Token: ".$_SESSION["facebook_access_token"];
+    //if (isset($_SESSION["facebook_access_token"])) echo "Access Token: ".$_SESSION["facebook_access_token"];
     switch (strtolower($_GET["action"]))
     {
         case "get_reviews":
