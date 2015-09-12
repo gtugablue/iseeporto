@@ -184,7 +184,7 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="print_qr">Print</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="print_qr">Save</button>
                 </div>
             </div>
         </div>
@@ -199,14 +199,14 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
         });
     </script>
 
-    <!-- Print QR Code -->
-
+    <!-- Save QR Code -->
     <script type="application/javascript">
         $('#print_qr').click(function() {
-            w=window.open();
-            w.document.write($('#qr_code_div').html());
-            w.print();
-            w.close();
+            var link = document.createElement('a');
+            link.href = $("#qr_code_pic").attr("src");
+            link.download = 'QRCode.png';
+            document.body.appendChild(link);
+            link.click();
 
             $('#qrCode').modal('hide');
         });
