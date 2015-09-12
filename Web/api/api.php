@@ -52,8 +52,6 @@ function get_user_info($accessToken, $id)
         http_response_code(401);
     }
     $friends = getFacebookFriends($fb, $accessToken);
-    $list = "?";
-    $parameters = array();
     $userNode = getFacebookGraphUser($fb, $accessToken);
     $found = ($userNode->getID() == $id); // Self profile
     if (!$found) {
@@ -318,7 +316,7 @@ function delete_poi($accessToken, $id)
     if (!$result)
     {
         http_response_code(500);
-        return null;
+        return false;
     }
 
     if(isset($_SERVER['HTTP_REFERER']))

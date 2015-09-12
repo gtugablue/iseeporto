@@ -246,6 +246,6 @@ AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
     UPDATE User SET points = points - 5, numPoIs = numPoIs - 1 WHERE idFacebook = Old.userId;
-    DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
-    DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
+    DELETE FROM PoIVisits WHERE PoIVisits.poiId = OLD.id;
+    DELETE FROM Reviews WHERE Reviews.poiId = OLD.id;
   END;
