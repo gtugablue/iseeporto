@@ -76,11 +76,6 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean result) {
         dialog.cancel();
-        if (!result)
-        {
-            Toast.makeText(act.getApplicationContext(), "Unable to fetch data from server", Toast.LENGTH_LONG).show();
-            return;
-        }
         //notifyAll();
             /*adapter.notifyDataSetChanged();
             if(result == false)

@@ -23,7 +23,9 @@ public class Place extends android.app.Fragment {
 
     Double latitude, longitude;
     Boolean report = false;
+    String id;
     DownloaderImage downloadImage = new DownloaderImage();
+    TextView addressText, reportText;
 
     @Nullable
     @Override
@@ -67,8 +69,9 @@ public class Place extends android.app.Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if (!result)
+            if (!result) {
                 return;
+            }
 
             getView().post(new Runnable() {
                 @Override
@@ -78,7 +81,9 @@ public class Place extends android.app.Fragment {
                         try {
                             if (jsono != null) {
                                 ((TextView) getView().findViewById(R.id.namePlaceId)).setText(jsono.getString("name"));
-                                ((TextView) getView().findViewById(R.id.idAddress)).setText(jsono.getString("address"));
+                                addressText = (TextView) getView().findViewById(R.id.idAddress);
+                                addressText.setText(jsono.getString("address"));
+                                reportText = (TextView) getView().findViewById(R.id.reportId);
                                 ((TextView) getView().findViewById(R.id.idDescription)).setText(jsono.getString("description"));
                                 latitude = Double.parseDouble(jsono.getString("latitude"));
                                 longitude = Double.parseDouble(jsono.getString("longitude"));
@@ -86,8 +91,9 @@ public class Place extends android.app.Fragment {
                                         jsono.getString("numVisits") + " visits, " +
                                                 jsono.getString("numLikes") + " likes and " +
                                                 jsono.getString("numDislikes") + " dislikes");
-                                downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + jsono.getString("id") + ".jpg");
-                                setTextsListeners(jsono.getString("id"));
+                                id = jsono.getString("id");
+                                downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + id + ".jpg");
+                                setClicks();
                             }
 
                         } catch (JSONException e) {
@@ -101,34 +107,30 @@ public class Place extends android.app.Fragment {
 
     private void openNavigation(double latitude, double longitude) {
         //o ponto de partida é o local onde o utilizador está
-        Log.e("Touch navigation", "!!!!!!!!!!!!!!!!!!!!");
         Intent intent1 = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?daddr=" + latitude + "," + longitude));
         startActivity(intent1);
     }
 
-    private void setTextsListeners(final String idPlace)
+    private void setClicks()
     {
-        ((TextView) getView().findViewById(R.id.idAddress)).setOnTouchListener(new View.OnTouchListener() {
-
+        reportText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                //abre o mapa
-                openNavigation(latitude, longitude);
-
-                return true;
+            public void onClick(View v) {
+                report = true;
+                JSONAsyncTask tempTask = new JSONAsyncTask();
+                tempTask.setActivity(getActivity());
+                tempTask.execute("https://iseeporto.revtut.net/api/api.php?action=report&id=" +
+                        id + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                Toast.makeText(getActivity().getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ((TextView) getView().findViewById(R.id.reportId)).setOnTouchListener(new View.OnTouchListener() {
-
+        addressText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                report = true;
-                getInfoTask.execute("https://iseeporto.revtut.net/api/api.php?action=report&id=" +
-                        idPlace + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
-                Toast.makeText(getActivity().getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
-                return true;
+            public void onClick(View v) {
+                //abre o mapa
+                openNavigation(latitude, longitude);
             }
         });
     }
