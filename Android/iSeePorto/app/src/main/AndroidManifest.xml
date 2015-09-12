@@ -35,13 +35,22 @@
             android:label="@string/title_activity_main_page" >
         </activity>
         <activity
-            android:name=".Search"
+            android:name=".SearchUser"
             android:label="@string/title_activity_search" >
         </activity>
         <activity
-            android:name=".SearchResult"
+            android:name=".SearchUserResult"
             android:label="@string/title_activity_search_result" >
         </activity>
+        <activity
+            android:name=".SearchPoiResult"
+            android:label="@string/title_activity_search_poi_result" >
+        </activity>
+        <activity
+            android:name=".SearchPoi"
+            android:label="@string/title_activity_search_poi">
+        </activity>
+
     </application>
 
 </manifest>

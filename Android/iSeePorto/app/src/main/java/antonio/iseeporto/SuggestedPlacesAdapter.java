@@ -109,7 +109,6 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
         SuggestedPoiData poiData = data.get(position);
 
-
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
 
         if (poiData.bitmapArray[0] != null)
