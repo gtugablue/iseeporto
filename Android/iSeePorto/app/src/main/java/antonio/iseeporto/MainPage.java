@@ -47,11 +47,6 @@ public class MainPage extends ActionBarActivity
     final FeedMenu friendsFrag = new FeedMenu();
     final Place placeFrag = new Place();
 
-    public static Activity getActivity()
-    {
-        return getActivity();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +111,8 @@ public class MainPage extends ActionBarActivity
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
             case MenuOptions.FRIENDS:
-                //transaction.replace(R.id.container, friendsFrag, "Friends");
-                transaction.replace(R.id.container, placeFrag, "Friends");
+                transaction.replace(R.id.container, friendsFrag, "Friends");
+//                transaction.replace(R.id.container, placeFrag, "Friends");
                 break;
             case MenuOptions.QRCODE:
                 startQRCode();

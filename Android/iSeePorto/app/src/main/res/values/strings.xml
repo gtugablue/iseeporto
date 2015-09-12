@@ -17,6 +17,8 @@
         <item>QR Code Reader</item>
     </string-array>
 
+    <integer name="poiFeedRadius">0x3F80806B</integer>
+
     <string-array name="menu_names"
         >
         <item

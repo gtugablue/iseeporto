@@ -28,7 +28,6 @@ import java.util.Locale;
  */
 public class FeedAdapter extends BaseAdapter {
 
-
     private final Context context;
     private List<FeedData> data;
     View row ;
@@ -54,6 +53,24 @@ public class FeedAdapter extends BaseAdapter {
             this.friendName = friendName;
             this.timestamp = timestamp;
         }
+
+        FeedData(String poiName1,String poiName2,int friendID, int friendImage, String friendName, Date timestamp){
+            this.poiName1 = poiName1;
+            this.poiName2 = poiName2;
+            this.friendID = friendID;
+            this.friendImage = friendImage;
+            this.friendName = friendName;
+            this.timestamp = timestamp;
+        }
+
+        FeedData(String poiName1,int friendID, int friendImage, String friendName, Date timestamp){
+            this.poiName1 = poiName1;
+            this.friendID = friendID;
+            this.friendImage = friendImage;
+            this.friendName = friendName;
+            this.timestamp = timestamp;
+        }
+
 
         public String getPoiImage1() {
             return poiImage1;
@@ -100,7 +117,7 @@ public class FeedAdapter extends BaseAdapter {
         for(int i = 0; i < friends.size(); i++){
             try {
                 Date date = format.parse(dates.get(i));
-                data.add(new FeedData("https://iseeporto.revtut.net/uploads/PoI_photos/19.jpg","https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg","Clérigos", "Ribeira",i,0, friends.get(i),date));
+                data.add(new FeedData("Clérigos", "Ribeira",i,0, friends.get(i),date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -136,43 +153,43 @@ public class FeedAdapter extends BaseAdapter {
         row = inflater.inflate(R.layout.feed_row_layout, parent, false);
         FeedData dataPosition = data.get(position);
 
-        ImageView poiImage1 = (ImageView) row.findViewById(R.id.poi_image1);
-        DownloadImageTask downloadImageTask1 = new DownloadImageTask(poiImage1){
-
-            @Override
-            protected void onPostExecute(final Bitmap result) {
-                row.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmImage.setImageBitmap(result);
-                    }
-                });
-            }
-        };
-
-
-        ImageView poiImage2 = (ImageView) row.findViewById(R.id.poi_image2);
-        DownloadImageTask downloadImageTask2 = new DownloadImageTask(poiImage2){
-
-            @Override
-            protected void onPostExecute(final Bitmap result) {
-                row.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmImage.setImageBitmap(result);
-                    }
-                });
-            }
-        };
-
-        downloadImageTask1.execute(dataPosition.getPoiImage1());
-
-        downloadImageTask2.execute(dataPosition.getPoiImage2());
+//        ImageView poiImage1 = (ImageView) row.findViewById(R.id.poi_image1);
+//        DownloadImageTask downloadImageTask1 = new DownloadImageTask(poiImage1){
+//
+//            @Override
+//            protected void onPostExecute(final Bitmap result) {
+//                row.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bmImage.setImageBitmap(result);
+//                    }
+//                });
+//            }
+//        };
+//
+//
+//        ImageView poiImage2 = (ImageView) row.findViewById(R.id.poi_image2);
+//        DownloadImageTask downloadImageTask2 = new DownloadImageTask(poiImage2){
+//
+//            @Override
+//            protected void onPostExecute(final Bitmap result) {
+//                row.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bmImage.setImageBitmap(result);
+//                    }
+//                });
+//            }
+//        };
+//
+//        downloadImageTask1.execute(dataPosition.getPoiImage1());
+//
+//        downloadImageTask2.execute(dataPosition.getPoiImage2());
 
 
 
         TextView feedText = (TextView) row.findViewById(R.id.achievement_name);
-        String text = dataPosition.getFriendName() + " visited " + dataPosition.getPoiName1() +" and " + dataPosition.getPoiName2();
+        String text = dataPosition.getFriendName() + " visited " + dataPosition.getPoiName1() + (dataPosition.getPoiName2() == null ? "" : (" and " + dataPosition.getPoiName2()));
         feedText.setText(text);
 
         TextView timestamp = (TextView) row.findViewById(R.id.timestamp);
