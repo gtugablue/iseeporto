@@ -81,7 +81,8 @@ function validate_access_token($fb, $accessToken)
 function login($accessToken)
 {
     global $fb;
-    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $userNode = validate_access_token($fb, $accessToken);
+    if (!$userNode) return false;
     $sql = "SELECT idFacebook FROM User WHERE idFacebook = ?";
     $parameters = array();
     $parameters[0] = $userNode->getID();

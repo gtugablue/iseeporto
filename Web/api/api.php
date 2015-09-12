@@ -34,10 +34,9 @@ function get_PoI_info($id)
 function get_self_user_info($accessToken)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $userNode = getFacebookGraphUser($fb, $accessToken);
@@ -47,9 +46,9 @@ function get_self_user_info($accessToken)
 function get_user_info($accessToken, $id)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken)) {
+    if (!login($accessToken))
+    {
         http_response_code(401);
-        return null;
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $list = "?";
@@ -148,10 +147,9 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 function get_visited($accessToken)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $list = "?";
@@ -180,10 +178,9 @@ function get_visited($accessToken)
 function set_visited($accessToken, $id)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
     $sql = "INSERT INTO PoIVisits (userId, poiId, visitDate) VALUES (?, ?, CURRENT_DATE)";
     $parameters = array();
@@ -205,10 +202,9 @@ function set_visited($accessToken, $id)
 function set_not_visited($accessToken, $id)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
     $sql = "DELETE FROM PoIVisits WHERE userId = ? AND poiId = ?";
     $parameters = array();
@@ -229,10 +225,9 @@ function set_not_visited($accessToken, $id)
 function make_review($accessToken, $id, $comment, $like)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
     $sql = "INSERT INTO Reviews (userId, poiId, comment, `like`) VALUES (?, ?, ?, ?)";
     $parameters = array();
@@ -256,10 +251,9 @@ function make_review($accessToken, $id, $comment, $like)
 function delete_review($accessToken, $id)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
 
     $sql = "DELETE FROM Reviews WHERE userId = ? AND poiId = ?";
@@ -282,10 +276,9 @@ function delete_review($accessToken, $id)
 function delete_poi($accessToken, $id)
 {
     global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
 
     $sql = "DELETE FROM PointsOfInterest WHERE userId = ? AND id = ?";
@@ -330,12 +323,11 @@ FROM PointsOfInterest WHERE active = true AND name LIKE ?";
 
 function find_friends_by_name($name, $accessToken)
 {
-    global $fb;
-    if (!validate_access_token($fb, $accessToken))
+    if (!login($accessToken))
     {
         http_response_code(401);
-        return null;
     }
+    global $fb;
     $friends = getFacebookFriends($fb, $accessToken);
     $list = "?";
     $parameters = array();
@@ -375,6 +367,10 @@ function find_friends_by_name($name, $accessToken)
 
 function report($accessToken, $id)
 {
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
     global $fb;
     $sql = "INSERT INTO Reports (userId, poiId) VALUES (?, ?)";
     $parameters = array();
