@@ -183,16 +183,18 @@ function get_achievements()
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
     $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
-            (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
+            (((acos(sin((? *pi()/180)) * sin((latitude*pi()/180))+cos((? *pi()/180))
+            * cos((latitude*pi()/180)) * cos(((? - longitude)*pi()/180))))*180/pi())*60*1.1515) * 1609.344
+            AS distance, rating, numLikes, numDislikes, numVisits
             FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
 
     $parameters = array();
     $parameters[0] = $currLat;
-    $parameters[1] = $currLon;
-    $parameters[2] = pow($minDist, 2);
-    $parameters[3] = pow($maxDist, 2);
-    $typeParameters = "dddd";
+    $parameters[1] = $currLat;
+    $parameters[2] = $currLon;
+    $parameters[3] = pow($minDist, 2);
+    $parameters[4] = pow($maxDist, 2);
+    $typeParameters = "ddddd";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)

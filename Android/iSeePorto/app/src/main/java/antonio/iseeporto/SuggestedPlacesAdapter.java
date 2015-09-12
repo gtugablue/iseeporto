@@ -133,7 +133,10 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         visitors.setText(data.get(position).getAddress());
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
-        distance.setText(poiData.getDistance() + "m");
+        if (poiData.getDistance() >= 1000)
+            distance.setText(((int)(poiData.getDistance() / 100)) / 10f + "km");
+        else
+            distance.setText(poiData.getDistance() + "m");
 
 
         return row;
