@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -35,6 +36,20 @@ public class Perfil extends Fragment {
         View view = inflater.inflate(R.layout.perfil, container, false);
         temp.setActivity(getActivity());
 
+        facebookRequest();
+
+        ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
+        ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
+        achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
+        listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
+
+        startInfoTransfer();
+
+        return view;
+    }
+
+    private void facebookRequest()
+    {
         final AccessToken tempToken = Singleton.getInstance().getAccessToken();
 
         //obtem as informacoes do facebook
@@ -58,15 +73,6 @@ public class Perfil extends Fragment {
         parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
         request.setParameters(parameters);
         request.executeAsync();
-
-        ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
-        ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
-        achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
-        listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
-
-        startInfoTransfer();
-
-        return view;
     }
 
     protected void startInfoTransfer()
@@ -81,8 +87,9 @@ public class Perfil extends Fragment {
     private JSONAsyncTask temp = new JSONAsyncTask() {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if (!result)
+            if (!result) {
                 return;
+            }
 
             getView().post(new Runnable() {
                 @Override
