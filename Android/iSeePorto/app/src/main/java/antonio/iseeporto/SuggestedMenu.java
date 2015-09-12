@@ -50,6 +50,7 @@ public class SuggestedMenu extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private SuggestedPlacesAdapter spAdapter;
     private List<SuggestedPlacesAdapter.SuggestedPoiData> data;
 
     /**
@@ -92,9 +93,9 @@ public class SuggestedMenu extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_suggested_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.suggested_list_view);
-        SuggestedPlacesAdapter spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
+        spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
         data = spAdapter.getData();
-        listView.setAdapter(new SuggestedPlacesAdapter(inflater.getContext()));
+        listView.setAdapter(spAdapter);
 
         FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +123,7 @@ public class SuggestedMenu extends Fragment {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             if (!result) {
+                System.err.println("Error reading data from the server.");
                 return;
             }
             try {
@@ -140,30 +142,32 @@ public class SuggestedMenu extends Fragment {
 
     public void shortcut(JSONArray jsona) throws JSONException {
         data.clear();
+        System.out.println("Success??");
         for (int i = 0; i < jsona.length(); i++)
         {
             JSONObject sPoI = jsona.getJSONObject(i);
-            SuggestedPlacesAdapter.SuggestedPoiData spd = new SuggestedPlacesAdapter.SuggestedPoiData(sPoI.getInt("id"), sPoI.getString("name"), sPoI.getString("address"), sPoI.getString("address"), (int)sPoI.getDouble("distance"));
+            int id = sPoI.getInt("id");
+            SuggestedPlacesAdapter.SuggestedPoiData spd =
+                    new SuggestedPlacesAdapter.SuggestedPoiData(
+                            sPoI.getInt("id"),
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("id") + ".jpg",
+                            stringCrop(sPoI.getString("name"), 25),
+                            sPoI.getString("address"),
+                            (int)sPoI.getDouble("distance"));
             data.add(spd);
         }
+        spAdapter.notifyDataSetChanged();
+    }
 
-        /*getView().post(new Runnable() {
-            @Override
-            public void run() {
-                ImageView tempImage = (ImageView) getView().findViewById(R.id.profile_pic_big);
-
-                try {
-                    if (objInfo != null) {
-                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
-                        ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
-                        downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + objInfo.getString("idFacebook") + "/picture?width=500&height=500");
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
+    private String stringCrop(String s, int maxChars)
+    {
+        String s2 = new String(s);
+        if (s2.length() > maxChars)
+        {
+            s2 = s2.substring(0, maxChars - 3);
+            s2 += "...";
+        }
+        return s2;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -71,14 +71,14 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         this.context = context;
         ArrayList<SuggestedPoiData> data;
         data = new ArrayList<>();
-        List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
+       /* List<String> names =Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
         List<String> visitors = Arrays.asList(context.getResources().getStringArray(R.array.friends_list));
         int[] distances = context.getResources().getIntArray(R.array.distances);
 
         for(int i = 0; i< distances.length; i++){
             data.add(new SuggestedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", names.get(i), visitors.get(i), distances[i]));
         }
-
+        */
         this.data = data;
     }
 

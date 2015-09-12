@@ -36,6 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toRightOf="@id/poi_image"
+        android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:text="Clérigos"
         android:textSize="16sp" />
