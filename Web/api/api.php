@@ -184,8 +184,8 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
     $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits, count(*) AS numFriendsThatVisited
-            FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC GROUP BY PointsOfInterest.userId";
+            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
+            FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
 
     $parameters = array();
     $parameters[0] = $currLat;
