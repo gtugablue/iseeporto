@@ -454,7 +454,7 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
-            case "delete_review":
+        case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = make_review($_GET["accessToken"], $_GET["id"]);
             else

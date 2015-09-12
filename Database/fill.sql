@@ -1,3 +1,10 @@
+# Achievements
+INSERT INTO Achievement(id, name, description) VALUES (1, "Perda da virgindade", "Fez a primeira visita.");
+INSERT INTO Achievement(id, name, description) VALUES (2, "Comentador", "Fez a primeira review.");
+INSERT INTO Achievement(id, name, description) VALUES (3, "Turista", "Fez 10 visitas.");
+INSERT INTO Achievement(id, name, description) VALUES (4, "Contribuidor", "Criou o primeiro ponto de interesse.");
+INSERT INTO Achievement(id, name, description) VALUES (5, "Cartógrafo", "Criou 5 pontos de interesse.");
+
 # Tipo de Pontos de Interesse
 INSERT INTO TypeOfPoI(type) VALUES ("Monumento");
 INSERT INTO TypeOfPoI(type) VALUES ("Paisagem");
@@ -55,10 +62,3 @@ INSERT INTO PointsOfInterest(userId, typeId, regionId, name, description, addres
                                                                                                                                                                                 "2015-09-08", 0, 0, 0, 0, true);
 # Reviews
 INSERT INTO Reviews(userId, poiId, comment, `like`) VALUES (1109369355758471, 1, "Adorei!!!", true);
-
-# Achievements
-INSERT INTO Achievement(id, name, description) VALUES (1, "Perda da virgindade", "Fez a primeira visita.");
-INSERT INTO Achievement(id, name, description) VALUES (2, "Comentador", "Fez a primeira review.");
-INSERT INTO Achievement(id, name, description) VALUES (3, "Turista", "Fez 10 visitas.");
-INSERT INTO Achievement(id, name, description) VALUES (4, "Contribuidor", "Criou o primeiro ponto de interesse.");
-INSERT INTO Achievement(id, name, description) VALUES (5, "Cartógrafo", "Criou 5 pontos de interesse.");
