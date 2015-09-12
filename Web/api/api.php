@@ -252,7 +252,6 @@ function set_not_visited($accessToken, $id)
 
 function make_review($accessToken, $id, $comment, $like)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -278,7 +277,6 @@ function make_review($accessToken, $id, $comment, $like)
 
 function delete_review($accessToken, $id)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -303,7 +301,6 @@ function delete_review($accessToken, $id)
 
 function delete_poi($accessToken, $id)
 {
-    global $fb;
     if (!login($accessToken))
     {
         http_response_code(401);
@@ -318,11 +315,13 @@ function delete_poi($accessToken, $id)
     $typeParameters = "si";
 
     $result = db_query($sql, $parameters, $typeParameters);
+    global $db_connection;
     if (!$result)
     {
         http_response_code(500);
         return null;
     }
+
     if(isset($_SERVER['HTTP_REFERER']))
         header("Location: {$_SERVER['HTTP_REFERER']}");
     return true;
