@@ -77,10 +77,10 @@ function has_liked($accessToken, $id) {
         http_response_code(500);
         return -1;
     }
-    if($result->num_rows > 0)
+    if($result->num_rows <= 0)
         return -1;
 
-    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ? AND `liked`=TRUE";
+    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ? AND `like`=TRUE";
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
     {
