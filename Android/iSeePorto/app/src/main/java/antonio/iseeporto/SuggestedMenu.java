@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -100,8 +101,27 @@ public class SuggestedMenu extends Fragment {
             }
         });
 
+        task.setActivity(this.getActivity());
+        startInfoTransfer();
+
         return view;
     }
+
+    public void startInfoTransfer()
+    {
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+        task.execute(url);
+    }
+
+    private JSONAsyncTask task = new JSONAsyncTask() {
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (!result) {
+                return;
+            }
+            System.out.println(jsono);
+        }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
