@@ -32,6 +32,67 @@ function get_PoI_info($id)
     return array_map("utf8_encode", $data);
 }
 
+function has_visited($accessToken, $id) {
+    global $fb;
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
+
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+    $sql = "SELECT userId FROM PoIVisits WHERE userId = ? AND poiId = ?";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return false;
+    }
+    if($result->num_rows > 0)
+        return true;
+    return false;
+}
+
+function has_liked($accessToken, $id) {
+    global $fb;
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
+
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ?";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return -1;
+    }
+    if($result->num_rows > 0)
+        return -1;
+
+    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ? AND `liked`=TRUE";
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return -1;
+    }
+    if($result->num_rows > 0)
+        return 1;
+
+    return 0;
+}
+
 function get_self_user_info($accessToken)
 {
     global $fb;
@@ -434,6 +495,18 @@ if (isset($_GET["action"]))
         case "get_poi_info":
             if (isset($_GET["id"]))
                 $value = get_PoI_info($_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "has_visited":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = has_visited($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "has_liked":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = has_liked($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
