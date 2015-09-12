@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -124,7 +123,10 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends() + " visited this place");
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
-        distance.setText(poiData.getDistance() + "m");
+        if(poiData.getDistance() > 1000)
+            distance.setText(((float)( poiData.getDistance() / 100 )) / 10 + "km");
+        else
+            distance.setText(poiData.getDistance() + "m");
 
 
         return row;
