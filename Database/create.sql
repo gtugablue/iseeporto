@@ -144,6 +144,11 @@ FOR EACH ROW
     END IF;
     UPDATE PointsOfInterest SET rating = CALCULATE_RATING(@positive, @negative) WHERE PointsOfInterest.id = NEW.poiId;
     UPDATE User SET points = points + 2, numReviews = numReviews + 1 WHERE idFacebook = New.userId;
+
+    # Achievement 2
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 2)) AND (SELECT User.numReviews FROM User WHERE User.idFacebook = NEW.userId) = 1 THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 2, CURRENT_DATE());
+    END IF;
   END;
 
 CREATE TRIGGER RemoveReview
@@ -200,8 +205,13 @@ FOR EACH ROW
     UPDATE User SET points = points + 1, numVisits = numVisits + 1 WHERE idFacebook = New.userId;
 
     # Achievement 1
-    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 1)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) THEN
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 1)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) = 1 THEN
       INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 1, CURRENT_DATE());
+    END IF;
+
+    # Achievement 3
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 3)) AND (SELECT User.numVisits FROM User WHERE User.idFacebook = NEW.userId) = 10 THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 3, CURRENT_DATE());
     END IF;
   END;
 
@@ -218,6 +228,16 @@ CREATE TRIGGER CreatePoI
   FOR EACH ROW
   BEGIN
     UPDATE User SET points = points + 5, numPoIs = numPoIs + 1 WHERE idFacebook = New.userId;
+
+    # Achievement 4
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 4)) AND (SELECT User.numPoIs FROM User WHERE User.idFacebook = NEW.userId) = 1 THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 4, CURRENT_DATE());
+    END IF;
+
+    # Achievement 5
+    IF (NOT USER_HAS_ACHIEVEMENT(NEW.userId, 5)) AND (SELECT User.numPoIs FROM User WHERE User.idFacebook = NEW.userId) = 5 THEN
+      INSERT INTO UserAchievements (userId, achievementId, unlockedDate) VALUES (NEW.userId, 5, CURRENT_DATE());
+    END IF;
   END;
 
 CREATE TRIGGER RemovePoI
