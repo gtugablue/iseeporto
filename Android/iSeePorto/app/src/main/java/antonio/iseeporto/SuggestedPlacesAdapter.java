@@ -31,15 +31,15 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         protected int poiID;
         protected String poiImageURL;
         protected String poiName;
-        protected int numFriendsThatVisited;
+        protected String address;
         protected int distance;
         protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, int numFriendsThatVisited,int distance){
+        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, String address,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
-            this.numFriendsThatVisited = numFriendsThatVisited;
+            this.address = address;
             this.distance = distance;
             DownloadImageTask downloadImageTask = new DownloadImageTask(bitmapArray);
             downloadImageTask.execute(poiImageURL);
@@ -53,8 +53,8 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
             return poiName;
         }
 
-        public int getNumFriendsThatVisited() {
-            return numFriendsThatVisited;
+        public String getAddress() {
+            return address;
         }
 
         public int getDistance() {
@@ -130,8 +130,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         name.setText(poiData.getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
-        int num = data.get(position).getNumFriendsThatVisited();
-        visitors.setText(num == 1 ? "1 friend" : (num + " friends visited this place"));
+        visitors.setText(data.get(position).getAddress());
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
         distance.setText(poiData.getDistance() + "m");
