@@ -304,7 +304,7 @@ function set_not_visited($accessToken, $id)
     if (!$result)
     {
         http_response_code(500);
-        return null;
+        return false;
     }
     return true;
 }
@@ -353,7 +353,7 @@ function delete_review($accessToken, $id)
     if (!$result)
     {
         http_response_code(500);
-        return null;
+        return false;
     }
     return true;
 }
@@ -553,7 +553,7 @@ if (isset($_GET["action"]))
             break;
         case "set_not_visited":
             if (isset($_GET["accessToken"]) && isset($_GET["id"]))
-                $value = set_visited($_GET["accessToken"], $_GET["id"]);
+                $value = set_not_visited($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
@@ -565,7 +565,7 @@ if (isset($_GET["action"]))
             break;
         case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
-                $value = make_review($_GET["accessToken"], $_GET["id"]);
+                $value = delete_review($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
