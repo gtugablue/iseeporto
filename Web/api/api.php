@@ -182,7 +182,7 @@ function get_achievements()
 
 function get_user_achievements($id)
 {
-    $sql = "SELECT userId, achievementId, unlockedDate, Achievement.name, Achievement.description FROM UserAchievements INNER JOIN Achievement ON UserAchievements.achievementId = Achievement.id WHERE userId = ? ORDER BY Achievement.achievementId";
+    $sql = "SELECT userId, achievementId, unlockedDate, Achievement.name, Achievement.description FROM UserAchievements INNER JOIN Achievement ON UserAchievements.achievementId = Achievement.id WHERE userId = ? ORDER BY Achievement.id";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -193,8 +193,8 @@ function get_user_achievements($id)
         http_response_code(500);
         return null;
     }
-    $data = $result->fetch_array(MYSQLI_ASSOC);
-    return array_map("utf8_encode", $data);
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
 }
 
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)

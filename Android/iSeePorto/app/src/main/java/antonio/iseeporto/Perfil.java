@@ -14,6 +14,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class Perfil extends Fragment {
 
     DownloaderImage downloadImage = new DownloaderImage();
+    private ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
 
     @Nullable
     @Override
@@ -34,7 +36,7 @@ public class Perfil extends Fragment {
         facebookRequest();
 
         ListView listView = (ListView) view.findViewById(R.id.achievements_list_view);
-        ArrayList<AchievementsAdapter.AchievementData> achievementData = new ArrayList<>();
+        achievementData = new ArrayList<>();
         achievementData.add(new AchievementsAdapter.AchievementData("https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", 1, "Primeiro Achivement", "Fizeste a tua primeira review"));
         listView.setAdapter(new AchievementsAdapter(inflater.getContext(), achievementData));
 
@@ -119,5 +121,26 @@ public class Perfil extends Fragment {
                 }
             }
         });
+    }
+
+    void shortcut2(JSONArray jsona)
+    {
+        achievementData.clear();
+        System.out.println("Success??");
+        for (int i = 0; i < jsona.length(); i++)
+        {
+            JSONObject sPoI = jsona.getJSONObject(i);
+            int id = sPoI.getInt("id");
+            SuggestedPlacesAdapter.SuggestedPoiData spd =
+                    new SuggestedPlacesAdapter.SuggestedPoiData(
+                            getView(),
+                            sPoI.getInt("id"),
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
+                            stringCrop(sPoI.getString("name"), 25),
+                            sPoI.getString("address"),
+                            (int)(sPoI.getDouble("distance")));
+            data.add(spd);
+        }
+        spAdapter.notifyDataSetChanged();
     }
 }
