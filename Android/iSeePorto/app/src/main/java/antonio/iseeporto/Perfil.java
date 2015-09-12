@@ -80,8 +80,12 @@ public class Perfil extends Fragment {
             @Override
             protected void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
-                objInfo = jsono;
-                shortcut(result);
+                try {
+                    objInfo = new JSONObject(data);
+                    shortcut(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
         temp.setActivity(getActivity());

@@ -38,8 +38,12 @@ public class Place extends android.app.Fragment {
                 if (!result) {
                     return;
                 }
-                objInfo = jsono;
-                shortcut();
+                try {
+                    objInfo = new JSONObject(data);
+                    shortcut(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
         temp.setActivity(getActivity());
