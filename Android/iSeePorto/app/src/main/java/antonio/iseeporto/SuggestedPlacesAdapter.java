@@ -35,7 +35,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         protected int distance;
         protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        SuggestedPoiData(int poiID,String poiImageURL,String poiName,String visitorFriends,int distance){
+        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName,String visitorFriends,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
@@ -109,20 +109,29 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
         SuggestedPoiData poiData = data.get(position);
 
+        if (poiData.bitmapArray[0] == null) {
+            ImageView image = (ImageView) row.findViewById(R.id.poi_image);
+            DownloadImageTask downloadImageTask = new DownloadImageTask(image) {
 
-        ImageView image = (ImageView) row.findViewById(R.id.poi_image);
-
-        if (poiData.bitmapArray[0] != null)
-        {
-            System.out.println("      NOT NULL     ");
-            image.setImageBitmap(poiData.bitmapArray[0]);
-        } else System.out.println("      NULL     ");
+                @Override
+                protected void onPostExecute(final Bitmap result) {
+                    row.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bmImage.setImageBitmap(result);
+                        }
+                    });
+                }
+            };
+            downloadImageTask.execute(poiData.poiImageURL);
+        }
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
         name.setText(poiData.getPoiName().toString());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
-        visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends() + " visited this place");
+        //visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends() + " visited this place");
+        visitors.setText(poiData.getVisitorFriends().equals("") ? "" : data.get(position).getVisitorFriends());
 
         TextView distance = (TextView) row.findViewById(R.id.distance);
         distance.setText(poiData.getDistance() + "m");
