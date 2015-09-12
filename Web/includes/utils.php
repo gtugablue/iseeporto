@@ -86,14 +86,15 @@ function login($accessToken)
     $sql = "SELECT idFacebook FROM User WHERE idFacebook = ?";
     $parameters = array();
     $parameters[0] = $userNode->getID();
-    $typeParameters = "i";
+    $parameters[1] = $userNode->getName();
+    $typeParameters = "is";
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result) return false;
     if ($result->num_rows > 0)
         return true;
 
     // Create account
-    $sql = "INSERT INTO User (idFacebook, points) VALUES (?, 0)";
+    $sql = "INSERT INTO User (idFacebook, name, points) VALUES (?, ?, 0)";
     $parameters = array();
     $parameters[0] = $userNode->getID();
     $typeParameters = "i";

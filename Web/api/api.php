@@ -70,7 +70,7 @@ function get_user_info($accessToken, $id)
             return null;
         }
     }
-    $sql = "SELECT idFacebook, points, numVisits, numAchievements FROM User WHERE idFacebook = ?";
+    $sql = "SELECT idFacebook, name, points, numVisits, numAchievements FROM User WHERE idFacebook = ?";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "s";
@@ -159,8 +159,8 @@ function get_visited($accessToken)
     $userNode = getFacebookGraphUser($fb, $accessToken);
     $parameters[0] = $userNode->getID();
     $typeParameters = "s";
-    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId = ?";
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes, comment, `like`, visitDate
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id INNER JOIN Reviews ON Reviews.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId = ?";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -433,12 +433,6 @@ if (isset($_GET["action"]))
 {
     switch (strtolower($_GET["action"]))
     {
-        case "get_reviews":
-            if (isset($_GET["id"]))
-                $value = get_reviews($_GET["id"]);
-            else
-                $value = "Missing argument";
-            break;
         case "get_poi_info":
             if (isset($_GET["id"]))
                 $value = get_PoI_info($_GET["id"]);
@@ -453,12 +447,24 @@ if (isset($_GET["action"]))
                     $value = get_self_user_info($_GET["accessToken"]);
             } else $value = "Missing argument";
             break;
+        case "get_reviews":
+            if (isset($_GET["id"]))
+                $value = get_reviews($_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
         case "get_achievements":
             $value = get_achievements();
             break;
         case "get_suggested_pois":
             if (isset($_GET["currLat"]) && isset($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
                 $value = get_suggestions($_GET["currLat"], $_GET["currLon"], $_GET["minDist"], $_GET["maxDist"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "get_visited":
+            if (isset($_GET["accessToken"]))
+                $value = get_visited($_GET["accessToken"]);
             else
                 $value = "Missing argument";
             break;
@@ -500,7 +506,7 @@ if (isset($_GET["action"]))
             break;
         case "find_pois_by_name":
             if (isset($_GET["name"]))
-                $value = find_poi_by_name($_GET["name"]);
+                $value = find_pois_by_name($_GET["name"]);
             else
                 $value = "Missing argument";
             break;

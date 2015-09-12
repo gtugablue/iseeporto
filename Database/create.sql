@@ -33,6 +33,7 @@ CREATE TABLE Region
 CREATE TABLE User
 (
   idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
   points INT NOT NULL,
   numVisits INT NOT NULL,
   numReviews INT NOT NULL,
