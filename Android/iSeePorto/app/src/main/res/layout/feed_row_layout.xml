@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
     android:orientation="horizontal">
@@ -53,31 +53,31 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="0"
-        android:layout_gravity="right"
-        android:id="@+id/poi_images_layout">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/poi_image1"
-            android:src="@mipmap/blank_image"
-            android:layout_weight="0.5"
-            android:layout_gravity="center_horizontal" />
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width= "@+id/poiFeedRadius"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="0"-->
+        <!--android:layout_gravity="right"-->
+        <!--android:id="@+id/poi_images_layout">-->
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@+id/poiFeedRadius"-->
+            <!--android:layout_height="@+id/poiFeedRadius"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:id="@+id/poi_image1"-->
+            <!--android:src="@mipmap/blank_image"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:layout_gravity="center_horizontal" />-->
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/poi_image2"
-            android:src="@mipmap/blank_image"
-            android:layout_weight="0.5"
-            android:layout_gravity="center_horizontal" />
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width= "@+id/poiFeedRadius"-->
+            <!--android:layout_height="@+id/poiFeedRadius"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:id="@+id/poi_image2"-->
+            <!--android:src="@mipmap/blank_image"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:layout_gravity="center_horizontal" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 </LinearLayout>
