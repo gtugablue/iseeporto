@@ -180,6 +180,23 @@ function get_achievements()
     return array_map("utf8_encode", $data);
 }
 
+function get_user_achievements($id)
+{
+    $sql = "SELECT userId, achievementId, unlockedDate, Achievement.name, Achievement.description FROM UserAchievements INNER JOIN Achievement ON UserAchievements.achievementId = Achievement.id WHERE userId = ? ORDER BY Achievement.achievementId";
+    $parameters = array();
+    $parameters[0] = $id;
+    $typeParameters = "i";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_array(MYSQLI_ASSOC);
+    return array_map("utf8_encode", $data);
+}
+
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
     $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
@@ -528,6 +545,12 @@ if (isset($_GET["action"]))
             break;
         case "get_achievements":
             $value = get_achievements();
+            break;
+        case "get_user_achievements":
+            if (isset($_GET["id"]))
+                $value = get_user_achievements($_GET["id"]);
+            else
+                $value = "Missing argument";
             break;
         case "get_suggested_pois":
             if (isset($_GET["currLat"]) && isset($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
