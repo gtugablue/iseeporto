@@ -2,9 +2,11 @@ package antonio.iseeporto;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,14 +67,21 @@ public class FeedMenu extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.feed_list_view);
         listView.setAdapter(new FeedAdapter(inflater.getContext()));
 
-
+        FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(inflater.getContext(), Search.class);
+                startActivity(searchIntent);
+            }
+        });
         return  view;
     }
 
