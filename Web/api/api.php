@@ -123,8 +123,8 @@ function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
     $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
             (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
-            FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
+            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits, count(*) AS numFriendsThatVisited
+            FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC GROUP BY PointsOfInterest.userId";
 
     $parameters = array();
     $parameters[0] = $currLat;
@@ -188,8 +188,8 @@ function get_friends_visited($accessToken)
         array_push($parameters, $friend["id"]);
         $typeParameters .= "s";
     }
-    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId IN (" . $list .")";
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes, count(*) AS numFriendsThatVisited
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId IN (" . $list .") GROUP BY PointsOfInterest.id";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -525,6 +525,9 @@ if (isset($_GET["action"]))
                 return generate_qr($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
+            break;
+        case "get_access_token":
+            $value = isset($_SESSION["facebook_access_token"]) ? $_SESSION["facebook_access_token"] : null;
             break;
         default:
             $value = "Unknown request.";

@@ -2,19 +2,19 @@
     <string name="app_name">iSee Porto</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Definições</string>
     <string name="title_activity_main_page">MainPage</string>
     <string name="facebook_app_id">1657545704515352</string>
 
-    <string name="report"><u>Report</u></string>
+    <string name="report"><u>Denunciar</u></string>
 
     <string-array
         name="menu_options">
         <item>Perfil</item>
-        <item>Suggestions</item>
-        <item>Visited</item>
-        <item>Friends</item>
-        <item>QR Code Reader</item>
+        <item>Sugestões</item>
+        <item>Visitados</item>
+        <item>Amigos</item>
+        <item>Leitor de QR codes</item>
     </string-array>
 
     <integer name="poiFeedRadius">0x3F80806B</integer>
@@ -22,13 +22,13 @@
     <string-array name="menu_names"
         >
         <item
-            >Suggestions</item>
+            >Sugestões</item>
         <item
-            >Visited</item>
+            >Visitados</item>
         <item
-            >Near Me</item>
+            >Perto de mim</item>
         <item
-            >Friends</item>
+            >Amigos</item>
     </string-array>
 
     <string-array name="poi_names">
@@ -139,8 +139,8 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_search">Search</string>
+    <string name="title_activity_search">Pesquisar</string>
     <string name="title_activity_search_result">User</string>
-    <string name="title_activity_search_poi_result">Poi</string>
-    <string name="title_activity_search_poi">Search</string>
+    <string name="title_activity_search_poi_result">PoI</string>
+    <string name="title_activity_search_poi">Pesquisar</string>
 </resources>
