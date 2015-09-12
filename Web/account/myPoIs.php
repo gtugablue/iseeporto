@@ -142,7 +142,8 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[3])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[4])) . " " . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[5])) . "</td>";
                                     echo "<td>" . htmlspecialchars(iconv('ISO-8859-1', 'UTF-8//IGNORE', $row[6])) . "</td>";
-                                    echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=" . $_SESSION['facebook_access_token'] . "'<i class='fa fa-remove' title='Remover PoI'></i></td>";
+                                    echo "<td><a href='../api/api.php?action=delete_poi&id=$row[0]&accessToken=" . $_SESSION['facebook_access_token'] . "'<i class='fa fa-remove' title='Remover PoI'></i></a></td>";
+                                    echo "<td><a data-toggle='modal' data-target='#qrCode' data-id='$row[0]'<i class='fa fa-qrcode' title='Gerar QR Code'></i></a></td>";
                                     echo "</tr>";
                                 }
                             }
@@ -167,6 +168,49 @@ $userNode = getFacebookGraphUser($fb, $_SESSION['facebook_access_token']);
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="qrCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">QR Code</h4>
+                </div>
+                <div class="modal-body" id="qr_code_div" >
+                    <?php
+                    echo "<img src='' id='qr_code_pic' class='img-responsive'/>";
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="print_qr">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Replace QR Code Image -->
+    <script type="application/javascript">
+        $('#qrCode').on('show.bs.modal', function(e) {
+            var poiId = $(e.relatedTarget).data('id');
+            var token = '<?php echo $_SESSION['facebook_access_token']; ?>';
+            $("#qr_code_pic").attr("src", "../api/api.php?action=generate_qr&id=" + poiId + "&accessToken=" + token);
+        });
+    </script>
+
+    <!-- Print QR Code -->
+
+    <script type="application/javascript">
+        $('#print_qr').click(function() {
+            w=window.open();
+            w.document.write($('#qr_code_div').html());
+            w.print();
+            w.close();
+
+            $('#qrCode').modal('hide');
+        });
+    </script>
 
 </body>
 

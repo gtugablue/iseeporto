@@ -8,6 +8,7 @@
 
 require_once "../includes/config.php";
 require_once "../includes/utils.php";
+require_once "../libs/phpqrcode/qrlib.php";
 
 function get_PoI_info($id)
 {
@@ -394,6 +395,17 @@ function report($accessToken, $id)
     return array_map('utf8_encode_array', $data);
 }
 
+function generate_qr($accessToken, $id) {
+    global $fb;
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    if(!isset($userNode)) {
+        http_response_code(500);
+        return null;
+    }
+
+    return QRcode::png($id, false, QR_ECLEVEL_L, 12, 4);
+}
+
 $value = "An error has occurred";
 
 if (isset($_GET["action"]))
@@ -481,6 +493,12 @@ if (isset($_GET["action"]))
         case "report":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
                 $value = report($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "generate_qr":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                return generate_qr($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
