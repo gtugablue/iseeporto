@@ -315,15 +315,14 @@ function delete_poi($accessToken, $id)
     $typeParameters = "si";
 
     $result = db_query($sql, $parameters, $typeParameters);
-    global $db_connection;
     if (!$result)
     {
         http_response_code(500);
         return null;
     }
 
-    if(isset($_SERVER['HTTP_REFERER']))
-        header("Location: {$_SERVER['HTTP_REFERER']}");
+    //if(isset($_SERVER['HTTP_REFERER']))
+    //    header("Location: {$_SERVER['HTTP_REFERER']}");
     return true;
 }
 
