@@ -27,7 +27,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
 
     private List<SuggestedPoiData> data;
 
-    public class SuggestedPoiData{
+    public static class SuggestedPoiData{
         protected int poiID;
 
 

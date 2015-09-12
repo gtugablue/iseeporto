@@ -126,11 +126,22 @@ public class SuggestedMenu extends Fragment {
             }
             try {
                 JSONArray jsona = new JSONArray(data);
+                shortcut(jsona);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     };
+
+    public void shortcut(JSONArray jsona) throws JSONException {
+        data.clear();
+        for (int i = 0; i < jsona.length(); i++)
+        {
+            JSONObject sPoI = jsona.getJSONObject(i);
+            SuggestedPlacesAdapter.SuggestedPoiData spd = new SuggestedPlacesAdapter.SuggestedPoiData(sPoI.getInt("id"), sPoI.getString("name"), sPoI.getString("address"), sPoI.getString("address"), (int)sPoI.getDouble("distance"));
+            data.add(spd);
+        }
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
