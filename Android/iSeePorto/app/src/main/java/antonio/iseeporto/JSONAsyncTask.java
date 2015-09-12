@@ -26,6 +26,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     ProgressDialog dialog;
     JSONObject jsono;
+
     Activity act;
 
     public void setActivity(Activity temp)

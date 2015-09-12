@@ -1,9 +1,6 @@
 package antonio.iseeporto;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -34,7 +30,6 @@ public class Perfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.perfil, container, false);
-        temp.setActivity(getActivity());
 
         facebookRequest();
 
@@ -75,39 +70,50 @@ public class Perfil extends Fragment {
         request.executeAsync();
     }
 
+    JSONObject objInfo;
+
     protected void startInfoTransfer()
     {
         String url = "https://iseeporto.revtut.net/api/api.php?action=get_user_info&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                objInfo = jsono;
+                shortcut(result);
+            }
+        };
+        temp.setActivity(getActivity());
+
         if (SingletonStringId.getInstance().getId() == null)
             temp.execute(url);
         else
             temp.execute(url + "&id=" + SingletonStringId.getInstance().getId());
     }
 
-    private JSONAsyncTask temp = new JSONAsyncTask() {
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (!result) {
-                return;
-            }
-
-            getView().post(new Runnable() {
-                @Override
-                public void run() {
-                    ImageView tempImage = (ImageView) getView().findViewById(R.id.profile_pic_big);
-
-                    try {
-                        if (jsono != null) {
-                            ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + jsono.getString("numVisits"));
-                            ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + jsono.getString("points"));
-                            downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + jsono.getString("idFacebook") + "/picture?width=500&height=500");
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+    void shortcut(Boolean result)
+    {
+        if (!result) {
+            return;
         }
-    };
+
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                ImageView tempImage = (ImageView) getView().findViewById(R.id.profile_pic_big);
+
+                try {
+                    if (objInfo != null) {
+                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
+                        ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
+                        downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + objInfo.getString("idFacebook") + "/picture?width=500&height=500");
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
