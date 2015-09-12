@@ -117,7 +117,9 @@ public class SuggestedMenu extends Fragment {
     {
         double latitude = 41.1488208;
         double longitude = -8.6115876;
+        // No time to implement this properly and get the location.
         String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=" + latitude + "&currLon=" + longitude + "&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+
         System.out.println("URL: " + url);
         executeUrl(url);
     }
@@ -159,11 +161,12 @@ public class SuggestedMenu extends Fragment {
             int id = sPoI.getInt("id");
             SuggestedPlacesAdapter.SuggestedPoiData spd =
                     new SuggestedPlacesAdapter.SuggestedPoiData(
+                            getView(),
                             sPoI.getInt("id"),
                             "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
                             stringCrop(sPoI.getString("name"), 25),
                             sPoI.getString("address"),
-                            (int)(sPoI.getDouble("distance") * 1000));
+                            (int)(sPoI.getDouble("distance")));
             data.add(spd);
         }
         spAdapter.notifyDataSetChanged();

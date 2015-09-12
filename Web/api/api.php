@@ -32,6 +32,67 @@ function get_PoI_info($id)
     return array_map("utf8_encode", $data);
 }
 
+function has_visited($accessToken, $id) {
+    global $fb;
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
+
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+    $sql = "SELECT userId FROM PoIVisits WHERE userId = ? AND poiId = ?";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return false;
+    }
+    if($result->num_rows > 0)
+        return true;
+    return false;
+}
+
+function has_liked($accessToken, $id) {
+    global $fb;
+    if (!login($accessToken))
+    {
+        http_response_code(401);
+    }
+
+    $parameters = array();
+    $userNode = getFacebookGraphUser($fb, $accessToken);
+    $parameters[0] = $userNode->getID();
+    $parameters[1] = $id;
+    $typeParameters = "si";
+    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ?";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return -1;
+    }
+    if($result->num_rows <= 0)
+        return -1;
+
+    $sql = "SELECT userId FROM Reviews WHERE userId = ? AND poiId = ? AND `like`=TRUE";
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return -1;
+    }
+    if($result->num_rows > 0)
+        return 1;
+
+    return 0;
+}
+
 function get_self_user_info($accessToken)
 {
     global $fb;
@@ -119,19 +180,38 @@ function get_achievements()
     return array_map("utf8_encode", $data);
 }
 
+function get_user_achievements($id)
+{
+    $sql = "SELECT userId, achievementId, unlockedDate, Achievement.name, Achievement.description FROM UserAchievements INNER JOIN Achievement ON UserAchievements.achievementId = Achievement.id WHERE userId = ? ORDER BY Achievement.id";
+    $parameters = array();
+    $parameters[0] = $id;
+    $typeParameters = "i";
+
+    $result = db_query($sql, $parameters, $typeParameters);
+    if (!$result)
+    {
+        http_response_code(500);
+        return null;
+    }
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
+}
+
 function get_suggestions($currLat, $currLon, $minDist, $maxDist)
 {
     $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude,
-            (POW(69.1 * (latitude - ?), 2) +
-            POW(69.1 * (? - longitude) * COS(latitude / 57.3), 2)) AS distance, rating, numLikes, numDislikes, numVisits
+            (((acos(sin((? *pi()/180)) * sin((latitude*pi()/180))+cos((? *pi()/180))
+            * cos((latitude*pi()/180)) * cos(((? - longitude)*pi()/180))))*180/pi())*60*1.1515) * 1609.344
+            AS distance, rating, numLikes, numDislikes, numVisits
             FROM PointsOfInterest WHERE active = true HAVING distance BETWEEN ? AND ? ORDER BY rating DESC";
 
     $parameters = array();
     $parameters[0] = $currLat;
-    $parameters[1] = $currLon;
-    $parameters[2] = pow($minDist, 2);
-    $parameters[3] = pow($maxDist, 2);
-    $typeParameters = "dddd";
+    $parameters[1] = $currLat;
+    $parameters[2] = $currLon;
+    $parameters[3] = pow($minDist, 2);
+    $parameters[4] = pow($maxDist, 2);
+    $typeParameters = "ddddd";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -188,8 +268,8 @@ function get_friends_visited($accessToken)
         array_push($parameters, $friend["id"]);
         $typeParameters .= "s";
     }
-    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes
-            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId IN (" . $list .")";
+    $sql = "SELECT PointsOfInterest.id, PointsOfInterest.userId, typeId, regionId, name, description, address, latitude, longitude, creationDate, numLikes, numDislikes, count(*) AS numFriendsThatVisited
+            FROM PointsOfInterest INNER JOIN PoIVisits ON PoIVisits.poiId = PointsOfInterest.id WHERE active = true AND PoIVisits.userId IN (" . $list .") GROUP BY PointsOfInterest.id";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -243,7 +323,7 @@ function set_not_visited($accessToken, $id)
     if (!$result)
     {
         http_response_code(500);
-        return null;
+        return false;
     }
     return true;
 }
@@ -292,7 +372,7 @@ function delete_review($accessToken, $id)
     if (!$result)
     {
         http_response_code(500);
-        return null;
+        return false;
     }
     return true;
 }
@@ -437,6 +517,18 @@ if (isset($_GET["action"]))
             else
                 $value = "Missing argument";
             break;
+        case "has_visited":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = has_visited($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
+        case "has_liked":
+            if (isset($_GET["id"]) && isset($_GET["accessToken"]))
+                $value = has_liked($_GET["accessToken"], $_GET["id"]);
+            else
+                $value = "Missing argument";
+            break;
         case "get_user_info":
             if (isset($_GET["accessToken"])) {
                 if (isset($_GET["id"]))
@@ -453,6 +545,12 @@ if (isset($_GET["action"]))
             break;
         case "get_achievements":
             $value = get_achievements();
+            break;
+        case "get_user_achievements":
+            if (isset($_GET["id"]))
+                $value = get_user_achievements($_GET["id"]);
+            else
+                $value = "Missing argument";
             break;
         case "get_suggested_pois":
             if (isset($_GET["currLat"]) && isset($_GET["currLon"]) && isset($_GET["minDist"]) && isset($_GET["maxDist"]))
@@ -480,7 +578,7 @@ if (isset($_GET["action"]))
             break;
         case "set_not_visited":
             if (isset($_GET["accessToken"]) && isset($_GET["id"]))
-                $value = set_visited($_GET["accessToken"], $_GET["id"]);
+                $value = set_not_visited($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
@@ -492,7 +590,7 @@ if (isset($_GET["action"]))
             break;
         case "delete_review":
             if (isset($_GET["id"]) && isset($_GET["accessToken"]))
-                $value = make_review($_GET["accessToken"], $_GET["id"]);
+                $value = delete_review($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
             break;
@@ -525,6 +623,9 @@ if (isset($_GET["action"]))
                 return generate_qr($_GET["accessToken"], $_GET["id"]);
             else
                 $value = "Missing argument";
+            break;
+        case "get_access_token":
+            $value = isset($_SESSION["facebook_access_token"]) ? $_SESSION["facebook_access_token"] : null;
             break;
         default:
             $value = "Unknown request.";
