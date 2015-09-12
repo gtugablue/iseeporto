@@ -125,6 +125,11 @@ public class SuggestedMenu extends Fragment {
                 return;
             }
             try {
+                if (data == null)
+                {
+                    System.err.println("Error reading data from the server.");
+                    return;
+                }
                 JSONArray jsona = new JSONArray(data);
                 shortcut(jsona);
             } catch (JSONException e) {
@@ -141,6 +146,24 @@ public class SuggestedMenu extends Fragment {
             SuggestedPlacesAdapter.SuggestedPoiData spd = new SuggestedPlacesAdapter.SuggestedPoiData(sPoI.getInt("id"), sPoI.getString("name"), sPoI.getString("address"), sPoI.getString("address"), (int)sPoI.getDouble("distance"));
             data.add(spd);
         }
+
+        /*getView().post(new Runnable() {
+            @Override
+            public void run() {
+                ImageView tempImage = (ImageView) getView().findViewById(R.id.profile_pic_big);
+
+                try {
+                    if (objInfo != null) {
+                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
+                        ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
+                        downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + objInfo.getString("idFacebook") + "/picture?width=500&height=500");
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
