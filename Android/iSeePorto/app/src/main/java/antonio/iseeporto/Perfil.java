@@ -122,15 +122,15 @@ public class Perfil extends Fragment {
             }
         });
     }
-
-    void shortcut2(JSONArray jsona)
-    {
+/*
+    void shortcut2(JSONArray jsona) throws JSONException {
         achievementData.clear();
         System.out.println("Success??");
         for (int i = 0; i < jsona.length(); i++)
         {
             JSONObject sPoI = jsona.getJSONObject(i);
-            int id = sPoI.getInt("id");
+            AchievementsAdapter.AchievementData ad =
+                    new AchievementsAdapter.AchievementData()
             SuggestedPlacesAdapter.SuggestedPoiData spd =
                     new SuggestedPlacesAdapter.SuggestedPoiData(
                             getView(),
@@ -142,5 +142,5 @@ public class Perfil extends Fragment {
             data.add(spd);
         }
         spAdapter.notifyDataSetChanged();
-    }
+    }*/
 }
