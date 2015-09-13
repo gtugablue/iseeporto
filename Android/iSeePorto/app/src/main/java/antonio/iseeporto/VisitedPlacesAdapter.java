@@ -1,13 +1,19 @@
 package antonio.iseeporto;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -70,47 +76,65 @@ public class VisitedPlacesAdapter extends BaseAdapter {
 
     }
 
-    private List<VisitedPoiData> data;
+    private List<VisitedPoiData> dataV;
 
-    VisitedPlacesAdapter(Context context){
+    VisitedPlacesAdapter(Context context, Activity act){
         this.context = context;
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        final DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        dataV = new ArrayList<>();
 
-        ArrayList<VisitedPoiData> data = new ArrayList<>();
-        List<String> names = Arrays.asList(context.getResources().getStringArray(R.array.poi_names));
-        List<String> dates = Arrays.asList(context.getResources().getStringArray(R.array.visited_dates));
-        int[] feedback = context.getResources().getIntArray(R.array.visited_feedback);
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                try {
+                    JSONArray temp = new JSONArray(data);
+                    Log.e("DATA = ", data);
+                    Date date; int id; String pic, name, like;
 
-        for(int i = 0; i < names.size(); i++)
-            try {
-                Date date = format.parse(dates.get(i));
-                data.add(new VisitedPoiData(i,"https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", names.get(i), date, feedback[i] == 1));
-            } catch (ParseException e) {
-                e.printStackTrace();
+                    for(int i = 0; i < temp.length(); i++)
+                        try {
+                            JSONObject obj = temp.getJSONObject(i);
+
+                            id = Integer.parseInt(obj.getString("poiId"));
+                            pic = "https://iseeporto.revtut.net/uploads/PoI_photos/"+id+".jpg";
+                            name = obj.getString("name");
+                            date = format.parse(obj.getString("visitDate"));
+                            //like = obj.getString("like");
+
+                            dataV.add(new VisitedPoiData(i,pic, name, date, 1 == 1));
+                            VisitedPlacesAdapter.this.notifyDataSetChanged();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-
-        this.data = data;
-
+        };
+        temp.setActivity(act);
+        Log.d("Site", "https://iseeporto.revtut.net/api/api.php?action=get_visited&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+        temp.execute("https://iseeporto.revtut.net/api/api.php?action=get_visited&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
     }
 
-    VisitedPlacesAdapter(Context context, List<VisitedPoiData> data){
+    VisitedPlacesAdapter(Context context, List<VisitedPoiData> dataV){
         this.context = context;
-        this.data = data;
+        this.dataV = dataV;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return dataV.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return dataV.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return data.get(position).getPoiID();
+        return dataV.get(position).getPoiID();
     }
 
     @Override
@@ -118,7 +142,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         row = inflater.inflate(R.layout.visited_pois_row_layout, parent, false);
 
-        VisitedPoiData rowData = data.get(position);
+        VisitedPoiData rowData = dataV.get(position);
 
         ImageView image = (ImageView) row.findViewById(R.id.poi_image);
         DownloadImageTask downloadImageTask = new DownloadImageTask(image){

@@ -58,7 +58,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
             if (status == 200) {
                 HttpEntity entity = response.getEntity();
-                String data = EntityUtils.toString(entity);
+                data = EntityUtils.toString(entity);
 
                 return true;
             }

@@ -1,6 +1,7 @@
 package antonio.iseeporto;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,17 +21,24 @@ import org.json.JSONObject;
 public class Place extends android.app.Fragment {
 
     Double latitude, longitude;
-    Boolean report = false;
-    String id;
+    Boolean report = false; Boolean checkVisited = false; Boolean checkLiked = false;
     DownloaderImage downloadImage = new DownloaderImage();
     TextView addressText, reportText;
     JSONObject objInfo;
+    Boolean infoTransferedBoolean = false;
+    String infoTransferedText = "";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewTemp = inflater.inflate(R.layout.place, container, false);
+        report = false;
+        executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
+        return viewTemp;
+    }
 
+    void executeUrl(String url)
+    {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
             protected void onPostExecute(Boolean result) {
@@ -39,18 +47,26 @@ public class Place extends android.app.Fragment {
                     return;
                 }
                 try {
-                    objInfo = new JSONObject(data);
-                    shortcut();
+                    if (checkVisited)
+                    {
+                        infoTransferedBoolean = new Boolean(data);
+                    }
+                    else if (checkLiked)
+                    {
+                        infoTransferedText = new String(data);
+                    }
+                    else {
+                        objInfo = new JSONObject(data);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                shortcut();
             }
         };
         temp.setActivity(getActivity());
 
-        report = false;
-        temp.execute("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
-        return viewTemp;
+        temp.execute(url);
     }
 
     public void createVisitFrag()
@@ -62,8 +78,7 @@ public class Place extends android.app.Fragment {
         transaction.commit();
     }
 
-    public void visitarLocal()
-    {
+    public void visitarLocal() {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
             protected void onPostExecute(Boolean result) {
@@ -73,8 +88,12 @@ public class Place extends android.app.Fragment {
         temp.setActivity(getActivity());
         temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_visited&id="
                 + SingletonStringId.getInstance().getId()
-                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
 
+        visitarLocalAfter();
+    }
+
+    public void visitarLocalAfter() {
         EvaluateThumbs avaliacao = new EvaluateThumbs();
         android.app.FragmentManager manager = getFragmentManager();
         android.app.FragmentTransaction transaction = manager.beginTransaction();
@@ -93,7 +112,7 @@ public class Place extends android.app.Fragment {
         temp.setActivity(getActivity());
         temp.execute("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                 + SingletonStringId.getInstance().getId()
-                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
 
         temp = new JSONAsyncTask() {
             @Override
@@ -104,7 +123,7 @@ public class Place extends android.app.Fragment {
         temp.setActivity(getActivity());
         temp.execute("https://iseeporto.revtut.net/api/api.php?action=set_not_visited&id="
                 + SingletonStringId.getInstance().getId()
-                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
 
         VisitButton v = new VisitButton();
         android.app.FragmentManager manager = getFragmentManager();
@@ -119,7 +138,7 @@ public class Place extends android.app.Fragment {
             @Override
             public void run() {
 
-                if (!report) {
+                if (!report && !checkVisited && !checkLiked) {
                     try {
                         if (objInfo != null) {
                             ((TextView) getView().findViewById(R.id.namePlaceId)).setText(objInfo.getString("name"));
@@ -133,16 +152,49 @@ public class Place extends android.app.Fragment {
                                     objInfo.getString("numVisits") + " visits, " +
                                             objInfo.getString("numLikes") + " likes and " +
                                             objInfo.getString("numDislikes") + " dislikes");
-                            id = objInfo.getString("id");
-                            downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + id + ".jpg");
+                            downloadImage.downloadImage((ImageView) getView().findViewById(R.id.placePicId), getView(), "https://iseeporto.revtut.net/uploads/PoI_photos/" + SingletonStringId.getInstance().getId() + ".jpg");
                             setClicks();
                             createVisitFrag();
+
+                            checkVisited = true;
+                            executeUrl("https://iseeporto.revtut.net/api/api.php?action=has_visited&id=" + SingletonStringId.getInstance().getId()
+                                    + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+                            return;
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                else report = false;
+
+                if (checkVisited)
+                {
+                    checkVisited = false;
+                    if (infoTransferedBoolean) {
+                        visitarLocalAfter();
+                        checkLiked = true;
+                        executeUrl("https://iseeporto.revtut.net/api/api.php?action=has_liked&id=" + SingletonStringId.getInstance().getId()
+                                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+                        return;
+                    }
+                }
+
+                if (checkLiked)
+                {
+                    checkLiked = false;
+                    if (infoTransferedText.equals("1"))
+                    {
+                        ((ImageView)getView().findViewById(R.id.gostoB)).setBackgroundColor(Color.GREEN);
+                    }
+                    else if (infoTransferedText.equals("0"))
+                    {
+                        ((ImageView)getView().findViewById(R.id.naoGostoB)).setBackgroundColor(Color.RED);
+                    }
+
+                    return;
+                }
+
             }
         });
     }
@@ -163,7 +215,7 @@ public class Place extends android.app.Fragment {
                 JSONAsyncTask tempTask = new JSONAsyncTask();
                 tempTask.setActivity(getActivity());
                 tempTask.execute("https://iseeporto.revtut.net/api/api.php?action=report&id=" +
-                        id + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                        SingletonStringId.getInstance().getId() + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
                 Toast.makeText(getActivity().getApplicationContext(), "Report Sent", Toast.LENGTH_SHORT).show();
             }
         });

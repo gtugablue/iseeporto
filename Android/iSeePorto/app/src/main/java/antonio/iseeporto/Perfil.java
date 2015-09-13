@@ -3,6 +3,7 @@ package antonio.iseeporto;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,12 @@ import com.facebook.GraphResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -48,26 +55,26 @@ public class Perfil extends Fragment {
         final AccessToken tempToken = Singleton.getInstance().getAccessToken();
 
         //obtem as informacoes do facebook
-        GraphRequest request = GraphRequest.newMeRequest(
-                tempToken,
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-                        // Application code
-                        //Log.e("response", "response" + object.toString());
-                        try {
-                            ((TextView) getView().findViewById(R.id.nomeId)).setText(object.getString("name"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
-        request.setParameters(parameters);
-        request.executeAsync();
+//        GraphRequest request = GraphRequest.newMeRequest(
+//                tempToken,
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(
+//                            JSONObject object,
+//                            GraphResponse response) {
+//                        // Application code
+//                        //Log.e("response", "response" + object.toString());
+//                        try {
+//                            ((TextView) getView().findViewById(R.id.nomeId)).setText(object.getString("name"));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "id,name,email,gender,birthday,picture.width(300)");
+//        request.setParameters(parameters);
+//        request.executeAsync();
     }
 
     JSONObject objInfo;
@@ -111,6 +118,8 @@ public class Perfil extends Fragment {
                     if (objInfo != null) {
                         ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
                         ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
+                        ((TextView) getView().findViewById(R.id.nomeId)).setText(objInfo.getString("name"));
+
                         downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + objInfo.getString("idFacebook") + "/picture?width=500&height=500");
                     }
 

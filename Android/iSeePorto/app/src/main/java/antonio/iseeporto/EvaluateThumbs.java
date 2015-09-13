@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class EvaluateThumbs extends Fragment {
                         gostoB.setBackgroundColor(Color.GREEN);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
-                                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken()
+                                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
                                 + "&comment=" + ""
                                 + "&like=" + "1");
                         return;
@@ -46,7 +47,7 @@ public class EvaluateThumbs extends Fragment {
                     gostoB.setBackgroundColor(Color.WHITE);
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
-                            + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                            + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
                 }
             }
         });
@@ -59,14 +60,15 @@ public class EvaluateThumbs extends Fragment {
                         naoGostoB.setBackgroundColor(Color.RED);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
-                                + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken()
+                                + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
                                 + "&comment=" + ""
-                                + "&like=" + "-1");
+                                + "&like=" + "0");
+                        return;
                     }
                     naoGostoB.setBackgroundColor(Color.WHITE);
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
-                            + "&accesstoken=" + Singleton.getInstance().getAccessToken().getToken());
+                            + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
                 }
             }
         });
@@ -80,6 +82,7 @@ public class EvaluateThumbs extends Fragment {
             @Override
             protected void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
+                Log.e("Liked->", data.toString());
             }
         };
         temp.setActivity(getActivity());

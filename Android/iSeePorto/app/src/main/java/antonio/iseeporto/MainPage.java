@@ -47,6 +47,8 @@ public class MainPage extends ActionBarActivity
     final FeedMenu friendsFrag = new FeedMenu();
     final Place placeFrag = new Place();
 
+    int previousQRCodeScreen = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,44 +92,72 @@ public class MainPage extends ActionBarActivity
             actionBar.setTitle(mTitle);
     }
 
+    private void switchToPlace(String id)
+    {
+        if (id == null) {
+            pageHandler(MenuOptions.PERFIL);
+            return;
+        }
+
+        SingletonStringId.getInstance().setId(id);
+
+        android.app.FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.replace(R.id.container, placeFrag, "Place");
+
+        transaction.commit();
+
+        placeFrag.createVisitFrag();
+    }
+
+    void setFalsePreviousQRCodeScreen()
+    {
+        previousQRCodeScreen++;
+    }
+
     private void pageHandler(int number) {
 
-        boolean isPlace = false;
         android.app.FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
         switch (number-1)
         {
             case MenuOptions.PERFIL:
+                setFalsePreviousQRCodeScreen();
                 SingletonStringId.getInstance().setId(null);
                 transaction.replace(R.id.container, perfilFrag, "Perfil");
                 break;
             case MenuOptions.SUGGESTIONS:
+                setFalsePreviousQRCodeScreen();
                 transaction.replace(R.id.container, suggestionsFrag, "Suggestions");
                 break;
             case MenuOptions.VISITED:
+                setFalsePreviousQRCodeScreen();
                 transaction.replace(R.id.container, visitedFrag, "Visited");
                 break;
             case MenuOptions.FRIENDS:
-//                transaction.replace(R.id.container, friendsFrag, "Friends");
-                SingletonStringId.getInstance().setId("1");
-                transaction.replace(R.id.container, placeFrag, "Place");
+                setFalsePreviousQRCodeScreen();
+                transaction.replace(R.id.container, friendsFrag, "Friends");
                 break;
             case MenuOptions.QRCODE:
-                startQRCode();
-                //transaction.replace(R.id.container, placeFrag, "Place");
-                isPlace = true;
-                break;
+                transaction.commit();
+                if (previousQRCodeScreen > 0)
+                {
+                    previousQRCodeScreen = 0;
+                    startQRCode();
+                }
+                else
+                {
+                    previousQRCodeScreen++;
+                }
+                return;
             default:
                 Log.e("Page Error", "Page Index out of bounds!");
                 break;
         }
 
         transaction.commit();
-
-        if (isPlace) {
-            placeFrag.createVisitFrag();
-        }
     }
 
     private void startQRCode() {
@@ -142,14 +172,13 @@ public class MainPage extends ActionBarActivity
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 // Handle successful scan
+                switchToPlace(contents);
 
             } else {
                 if (resultCode == RESULT_CANCELED)
                     Toast.makeText(getApplicationContext(), "QR Code read error!", Toast.LENGTH_SHORT).show();
             }
         }
-
-//        onSectionAttached(MenuOptions.PERFIL);
     }
 
     public void restoreActionBar() {

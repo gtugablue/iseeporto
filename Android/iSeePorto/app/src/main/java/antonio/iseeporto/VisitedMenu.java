@@ -69,7 +69,7 @@ public class VisitedMenu extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_visited_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.visited_list_view);
-        listView.setAdapter(new VisitedPlacesAdapter(inflater.getContext()));
+        listView.setAdapter(new VisitedPlacesAdapter(inflater.getContext(), getActivity()));
 
         return view;
     }
