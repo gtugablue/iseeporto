@@ -147,5 +147,5 @@
     <string name="title_activity_search_result">Perfil</string>
     <string name="title_activity_search_poi_result">Place</string>
     <string name="title_activity_search_poi">Pesquisar</string>
-    <string name="title_activity_write_review">WriteReview</string>
+    <string name="title_activity_write_review">Comentário</string>
 </resources>
