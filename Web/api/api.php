@@ -111,6 +111,7 @@ function get_user_info($accessToken, $id)
     if (!login($accessToken))
     {
         http_response_code(401);
+        return null;
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $userNode = getFacebookGraphUser($fb, $accessToken);

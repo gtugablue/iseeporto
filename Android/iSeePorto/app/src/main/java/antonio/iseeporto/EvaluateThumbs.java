@@ -33,9 +33,9 @@ public class EvaluateThumbs extends Fragment {
         gostoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((ColorDrawable) naoGostoB.getBackground()).getColor() == Color.WHITE) {
-                    if (((ColorDrawable) gostoB.getBackground()).getColor() == Color.WHITE) {
-                        gostoB.setBackgroundColor(Color.GREEN);
+                if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
+                    if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
+                        gostoB.setBackgroundColor(0x0000FF00);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
@@ -44,7 +44,7 @@ public class EvaluateThumbs extends Fragment {
                         return;
                     }
 
-                    gostoB.setBackgroundColor(Color.WHITE);
+                    gostoB.setBackgroundColor(0x00FFFFFF);
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
                             + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
@@ -55,9 +55,9 @@ public class EvaluateThumbs extends Fragment {
         naoGostoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((ColorDrawable) gostoB.getBackground()).getColor() == Color.WHITE) {
-                    if (((ColorDrawable) naoGostoB.getBackground()).getColor() == Color.WHITE) {
-                        naoGostoB.setBackgroundColor(Color.RED);
+                if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
+                    if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
+                        naoGostoB.setBackgroundColor(0x00FF0000);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
@@ -65,7 +65,7 @@ public class EvaluateThumbs extends Fragment {
                                 + "&like=" + "0");
                         return;
                     }
-                    naoGostoB.setBackgroundColor(Color.WHITE);
+                    naoGostoB.setBackgroundColor(0x00FFFFFF);
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
                             + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
