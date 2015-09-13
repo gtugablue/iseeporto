@@ -3,7 +3,6 @@ package antonio.iseeporto;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -91,7 +82,7 @@ public class Perfil extends Fragment {
             protected void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
-                    objInfo = new JSONObject(data);
+                    objInfo = new JSONObject(data+"");
                     shortcut(result);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -105,7 +96,6 @@ public class Perfil extends Fragment {
             protected void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
-                    System.out.println("POOOOOOOOST");
                     JSONArray arrayInfo = new JSONArray(data);
                     shortcut2(arrayInfo);
                 } catch (JSONException e) {
@@ -115,8 +105,8 @@ public class Perfil extends Fragment {
         };
         temp2.setActivity(getActivity());
         String url2 = "https://iseeporto.revtut.net/api/api.php?action=get_user_achievements&id=" + Singleton.getInstance().getAccessToken().getUserId();
-        System.out.println(url2);
         temp2.execute(url2);
+
 
         if (SingletonStringId.getInstance().getId() == null)
             temp.execute(url);

@@ -163,8 +163,6 @@ public class LoginPage extends ActionBarActivity {
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                Log.d("LAT", "Long: " + location.getLongitude() + " Lat: " + location.getLatitude());
-
                 Singleton.getInstance().setLongitude(location.getLongitude());
                 Singleton.getInstance().setLatitude(location.getLatitude());
             }
