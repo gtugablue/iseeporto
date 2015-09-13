@@ -152,7 +152,7 @@ function get_user_info($accessToken, $id)
 
 function get_reviews($id)
 {
-    $sql = "SELECT userId, poiId, comment, like FROM Reviews WHERE poiId = ? AND active = true";
+    $sql = "SELECT Reviews.userId, poiId, comment, `like` FROM Reviews INNER JOIN PointsOfInterest ON Reviews.poiId = PointsOfInterest.id WHERE poiId = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";
@@ -163,8 +163,8 @@ function get_reviews($id)
         http_response_code(500);
         return null;
     }
-    $data = $result->fetch_array(MYSQLI_ASSOC);
-    return array_map("utf8_encode", $data);
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return array_map('utf8_encode_array', $data);
 }
 
 function get_achievements()
