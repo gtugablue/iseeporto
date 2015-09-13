@@ -29,9 +29,8 @@ public class WriteReview extends AppCompatActivity {
                 accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                         + SingletonStringId.getInstance().getId()
                         + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
-                        + "&comment=" +((EditText) WriteReview.this.findViewById(R.id.review)).getText()
+                        + "&comment=" + ((EditText) WriteReview.this.findViewById(R.id.review)).getText()
                         + "&like=" + (SingletonStringId.getInstance().isLike() ? 1 : 0));
-                onBackPressed();
             }
         });
     }
@@ -68,6 +67,7 @@ public class WriteReview extends AppCompatActivity {
             @Override
             public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
+                onBackPressed();
             }
         };
         temp.setActivity(this);
