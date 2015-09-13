@@ -150,7 +150,7 @@ public class Perfil extends Fragment {
             JSONObject sPoI = jsona.getJSONObject(i);
             AchievementsAdapter.AchievementData ad =
                     new AchievementsAdapter.AchievementData(
-                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("achievementId") + ".jpg",
+                            "https://iseeporto.revtut.net/uploads/achievements/" + sPoI.getInt("achievementId") + ".jpg",
                             sPoI.getInt("userId"),
                             sPoI.getString("name"),
                             sPoI.getString("description"));
