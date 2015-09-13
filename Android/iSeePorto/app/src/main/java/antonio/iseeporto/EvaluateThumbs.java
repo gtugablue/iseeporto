@@ -1,7 +1,7 @@
 package antonio.iseeporto;
 
 import android.app.Fragment;
-import android.graphics.Color;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,14 +33,18 @@ public class EvaluateThumbs extends Fragment {
         gostoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SingletonStringId.getInstance().setLike(true);
                 if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
                     if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
                         gostoB.setBackgroundColor(0x0000FF00);
-                        accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
+                        /*accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
                                 + "&comment=" + ""
-                                + "&like=" + "1");
+                                + "&like=" + "1");*/
+                        SingletonStringId.getInstance().setLike(true);
+                        Intent searchIntent = new Intent(v.getContext(), WriteReview.class);
+                        startActivity(searchIntent);
                         return;
                     }
 
@@ -48,27 +52,34 @@ public class EvaluateThumbs extends Fragment {
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
                             + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+                    SingletonStringId.getInstance().setLike(false);
                 }
+
             }
         });
 
         naoGostoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
                     if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
                         naoGostoB.setBackgroundColor(0x00FF0000);
-                        accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
+                        /*accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
                                 + "&comment=" + ""
-                                + "&like=" + "0");
+                                + "&like=" + "0");*/
+                        SingletonStringId.getInstance().setLike(false);
+                        Intent searchIntent = new Intent(v.getContext(), WriteReview.class);
+                        startActivity(searchIntent);
                         return;
                     }
                     naoGostoB.setBackgroundColor(0x00FFFFFF);
                     accessUrl("https://iseeporto.revtut.net/api/api.php?action=delete_review&id="
                             + SingletonStringId.getInstance().getId()
                             + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+                    SingletonStringId.getInstance().setLike(true);
                 }
             }
         });

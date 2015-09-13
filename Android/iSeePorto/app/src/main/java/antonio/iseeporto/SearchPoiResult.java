@@ -1,12 +1,14 @@
 package antonio.iseeporto;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class SearchPoiResult extends AppCompatActivity {
+
+    private boolean mIsLargeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,4 +39,5 @@ public class SearchPoiResult extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

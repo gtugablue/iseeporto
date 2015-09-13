@@ -16,6 +16,16 @@ public class SingletonStringId {
 
     protected String id;
 
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    protected boolean like;
+
     public static SingletonStringId getInstance() {
         return ourInstance;
     }

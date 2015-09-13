@@ -1,3 +1,4 @@
+/*
 package antonio.iseeporto;
 
 import android.app.Activity;
@@ -19,9 +20,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * Created by Duarte on 13/09/2015.
- */
+ *//*
+
 public class ReviewAdapter extends BaseAdapter {
 
     private final Context context;
@@ -223,3 +226,4 @@ public class ReviewAdapter extends BaseAdapter {
         });
     }
 }
+*/
