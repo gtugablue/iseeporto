@@ -22,7 +22,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".LoginPage"
+            android:name=".uielements.LoginPage"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -32,32 +32,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainPage"
+            android:name=".uielements.MainPage"
             android:label="@string/title_activity_main_page"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SearchUser"
+            android:name=".uielements.SearchUser"
             android:label="@string/title_activity_search"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SearchUserResult"
+            android:name=".uielements.SearchUserResult"
             android:label="@string/title_activity_search_result"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SearchPoiResult"
+            android:name=".uielements.SearchPoiResult"
             android:label="@string/title_activity_search_poi_result"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SearchPoi"
+            android:name=".uielements.SearchPoi"
             android:label="@string/title_activity_search_poi"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".WriteReview"
+            android:name=".uielements.WriteReview"
             android:label="@string/title_activity_write_review" >
         </activity>
     </application>

@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,7 +18,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import antonio.iseeporto.listviewadapters.AchievementsAdapter;
+import antonio.iseeporto.DownloaderImage;
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.listviewadapters.AchievementsAdapter;
 
 /**
  * Created by Antonio on 08-09-2015.

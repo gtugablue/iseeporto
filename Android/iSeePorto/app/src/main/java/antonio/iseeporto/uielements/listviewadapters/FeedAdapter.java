@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,6 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.R;
+
 /**
  * Created by Duarte on 09/09/2015.
  */
@@ -30,8 +33,6 @@ public class FeedAdapter extends BaseAdapter {
 
     public class FeedData{
 
-        protected String poiImage1;
-        protected String poiImage2;
         protected String poiName1;
         protected String poiName2;
         protected int friendID;
@@ -39,9 +40,7 @@ public class FeedAdapter extends BaseAdapter {
         protected String friendName;
         protected Date timestamp;
 
-        FeedData(String poiImage1, String poiImage2, String poiName1, String poiName2,int friendID, String friendImageURL, String friendName, Date timestamp){
-            this.poiImage1 = poiImage1;
-            this.poiImage2 = poiImage2;
+        public FeedData(String poiName1, String poiName2,int friendID, String friendImageURL, String friendName, Date timestamp){
             this.poiName1 = poiName1;
             this.poiName2 = poiName2;
             this.friendID = friendID;
@@ -50,16 +49,7 @@ public class FeedAdapter extends BaseAdapter {
             this.timestamp = timestamp;
         }
 
-        FeedData(String poiName1,String poiName2,int friendID, String friendImageURL, String friendName, Date timestamp){
-            this.poiName1 = poiName1;
-            this.poiName2 = poiName2;
-            this.friendID = friendID;
-            this.friendImageURL = friendImageURL;
-            this.friendName = friendName;
-            this.timestamp = timestamp;
-        }
-
-        FeedData(String poiName1,int friendID, String friendImageURL, String friendName, Date timestamp){
+        public FeedData(String poiName1,int friendID, String friendImageURL, String friendName, Date timestamp){
             this.poiName1 = poiName1;
             this.friendID = friendID;
             this.friendImageURL = friendImageURL;
@@ -67,14 +57,6 @@ public class FeedAdapter extends BaseAdapter {
             this.timestamp = timestamp;
         }
 
-
-        public String getPoiImage1() {
-            return poiImage1;
-        }
-
-        public String getPoiImage2() {
-            return poiImage2;
-        }
 
         public String getPoiName1() {
             return poiName1;
@@ -102,7 +84,7 @@ public class FeedAdapter extends BaseAdapter {
     }
 
 
-    FeedAdapter(Context context){
+    public FeedAdapter(Context context){
         this.context = context;
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
@@ -122,7 +104,7 @@ public class FeedAdapter extends BaseAdapter {
         this.data = data;
     }
 
-    FeedAdapter(Context context, ArrayList<FeedData> data){
+    public FeedAdapter(Context context, ArrayList<FeedData> data){
         this.context = context;
         this.data = data;
     }
@@ -190,7 +172,7 @@ public class FeedAdapter extends BaseAdapter {
                 row.post(new Runnable() {
                     @Override
                     public void run() {
-                        bmImage.setImageBitmap(result);
+                        getBmImage().setImageBitmap(result);
                     }
                 });
             }

@@ -1,4 +1,4 @@
-package antonio.iseeporto.listviewadapters;
+package antonio.iseeporto.uielements.listviewadapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -72,12 +72,6 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         public String getPoiImageURL() {
             return poiImageURL;
         }
-
-        public void setPoiImageURL(String poiImageURL) {
-            this.poiImageURL = poiImageURL;
-        }
-
-
     }
 
     private List<VisitedPoiData> dataV;
@@ -94,7 +88,9 @@ public class VisitedPlacesAdapter extends BaseAdapter {
                 try {
                     JSONArray temp = new JSONArray(data);
                     Log.e("DATA = ", data);
-                    Date date; int id; String pic, name, like;
+                    Date date;
+                    int id;
+                    String pic, name/*, like*/;
 
                     for(int i = 0; i < temp.length(); i++)
                         try {
@@ -164,7 +160,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
         downloadImageTask.execute(rowData.getPoiImageURL());
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
-        name.setText(rowData.getPoiName().toString());
+        name.setText(rowData.getPoiName());
 
         TextView date = (TextView) row.findViewById(R.id.visitation_date);
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);

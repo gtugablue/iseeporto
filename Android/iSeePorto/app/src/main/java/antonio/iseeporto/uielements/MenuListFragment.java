@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import antonio.iseeporto.R;
 import antonio.iseeporto.dummy.DummyContent;
 
 /**

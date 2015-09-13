@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
 
 public class WriteReview extends AppCompatActivity {
 

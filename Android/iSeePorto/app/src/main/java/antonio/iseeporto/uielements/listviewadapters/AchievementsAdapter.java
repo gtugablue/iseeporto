@@ -1,4 +1,4 @@
-package antonio.iseeporto.listviewadapters;
+package antonio.iseeporto.uielements.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -95,7 +95,7 @@ public class AchievementsAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return data.get(position).achievementID;
+        return data.get(position).getAchievementID();
     }
 
     @Override

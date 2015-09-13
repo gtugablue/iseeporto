@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+
+import antonio.iseeporto.R;
+import antonio.iseeporto.SingletonStringId;
 
 public class MainPage extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {

@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.Manifest;
 import android.content.Context;
@@ -29,6 +29,9 @@ import com.facebook.login.widget.LoginButton;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
 
 public class LoginPage extends ActionBarActivity {
 

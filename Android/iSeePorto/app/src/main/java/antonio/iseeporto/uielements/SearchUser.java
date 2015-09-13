@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -12,7 +12,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import antonio.iseeporto.listviewadapters.SearchFriendsAdapter;
+import antonio.iseeporto.R;
+import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.listviewadapters.SearchFriendsAdapter;
 
 public class SearchUser extends AppCompatActivity {
 
@@ -43,7 +45,8 @@ public class SearchUser extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         return true;

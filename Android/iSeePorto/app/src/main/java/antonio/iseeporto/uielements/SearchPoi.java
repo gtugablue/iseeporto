@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import antonio.iseeporto.listviewadapters.SuggestedPlacesAdapter;
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter;
 
 public class SearchPoi extends AppCompatActivity {
     EditText searchBar;
@@ -81,7 +85,6 @@ public class SearchPoi extends AppCompatActivity {
             JSONObject sPoI = array.getJSONObject(i);
             SuggestedPlacesAdapter.SuggestedPoiData spd =
                     new SuggestedPlacesAdapter.SuggestedPoiData(
-                            view,
                             sPoI.getInt("id"),
                             "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
                             SuggestedMenu.stringCrop(sPoI.getString("name"), 25),

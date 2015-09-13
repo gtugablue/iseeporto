@@ -1,15 +1,19 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -93,7 +97,6 @@ public class EvaluateThumbs extends Fragment {
             @Override
             public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
-                Log.e("Liked->", data.toString());
             }
         };
         temp.setActivity(getActivity());

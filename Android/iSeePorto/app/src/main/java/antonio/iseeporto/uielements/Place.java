@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,7 +19,12 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import antonio.iseeporto.listviewadapters.ReviewAdapter;
+import antonio.iseeporto.DownloaderImage;
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.listviewadapters.ReviewAdapter;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -49,7 +54,7 @@ public class Place extends android.app.Fragment {
         executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
 
         ListView reviewsList = (ListView) viewTemp.findViewById(R.id.reviews_list);
-        rAdapter = new ReviewAdapter(getActivity().getApplicationContext(), getActivity());
+        rAdapter = new ReviewAdapter(getActivity().getApplicationContext());
         reviewsList.setAdapter(rAdapter);
         downloadData();
 

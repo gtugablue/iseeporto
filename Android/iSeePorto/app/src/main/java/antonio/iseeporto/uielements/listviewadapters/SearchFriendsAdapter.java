@@ -1,4 +1,4 @@
-package antonio.iseeporto.listviewadapters;
+package antonio.iseeporto.uielements.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -73,8 +73,8 @@ public class SearchFriendsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        if(row != null)
-            row = inflater.inflate(R.layout.search_result_row, parent, false);
+        row = inflater.inflate(R.layout.search_result_row, parent, false);
+
         SearchResults searchResults = data.get(position);
 
         ImageView image = (ImageView) row.findViewById(R.id.friend_user_image);

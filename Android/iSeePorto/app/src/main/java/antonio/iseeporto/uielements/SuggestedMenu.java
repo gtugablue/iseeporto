@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.uielements;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -17,7 +17,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import antonio.iseeporto.listviewadapters.SuggestedPlacesAdapter;
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
+import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter;
+
+import static antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter.*;
 
 
 /**
@@ -152,15 +158,14 @@ public class SuggestedMenu extends Fragment {
         for (int i = 0; i < jsona.length(); i++)
         {
             JSONObject sPoI = jsona.getJSONObject(i);
-            int id = sPoI.getInt("id");
-            SuggestedPlacesAdapter.SuggestedPoiData spd =
-                    new SuggestedPlacesAdapter.SuggestedPoiData(
-                            getView(),
-                            sPoI.getInt("id"),
-                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("id") + ".jpg",
-                            stringCrop(sPoI.getString("name"), 25),
-                            sPoI.getString("address"),
-                            (int)(sPoI.getDouble("distance")));
+            /*int id = sPoI.getInt("id");*/
+            SuggestedPoiData spd;
+            spd = new SuggestedPoiData(
+                    sPoI.getInt("id"),
+                    "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("id") + ".jpg",
+                    stringCrop(sPoI.getString("name"), 25),
+                    sPoI.getString("address"),
+                    (int)(sPoI.getDouble("distance")));
             data.add(spd);
         }
         spAdapter.notifyDataSetChanged();
@@ -168,7 +173,7 @@ public class SuggestedMenu extends Fragment {
 
     public static String stringCrop(String s, int maxChars)
     {
-        String s2 = new String(s);
+        String s2 = s;
         if (s2.length() > maxChars)
         {
             s2 = s2.substring(0, maxChars - 3);

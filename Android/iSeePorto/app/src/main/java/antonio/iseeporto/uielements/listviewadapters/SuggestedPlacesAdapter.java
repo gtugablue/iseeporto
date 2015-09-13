@@ -1,4 +1,4 @@
-package antonio.iseeporto.listviewadapters;
+package antonio.iseeporto.uielements.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -37,7 +37,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         protected int distance;
         protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        public SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, String address,int distance){
+        public SuggestedPoiData(int poiID,String poiImageURL,String poiName, String address,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
@@ -109,6 +109,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         row = inflater.inflate(R.layout.suggested_pois_row_layout, parent, false);
+
         SuggestedPoiData poiData = data.get(position);
 
         if (poiData.bitmapArray[0] == null) {
@@ -129,7 +130,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         }
 
         TextView name = (TextView) row.findViewById(R.id.poi_name);
-        name.setText(poiData.getPoiName().toString());
+        name.setText(poiData.getPoiName());
 
         TextView visitors = (TextView) row.findViewById(R.id.visitors);
         visitors.setText(data.get(position).getAddress());

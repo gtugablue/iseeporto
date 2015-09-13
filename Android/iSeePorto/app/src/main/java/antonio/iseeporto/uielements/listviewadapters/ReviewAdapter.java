@@ -1,6 +1,5 @@
-package antonio.iseeporto.listviewadapters;
+package antonio.iseeporto.uielements.listviewadapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -73,7 +72,7 @@ public class ReviewAdapter extends BaseAdapter {
     }
 
 
-    public ReviewAdapter(Context context, Activity activity) {
+    public ReviewAdapter(Context context) {
         this.context = context;
         data = new ArrayList<>();
     }
@@ -122,7 +121,7 @@ public class ReviewAdapter extends BaseAdapter {
         downloadImageTask.execute(rowData.getUserImageURL());
 
         TextView name = (TextView) row.findViewById(R.id.user_name);
-        name.setText(rowData.getUserName().toString());
+        name.setText(rowData.getUserName());
 
         TextView comment = (TextView) row.findViewById(R.id.comment);
         comment.setText(rowData.getComment());
