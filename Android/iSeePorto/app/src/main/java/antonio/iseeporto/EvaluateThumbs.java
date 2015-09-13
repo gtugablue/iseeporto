@@ -35,7 +35,7 @@ public class EvaluateThumbs extends Fragment {
             public void onClick(View v) {
                 if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
                     if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
-                        gostoB.setBackgroundColor(0x0000FF00);
+                        gostoB.setBackgroundColor(0xFF00FF00);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
@@ -57,7 +57,7 @@ public class EvaluateThumbs extends Fragment {
             public void onClick(View v) {
                 if (((ColorDrawable) gostoB.getBackground()).getColor() == 0x00FFFFFF) {
                     if (((ColorDrawable) naoGostoB.getBackground()).getColor() == 0x00FFFFFF) {
-                        naoGostoB.setBackgroundColor(0x00FF0000);
+                        naoGostoB.setBackgroundColor(0xFFFF0000);
                         accessUrl("https://iseeporto.revtut.net/api/api.php?action=make_review&id="
                                 + SingletonStringId.getInstance().getId()
                                 + "&accessToken=" + Singleton.getInstance().getAccessToken().getToken()
