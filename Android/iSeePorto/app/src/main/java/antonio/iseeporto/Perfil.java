@@ -127,7 +127,7 @@ public class Perfil extends Fragment {
 
                 try {
                     if (objInfo != null) {
-                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
+                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Nº of visited PoIs: " + objInfo.getString("numVisits"));
                         ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
                         ((TextView) getView().findViewById(R.id.nomeId)).setText(objInfo.getString("name"));
 

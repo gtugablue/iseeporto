@@ -4,7 +4,6 @@ package antonio.iseeporto;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,18 +27,21 @@ public class ReviewAdapter extends BaseAdapter {
 
     private final Context context;
     View row;
-    private List<ReviewData> dataV;
 
-    public class ReviewData{
+    public List<ReviewData> getData() {
+        return data;
+    }
 
+    private List<ReviewData> data;
 
-        protected int userID;
+    public static class ReviewData {
+        protected long userID;
         protected String userImageURL;
         protected String userName;
         protected String comment;
         protected boolean liked;
 
-        ReviewData(int userID, String userImageURL, String userName, String comment, boolean liked){
+        ReviewData(long userID, String userImageURL, String userName, String comment, boolean liked) {
             this.userImageURL = userImageURL;
             this.userID = userID;
             this.userName = userName;
@@ -48,7 +49,7 @@ public class ReviewAdapter extends BaseAdapter {
             this.liked = liked;
         }
 
-        public int getUserID() {
+        public long getUserID() {
             return userID;
         }
 
@@ -76,61 +77,29 @@ public class ReviewAdapter extends BaseAdapter {
     }
 
 
-    ReviewAdapter(Context context, Activity activity){
+    ReviewAdapter(Context context, Activity activity) {
         this.context = context;
-        dataV = new ArrayList<>();
-
-        JSONAsyncTask temp = new JSONAsyncTask() {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                super.onPostExecute(result);
-                try {
-                    JSONArray temp = new JSONArray(data);
-                    Log.e("DATA = ", data);
-                    String date; int id; String pic, name, like;
-
-                    for(int i = 0; i < temp.length(); i++)
-                        try {
-                            JSONObject obj = temp.getJSONObject(i);
-
-                            id = Integer.parseInt(obj.getString("poiId"));
-                            pic = "https://iseeporto.revtut.net/uploads/PoI_photos/"+id+".jpg";
-                            name = obj.getString("name");
-                            date = format.parse(obj.getString("visitDate"));
-                            like = obj.getString("like");
-
-                            dataV.add(new ReviewData(i,pic, name, date, 1 == 1));
-                            ReviewAdapter.this.notifyDataSetChanged();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        temp.setActivity(act);
-        temp.execute("https://iseeporto.revtut.net/api/api.php?action=get_visited&accessToken=" + Singleton.getInstance().getAccessToken().getToken());
+        data = new ArrayList<>();
     }
 
-    ReviewAdapter(Context context, List<ReviewData> dataV){
+    ReviewAdapter(Context context, List<ReviewData> dataV) {
         this.context = context;
-        this.dataV = dataV;
+        this.data = dataV;
     }
 
     @Override
     public int getCount() {
-        return dataV.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return dataV.get(position);
+        return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return dataV.get(position).getUserID();
+        return data.get(position).getUserID();
     }
 
     @Override
@@ -138,10 +107,10 @@ public class ReviewAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         row = inflater.inflate(R.layout.review_row, parent, false);
 
-        ReviewData rowData = dataV.get(position);
+        ReviewData rowData = data.get(position);
 
         ImageView image = (ImageView) row.findViewById(R.id.user_image);
-        DownloadImageTask downloadImageTask = new DownloadImageTask(image){
+        DownloadImageTask downloadImageTask = new DownloadImageTask(image) {
 
             @Override
             protected void onPostExecute(final Bitmap result) {
@@ -163,67 +132,12 @@ public class ReviewAdapter extends BaseAdapter {
         comment.setText(rowData.getComment());
 
         ImageView like = (ImageView) row.findViewById(R.id.thumb);
-        if(rowData.isLiked())
+        if (rowData.isLiked())
             like.setImageResource(R.mipmap.thumbs_up);
         else
             like.setImageResource(R.mipmap.thumbs_down);
 
         return row;
-    }
-
-
-    JSONObject objInfo;
-
-    protected void startInfoTransfer()
-    {
-        String url = "https://iseeporto.revtut.net/api/api.php?action=get_user_info&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
-
-        JSONAsyncTask temp = new JSONAsyncTask() {
-            @Override
-            protected void onPostExecute(Boolean result) {
-                super.onPostExecute(result);
-                try {
-                    objInfo = new JSONObject(data+"");
-                    shortcut(result);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        temp.setActivity(getActivity());
-
-
-        if (SingletonStringId.getInstance().getId() == null)
-            temp.execute(url);
-        else
-            temp.execute(url + "&id=" + SingletonStringId.getInstance().getId());
-    }
-
-    void shortcut(Boolean result)
-    {
-        if (!result) {
-            return;
-        }
-
-        getView().post(new Runnable() {
-            @Override
-            public void run() {
-                ImageView tempImage = (ImageView) .findViewById(R.id.profile_pic_big);
-
-                try {
-                    if (objInfo != null) {
-                        ((TextView) getView().findViewById(R.id.visitedPlacesId)).setText("Number of Visited Places: " + objInfo.getString("numVisits"));
-                        ((TextView) getView().findViewById(R.id.pointsId)).setText("Points: " + objInfo.getString("points"));
-                        ((TextView) getView().findViewById(R.id.nomeId)).setText(objInfo.getString("name"));
-
-                        downloadImage.downloadImage(tempImage, getView(), "https://graph.facebook.com/" + objInfo.getString("idFacebook") + "/picture?width=500&height=500");
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }
 */

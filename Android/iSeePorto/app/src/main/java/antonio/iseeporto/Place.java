@@ -13,8 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -29,6 +32,7 @@ public class Place extends android.app.Fragment {
     Boolean infoTransferedBoolean = false;
     String infoTransferedText = "";
     LayoutInflater inflater;
+    ReviewAdapter rAdapter;
 
     @Nullable
     @Override
@@ -43,8 +47,50 @@ public class Place extends android.app.Fragment {
         executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
 
         ListView reviewsList = (ListView) viewTemp.findViewById(R.id.reviews_list);
+        rAdapter = new ReviewAdapter(getActivity().getApplicationContext(), getActivity());
+        reviewsList.setAdapter(rAdapter);
+        downloadData();
 
         return viewTemp;
+    }
+
+    private void downloadData() {
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_reviews&id=" + SingletonStringId.getInstance().getId();
+
+        JSONAsyncTask temp = new JSONAsyncTask() {
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                try {
+                    JSONArray array = new JSONArray(data);
+                    shortcutReviews(array);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        temp.setActivity(getActivity());
+        temp.execute(url);
+    }
+
+    private void shortcutReviews(JSONArray array) throws JSONException {
+        List<ReviewAdapter.ReviewData> data = rAdapter.getData();
+        data.clear();
+        for (int i = 0; i < array.length(); i++)
+        {
+            JSONObject review = array.getJSONObject(i);
+            long userId = review.getLong("userId");
+            Boolean like = review.getInt("like") == 0 ? false : true;
+            ReviewAdapter.ReviewData rd =
+                    new ReviewAdapter.ReviewData(
+                            userId,
+                            "https://graph.facebook.com/" + userId + "/picture?width=100&height=100",
+                            review.getString("name"),
+                            review.getString("comment"),
+                            like);
+            data.add(rd);
+        }
+        rAdapter.notifyDataSetChanged();
     }
 
     void executeUrl(String url)

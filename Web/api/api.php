@@ -152,7 +152,11 @@ function get_user_info($accessToken, $id)
 
 function get_reviews($id)
 {
-    $sql = "SELECT Reviews.userId, poiId, comment, `like` FROM Reviews INNER JOIN PointsOfInterest ON Reviews.poiId = PointsOfInterest.id WHERE poiId = ? AND active = true";
+    $sql = "SELECT Reviews.userId, User.name, poiId, comment, `like`
+FROM Reviews
+INNER JOIN PointsOfInterest ON Reviews.poiId = PointsOfInterest.id
+INNER JOIN User ON Reviews.userId = User.idFacebook
+WHERE poiId = ? AND active = true";
     $parameters = array();
     $parameters[0] = $id;
     $typeParameters = "i";

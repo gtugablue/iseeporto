@@ -155,7 +155,7 @@ public class SuggestedMenu extends Fragment {
                     new SuggestedPlacesAdapter.SuggestedPoiData(
                             getView(),
                             sPoI.getInt("id"),
-                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + sPoI.getInt("id") + ".jpg",
                             stringCrop(sPoI.getString("name"), 25),
                             sPoI.getString("address"),
                             (int)(sPoI.getDouble("distance")));
