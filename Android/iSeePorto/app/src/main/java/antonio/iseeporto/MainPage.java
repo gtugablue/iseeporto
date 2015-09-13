@@ -3,23 +3,24 @@ package antonio.iseeporto;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
-public class MainPage extends ActionBarActivity
+public class MainPage extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -62,6 +63,9 @@ public class MainPage extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        SingletonStringId.getInstance().setId("1");
+
     }
 
     @Override
@@ -139,6 +143,7 @@ public class MainPage extends ActionBarActivity
             case MenuOptions.FRIENDS:
                 setFalsePreviousQRCodeScreen();
                 transaction.replace(R.id.container, friendsFrag, "Friends");
+//                transaction.replace(R.id.container, placeFrag, "Place");
                 break;
             case MenuOptions.QRCODE:
                 transaction.commit();
@@ -212,14 +217,34 @@ public class MainPage extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        /*//noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 
     /**

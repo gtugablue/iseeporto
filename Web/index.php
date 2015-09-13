@@ -64,7 +64,7 @@ header('Content-Type: text/html; charset=utf-8');
                     <a href="#page-top"></a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#features">Funcionalidades</a>
+                    <a class="page-scroll" href="#features">Características</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#contact">Contacto</a>
@@ -123,7 +123,7 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Funcionalidades</h2>
+                <h2 class="section-heading">Características</h2>
                 <h3 class="section-subheading text-muted">(Re)Descobrir novos locais fascinantes na Invicta.</h3>
             </div>
         </div>

@@ -33,6 +33,7 @@ CREATE TABLE Region
 CREATE TABLE User
 (
   idFacebook VARCHAR(64) PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
   points INT NOT NULL,
   numVisits INT NOT NULL,
   numReviews INT NOT NULL,
@@ -245,6 +246,6 @@ AFTER DELETE ON PointsOfInterest
 FOR EACH ROW
   BEGIN
     UPDATE User SET points = points - 5, numPoIs = numPoIs - 1 WHERE idFacebook = Old.userId;
-    DELETE FROM PoIVisits WHERE PointsOfInterest.id = OLD.id;
-    DELETE FROM Reviews WHERE PointsOfInterest.id = OLD.id;
+    DELETE FROM PoIVisits WHERE PoIVisits.poiId = OLD.id;
+    DELETE FROM Reviews WHERE Reviews.poiId = OLD.id;
   END;

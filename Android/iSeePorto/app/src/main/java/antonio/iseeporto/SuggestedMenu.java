@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,6 +53,7 @@ public class SuggestedMenu extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private SuggestedPlacesAdapter spAdapter;
     private List<SuggestedPlacesAdapter.SuggestedPoiData> data;
 
     /**
@@ -83,7 +87,6 @@ public class SuggestedMenu extends Fragment {
         }
 
 
-
     }
 
     @Override
@@ -92,20 +95,19 @@ public class SuggestedMenu extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_suggested_menu, container, false);
         ListView listView = (ListView) view.findViewById(R.id.suggested_list_view);
-        SuggestedPlacesAdapter spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
+        spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
         data = spAdapter.getData();
-        listView.setAdapter(new SuggestedPlacesAdapter(inflater.getContext()));
+        listView.setAdapter(spAdapter);
 
         FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent = new Intent(inflater.getContext(), Search.class);
+                Intent searchIntent = new Intent(inflater.getContext(), SearchPoi.class);
                 startActivity(searchIntent);
             }
         });
 
-        task.setActivity(this.getActivity());
         startInfoTransfer();
 
         return view;
@@ -113,24 +115,73 @@ public class SuggestedMenu extends Fragment {
 
     public void startInfoTransfer()
     {
-        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=1&currLon=1&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+        double latitude = 41.1488208;
+        double longitude = -8.6115876;
+        // No time to implement this properly and get the location.
+        String url = "https://iseeporto.revtut.net/api/api.php?action=get_suggested_pois&currLat=" + latitude + "&currLon=" + longitude + "&minDist=0&maxDist=5000&accessToken=" + Singleton.getInstance().getAccessToken().getToken();
+
         System.out.println("URL: " + url);
+        executeUrl(url);
+    }
+
+    void executeUrl(String url)
+    {
+        JSONAsyncTask task = new JSONAsyncTask() {
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                if (!result) {
+                    System.err.println("Error reading data from the server.");
+                    return;
+                }
+                try {
+                    if (data == null)
+                    {
+                        System.err.println("Error reading data from the server.");
+                        return;
+                    }
+                    JSONArray jsona = new JSONArray(data);
+                    shortcut(jsona);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        task.setActivity(getActivity());
+
         task.execute(url);
     }
 
-    private JSONAsyncTask task = new JSONAsyncTask() {
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (!result) {
-                return;
-            }
-            try {
-                JSONArray jsona = new JSONArray(data);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+    public void shortcut(JSONArray jsona) throws JSONException {
+        data.clear();
+        System.out.println("Success??");
+        for (int i = 0; i < jsona.length(); i++)
+        {
+            JSONObject sPoI = jsona.getJSONObject(i);
+            int id = sPoI.getInt("id");
+            SuggestedPlacesAdapter.SuggestedPoiData spd =
+                    new SuggestedPlacesAdapter.SuggestedPoiData(
+                            getView(),
+                            sPoI.getInt("id"),
+                            "https://iseeporto.revtut.net/uploads/PoI_photos/" + 1 + ".jpg",
+                            stringCrop(sPoI.getString("name"), 25),
+                            sPoI.getString("address"),
+                            (int)(sPoI.getDouble("distance")));
+            data.add(spd);
         }
-    };
+        spAdapter.notifyDataSetChanged();
+    }
+
+    private String stringCrop(String s, int maxChars)
+    {
+        String s2 = new String(s);
+        if (s2.length() > maxChars)
+        {
+            s2 = s2.substring(0, maxChars - 3);
+            s2 += "...";
+        }
+        return s2;
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

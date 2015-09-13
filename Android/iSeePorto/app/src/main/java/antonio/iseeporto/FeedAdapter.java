@@ -199,7 +199,7 @@ public class FeedAdapter extends BaseAdapter {
         downloadImageTask.execute(dataPosition.getFriendImageURL());
 
 
-        TextView feedText = (TextView) row.findViewById(R.id.achievement_name);
+        TextView feedText = (TextView) row.findViewById(R.id.feedText);
         String text = dataPosition.getFriendName() + " visited " + dataPosition.getPoiName1() + (dataPosition.getPoiName2() == null ? "" : (" and " + dataPosition.getPoiName2()));
         feedText.setText(text);
 
