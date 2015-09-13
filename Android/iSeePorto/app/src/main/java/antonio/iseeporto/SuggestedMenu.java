@@ -172,7 +172,7 @@ public class SuggestedMenu extends Fragment {
         spAdapter.notifyDataSetChanged();
     }
 
-    private String stringCrop(String s, int maxChars)
+    public static String stringCrop(String s, int maxChars)
     {
         String s2 = new String(s);
         if (s2.length() > maxChars)
