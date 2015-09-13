@@ -19,6 +19,8 @@ public class Singleton {
     }
 
     private Singleton() {
+        latitude = 0;
+        longitude = 0;
     }
 
     public double getLatitude() {

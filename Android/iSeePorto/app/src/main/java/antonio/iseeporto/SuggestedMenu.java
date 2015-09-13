@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -81,6 +82,14 @@ public class SuggestedMenu extends Fragment {
         spAdapter = new SuggestedPlacesAdapter(inflater.getContext());
         data = spAdapter.getData();
         listView.setAdapter(spAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SuggestedMenu.this.getActivity(), SearchPoiResult.class);
+                SingletonStringId.getInstance().setId(id + "");
+                startActivity(intent);
+            }
+        });
 
         FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {

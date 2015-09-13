@@ -2,11 +2,8 @@ package antonio.iseeporto;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,8 +11,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -55,6 +50,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
             // StatusLine stat = response.getStatusLine();
             int status = response.getStatusLine().getStatusCode();
+            Log.e("status", status+"");
 
             if (status == 200) {
                 HttpEntity entity = response.getEntity();
