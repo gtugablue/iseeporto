@@ -111,6 +111,7 @@ function get_user_info($accessToken, $id)
     if (!login($accessToken))
     {
         http_response_code(401);
+        return null;
     }
     $friends = getFacebookFriends($fb, $accessToken);
     $userNode = getFacebookGraphUser($fb, $accessToken);
@@ -403,16 +404,21 @@ function delete_poi($accessToken, $id)
     return true;
 }
 
-function find_pois_by_name($name)
+function find_pois_by_name($name, $currLat, $currLon)
 {
-    $sql = "SELECT typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits
+    $sql = "SELECT id, typeId, regionId, name, description, address, latitude, longitude, numLikes, numDislikes, numVisits,
+(((acos(sin((? *pi()/180)) * sin((latitude*pi()/180))+cos((? *pi()/180))
+            * cos((latitude*pi()/180)) * cos(((? - longitude)*pi()/180))))*180/pi())*60*1.1515) * 1609.344 AS distance
 FROM PointsOfInterest WHERE active = true AND name LIKE ?";
     $parameters = array();
     $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
     $name_encoded = htmlentities($name,ENT_NOQUOTES,'UTF-8');
     $name = preg_replace($accents,'$1',$name_encoded);
-    $parameters[0] = '%'.$name.'%';
-    $typeParameters = "s";
+    $parameters[0] = $currLat;
+    $parameters[1] = $currLat;
+    $parameters[2] = $currLon;
+    $parameters[3] = '%'.$name.'%';
+    $typeParameters = "ddds";
 
     $result = db_query($sql, $parameters, $typeParameters);
     if (!$result)
@@ -600,8 +606,8 @@ if (isset($_GET["action"]))
                 $value = "Missing argument";
             break;
         case "find_pois_by_name":
-            if (isset($_GET["name"]))
-                $value = find_pois_by_name($_GET["name"]);
+            if (isset($_GET["name"]) && isset($_GET["currLat"]) && isset($_GET["currLon"]))
+                $value = find_pois_by_name($_GET["name"], $_GET["currLat"], $_GET["currLon"]);
             else
                 $value = "Missing argument";
             break;
