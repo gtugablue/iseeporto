@@ -16,7 +16,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:padding="5dp">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -24,8 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/profile_pic_big"
-                android:src="@mipmap/blank_image"
-                />
+                android:src="@mipmap/blank_image" />
         </LinearLayout>
 
         <LinearLayout
