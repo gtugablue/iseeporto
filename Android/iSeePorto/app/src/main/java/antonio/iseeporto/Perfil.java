@@ -143,7 +143,6 @@ public class Perfil extends Fragment {
 
     void shortcut2(JSONArray jsona) throws JSONException {
         achievementData.clear();
-        System.out.println("Cenas " + jsona.length());
         for (int i = 0; i < jsona.length(); i++)
         {
             JSONObject sPoI = jsona.getJSONObject(i);

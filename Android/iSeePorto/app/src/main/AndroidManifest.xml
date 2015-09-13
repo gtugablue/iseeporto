@@ -22,7 +22,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".LoginPage"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,23 +34,33 @@
         </activity>
         <activity
             android:name=".MainPage"
-            android:label="@string/title_activity_main_page" >
+            android:label="@string/title_activity_main_page"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".SearchUser"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".SearchUserResult"
-            android:label="@string/title_activity_search_result" >
+            android:label="@string/title_activity_search_result"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".SearchPoiResult"
-            android:label="@string/title_activity_search_poi_result" >
+            android:label="@string/title_activity_search_poi_result"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".SearchPoi"
-            android:label="@string/title_activity_search_poi">
+            android:label="@string/title_activity_search_poi"
+            android:screenOrientation="portrait"
+            >
         </activity>
 
     </application>

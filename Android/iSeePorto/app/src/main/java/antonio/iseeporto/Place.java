@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ public class Place extends android.app.Fragment {
         View viewTemp = inflater.inflate(R.layout.place, container, false);
         report = false;
         executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
+
+        ListView reviewsList = (ListView) viewTemp.findViewById(R.id.reviews_list);
+
         return viewTemp;
     }
 
