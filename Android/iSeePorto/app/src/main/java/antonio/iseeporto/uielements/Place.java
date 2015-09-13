@@ -54,7 +54,7 @@ public class Place extends android.app.Fragment {
         executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
 
         ListView reviewsList = (ListView) viewTemp.findViewById(R.id.reviews_list);
-        rAdapter = new ReviewAdapter(getActivity().getApplicationContext());
+        rAdapter = new ReviewAdapter(inflater.getContext());
         reviewsList.setAdapter(rAdapter);
         downloadData();
 
