@@ -78,13 +78,13 @@ public class Place extends android.app.Fragment {
         for (int i = 0; i < array.length(); i++)
         {
             JSONObject review = array.getJSONObject(i);
-            int userId = review.getInt("userId");
+            long userId = review.getLong("userId");
             Boolean like = review.getInt("like") == 0 ? false : true;
             ReviewAdapter.ReviewData rd =
                     new ReviewAdapter.ReviewData(
                             userId,
-                            "imageUrl",
-                            "username",
+                            "https://graph.facebook.com/" + userId + "/picture?width=100&height=100",
+                            review.getString("name"),
                             review.getString("comment"),
                             like);
             data.add(rd);

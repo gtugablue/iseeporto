@@ -32,13 +32,13 @@ public class ReviewAdapter extends BaseAdapter {
     private List<ReviewData> data;
 
     public static class ReviewData {
-        protected int userID;
+        protected long userID;
         protected String userImageURL;
         protected String userName;
         protected String comment;
         protected boolean liked;
 
-        ReviewData(int userID, String userImageURL, String userName, String comment, boolean liked) {
+        ReviewData(long userID, String userImageURL, String userName, String comment, boolean liked) {
             this.userImageURL = userImageURL;
             this.userID = userID;
             this.userName = userName;
@@ -46,7 +46,7 @@ public class ReviewAdapter extends BaseAdapter {
             this.liked = liked;
         }
 
-        public int getUserID() {
+        public long getUserID() {
             return userID;
         }
 
