@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.menuactivities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;

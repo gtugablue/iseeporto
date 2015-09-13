@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.menuactivities;
 
 import android.Manifest;
 import android.content.Context;

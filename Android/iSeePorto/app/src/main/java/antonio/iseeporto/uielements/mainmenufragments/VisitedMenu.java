@@ -1,28 +1,26 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.mainmenufragments;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import antonio.iseeporto.R;
-import antonio.iseeporto.uielements.listviewadapters.FeedAdapter;
+import antonio.iseeporto.uielements.listviewadapters.VisitedPlacesAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FeedMenu.OnFragmentInteractionListener} interface
+ * {@link VisitedMenu.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FeedMenu#newInstance} factory method to
+ * Use the {@link VisitedMenu#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedMenu extends Fragment {
+public class VisitedMenu extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,11 +38,11 @@ public class FeedMenu extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FeedMenu.
+     * @return A new instance of fragment VisitedMenu.
      */
     // TODO: Rename and change types and number of parameters
-    public static FeedMenu newInstance(String param1, String param2) {
-        FeedMenu fragment = new FeedMenu();
+    public static VisitedMenu newInstance(String param1, String param2) {
+        VisitedMenu fragment = new VisitedMenu();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -52,7 +50,7 @@ public class FeedMenu extends Fragment {
         return fragment;
     }
 
-    public FeedMenu() {
+    public VisitedMenu() {
         // Required empty public constructor
     }
 
@@ -66,22 +64,14 @@ public class FeedMenu extends Fragment {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_feed_menu, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.feed_list_view);
-        listView.setAdapter(new FeedAdapter(inflater.getContext()));
+        View view = inflater.inflate(R.layout.fragment_visited_menu, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.visited_list_view);
+        listView.setAdapter(new VisitedPlacesAdapter(inflater.getContext(), getActivity()));
 
-        FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent searchIntent = new Intent(inflater.getContext(), SearchUser.class);
-                startActivity(searchIntent);
-            }
-        });
-        return  view;
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

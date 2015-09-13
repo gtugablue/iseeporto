@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.mainmenufragments;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +24,8 @@ import antonio.iseeporto.JSONAsyncTask;
 import antonio.iseeporto.R;
 import antonio.iseeporto.Singleton;
 import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.EvaluateThumbs;
+import antonio.iseeporto.uielements.VisitButton;
 import antonio.iseeporto.uielements.listviewadapters.ReviewAdapter;
 
 /**

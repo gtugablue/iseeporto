@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="antonio.iseeporto.uielements.Perfil">
+    tools:context="antonio.iseeporto.uielements.mainmenufragments.Perfil">
 
     <LinearLayout
         android:orientation="horizontal"

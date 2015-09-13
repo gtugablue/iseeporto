@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import antonio.iseeporto.R;
+import antonio.iseeporto.uielements.mainmenufragments.Place;
 
 /**
  * Created by Antonio on 08-09-2015.

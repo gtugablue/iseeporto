@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.menuactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import antonio.iseeporto.JSONAsyncTask;
 import antonio.iseeporto.R;
 import antonio.iseeporto.Singleton;
 import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.mainmenufragments.SuggestedMenu;
 import antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter;
 
 public class SearchPoi extends AppCompatActivity {

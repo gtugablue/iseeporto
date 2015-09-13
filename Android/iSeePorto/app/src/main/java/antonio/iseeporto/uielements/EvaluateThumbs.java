@@ -14,6 +14,8 @@ import antonio.iseeporto.JSONAsyncTask;
 import antonio.iseeporto.R;
 import antonio.iseeporto.Singleton;
 import antonio.iseeporto.SingletonStringId;
+import antonio.iseeporto.uielements.mainmenufragments.Place;
+import antonio.iseeporto.uielements.menuactivities.WriteReview;
 
 /**
  * Created by Antonio on 08-09-2015.

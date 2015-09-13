@@ -1,28 +1,26 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.menuactivities;
 
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import antonio.iseeporto.R;
 
-public class SearchPoiResult extends AppCompatActivity {
-
-    private boolean mIsLargeLayout;
+public class SearchUserResult extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_poi_result);
+        setContentView(R.layout.activity_search_user_result);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search_poi_result, menu);
+        getMenuInflater().inflate(R.menu.menu_search_user_result, menu);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         return true;
@@ -41,5 +39,4 @@ public class SearchPoiResult extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

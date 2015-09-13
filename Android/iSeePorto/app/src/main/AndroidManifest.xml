@@ -22,7 +22,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".uielements.LoginPage"
+            android:name=".uielements.menuactivities.LoginPage"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -32,32 +32,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".uielements.MainPage"
+            android:name=".uielements.menuactivities.MainPage"
             android:label="@string/title_activity_main_page"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".uielements.SearchUser"
+            android:name=".uielements.menuactivities.SearchUser"
             android:label="@string/title_activity_search"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".uielements.SearchUserResult"
+            android:name=".uielements.menuactivities.SearchUserResult"
             android:label="@string/title_activity_search_result"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".uielements.SearchPoiResult"
+            android:name=".uielements.menuactivities.SearchPoiResult"
             android:label="@string/title_activity_search_poi_result"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".uielements.SearchPoi"
+            android:name=".uielements.menuactivities.SearchPoi"
             android:label="@string/title_activity_search_poi"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".uielements.WriteReview"
+            android:name=".uielements.menuactivities.WriteReview"
             android:label="@string/title_activity_write_review" >
         </activity>
     </application>

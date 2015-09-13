@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.mainmenufragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import antonio.iseeporto.R;
+import antonio.iseeporto.uielements.menuactivities.MainPage;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

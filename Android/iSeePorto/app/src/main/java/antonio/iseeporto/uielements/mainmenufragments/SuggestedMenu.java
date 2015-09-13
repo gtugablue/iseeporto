@@ -1,4 +1,4 @@
-package antonio.iseeporto.uielements;
+package antonio.iseeporto.uielements.mainmenufragments;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import antonio.iseeporto.R;
 import antonio.iseeporto.Singleton;
 import antonio.iseeporto.SingletonStringId;
 import antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter;
+import antonio.iseeporto.uielements.menuactivities.SearchPoi;
+import antonio.iseeporto.uielements.menuactivities.SearchPoiResult;
 
 import static antonio.iseeporto.uielements.listviewadapters.SuggestedPlacesAdapter.*;
 
