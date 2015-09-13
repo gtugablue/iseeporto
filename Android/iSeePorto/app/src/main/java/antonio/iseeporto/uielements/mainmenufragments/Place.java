@@ -63,6 +63,24 @@ public class Place extends android.app.Fragment {
         return viewTemp;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        TextView tv1 = (TextView)getView().findViewById(R.id.namePlaceId);
+        tv1.setSelected(true);
+        TextView tv2 = (TextView)getView().findViewById(R.id.idAddress);
+        tv2.setSelected(true);
+        report = false;
+        executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
+
+        ListView reviewsList = (ListView) getView().findViewById(R.id.reviews_list);
+        rAdapter = new ReviewAdapter(inflater.getContext());
+        reviewsList.setAdapter(rAdapter);
+        downloadData();
+
+    }
+
     private void downloadData() {
         String url = "https://iseeporto.revtut.net/api/api.php?action=get_reviews&id=" + SingletonStringId.getInstance().getId();
 
