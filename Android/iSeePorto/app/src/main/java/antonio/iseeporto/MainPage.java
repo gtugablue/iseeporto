@@ -33,7 +33,7 @@ public class MainPage extends AppCompatActivity
      */
     private CharSequence mTitle;
 
-    protected abstract class MenuOptions{
+    protected abstract class MenuOptions {
         public final static int PERFIL = 0;
         public final static int SUGGESTIONS = 1;
         public final static int VISITED = 2;
