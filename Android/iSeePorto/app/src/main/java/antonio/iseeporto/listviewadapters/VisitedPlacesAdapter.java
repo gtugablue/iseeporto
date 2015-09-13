@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.listviewadapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.JSONAsyncTask;
+import antonio.iseeporto.R;
+import antonio.iseeporto.Singleton;
 
 /**
  * Created by Duarte on 09/09/2015.
@@ -77,14 +82,14 @@ public class VisitedPlacesAdapter extends BaseAdapter {
 
     private List<VisitedPoiData> dataV;
 
-    VisitedPlacesAdapter(Context context, Activity act){
+    public VisitedPlacesAdapter(Context context, Activity act){
         this.context = context;
         final DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         dataV = new ArrayList<>();
 
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
                     JSONArray temp = new JSONArray(data);
@@ -150,7 +155,7 @@ public class VisitedPlacesAdapter extends BaseAdapter {
                 row.post(new Runnable() {
                     @Override
                     public void run() {
-                        bmImage.setImageBitmap(result);
+                        getBmImage().setImageBitmap(result);
                     }
                 });
             }

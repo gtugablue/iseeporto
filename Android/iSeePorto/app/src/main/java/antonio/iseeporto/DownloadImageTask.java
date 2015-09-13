@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import java.io.InputStream;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
     ImageView bmImage;
     Bitmap[] image;
 
@@ -31,6 +32,14 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             e.printStackTrace();
         }
         return mIcon11;
+    }
+
+    public ImageView getBmImage() {
+        return bmImage;
+    }
+
+    public Bitmap[] getImage() {
+        return image;
     }
 
     protected void onPostExecute(Bitmap result) {

@@ -1,6 +1,5 @@
 package antonio.iseeporto;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import antonio.iseeporto.listviewadapters.SuggestedPlacesAdapter;
 
 public class SearchPoi extends AppCompatActivity {
     EditText searchBar;
@@ -58,7 +59,7 @@ public class SearchPoi extends AppCompatActivity {
         System.out.println(url);
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
                     JSONArray array = new JSONArray(data);
@@ -78,7 +79,6 @@ public class SearchPoi extends AppCompatActivity {
         for (int i = 0; i < array.length(); i++)
         {
             JSONObject sPoI = array.getJSONObject(i);
-            int id = sPoI.getInt("id");
             SuggestedPlacesAdapter.SuggestedPoiData spd =
                     new SuggestedPlacesAdapter.SuggestedPoiData(
                             view,
@@ -96,8 +96,11 @@ public class SearchPoi extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         return true;
     }
 

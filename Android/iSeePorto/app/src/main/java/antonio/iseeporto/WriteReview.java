@@ -3,7 +3,6 @@ package antonio.iseeporto;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,8 +35,11 @@ public class WriteReview extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search_poi_result, menu);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         return true;
     }
 
@@ -59,9 +61,8 @@ public class WriteReview extends AppCompatActivity {
     {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
-                Log.e("Liked->", data.toString());
             }
         };
         temp.setActivity(this);

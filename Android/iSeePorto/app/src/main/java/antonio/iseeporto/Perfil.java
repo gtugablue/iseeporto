@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import antonio.iseeporto.listviewadapters.AchievementsAdapter;
+
 /**
  * Created by Antonio on 08-09-2015.
  */
@@ -79,7 +81,7 @@ public class Perfil extends Fragment {
 
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
                     objInfo = new JSONObject(data+"");
@@ -93,7 +95,7 @@ public class Perfil extends Fragment {
 
         JSONAsyncTask temp2 = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
                     JSONArray arrayInfo = new JSONArray(data);

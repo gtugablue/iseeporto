@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by Antonio on 12-09-2015.
  */
-class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
+public class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     ProgressDialog dialog;
     public String data;
@@ -30,7 +30,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPreExecute() {
+    public void onPreExecute() {
         super.onPreExecute();
         dialog = new ProgressDialog(act);
         dialog.setMessage("Loading, please wait");
@@ -40,7 +40,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... urls) {
+    public Boolean doInBackground(String... urls) {
         try {
 
             //------------------>>
@@ -67,7 +67,7 @@ class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
         return false;
     }
 
-    protected void onPostExecute(Boolean result) {
+    public void onPostExecute(Boolean result) {
         dialog.cancel();
         //notifyAll();
             /*adapter.notifyDataSetChanged();

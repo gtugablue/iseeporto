@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,13 +12,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.R;
+
 /**
  * Created by Duarte on 08/09/2015.
  */
 public class SuggestedPlacesAdapter extends BaseAdapter {
 
     private final Context context;
-    View row ;
+    private View row ;
 
     public List<SuggestedPoiData> getData() {
         return data;
@@ -34,7 +37,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
         protected int distance;
         protected Bitmap[] bitmapArray = new Bitmap[1];
 
-        SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, String address,int distance){
+        public SuggestedPoiData(View view, int poiID,String poiImageURL,String poiName, String address,int distance){
             this.poiID = poiID;
             this.poiImageURL = poiImageURL;
             this.poiName = poiName;
@@ -117,7 +120,7 @@ public class SuggestedPlacesAdapter extends BaseAdapter {
                     row.post(new Runnable() {
                         @Override
                         public void run() {
-                            bmImage.setImageBitmap(result);
+                            getBmImage().setImageBitmap(result);
                         }
                     });
                 }

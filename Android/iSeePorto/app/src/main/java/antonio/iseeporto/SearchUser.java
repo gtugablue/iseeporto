@@ -12,6 +12,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import antonio.iseeporto.listviewadapters.SearchFriendsAdapter;
+
 public class SearchUser extends AppCompatActivity {
 
     @Override
@@ -42,6 +44,7 @@ public class SearchUser extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         return true;
     }

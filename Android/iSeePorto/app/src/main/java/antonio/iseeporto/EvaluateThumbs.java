@@ -91,7 +91,7 @@ public class EvaluateThumbs extends Fragment {
     {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 Log.e("Liked->", data.toString());
             }

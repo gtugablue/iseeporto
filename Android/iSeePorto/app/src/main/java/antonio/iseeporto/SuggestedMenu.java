@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import antonio.iseeporto.listviewadapters.SuggestedPlacesAdapter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,7 +121,7 @@ public class SuggestedMenu extends Fragment {
     void executeUrl(String url)
     {
         JSONAsyncTask task = new JSONAsyncTask() {
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 if (!result) {
                     System.err.println("Error reading data from the server.");

@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.R;
+
 /**
  * Created by Duarte on 11/09/2015.
  */
@@ -21,13 +24,13 @@ public class AchievementsAdapter extends BaseAdapter {
     private List<AchievementData> data;
     private View row ;
 
-    protected static class AchievementData{
+    public static class AchievementData{
         private String imageURL;
         private int achievementID;
         private String achievementName;
         private String achievementDescription;
 
-        AchievementData(String imageURL, int achievementID, String achievementName ,String achievementDescription){
+        public AchievementData(String imageURL, int achievementID, String achievementName ,String achievementDescription){
             this.imageURL = imageURL;
             this.achievementID = achievementID;
             this.achievementName = achievementName;
@@ -68,11 +71,11 @@ public class AchievementsAdapter extends BaseAdapter {
         }
     }
 
-    AchievementsAdapter(Context context){
+    public AchievementsAdapter(Context context){
         this.context = context;
     }
 
-    AchievementsAdapter(Context context, ArrayList<AchievementData> data){
+    public AchievementsAdapter(Context context, ArrayList<AchievementData> data){
         this.context = context;
         this.data = data;
     }
@@ -111,7 +114,7 @@ public class AchievementsAdapter extends BaseAdapter {
                 row.post(new Runnable() {
                     @Override
                     public void run() {
-                        bmImage.setImageBitmap(result);
+                        getBmImage().setImageBitmap(result);
                     }
                 });
             }

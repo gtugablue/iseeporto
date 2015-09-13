@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.listviewadapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.R;
 
 /**
  * Created by Duarte on 12/09/2015.
@@ -47,17 +50,9 @@ public class SearchFriendsAdapter extends BaseAdapter {
         }
     }
 
-    SearchFriendsAdapter(Context context, ArrayList<SearchResults> data){
+    public SearchFriendsAdapter(Context context, ArrayList<SearchResults> data){
         this.context = context;
         this.data = data;
-    }
-
-    SearchFriendsAdapter(Context context){
-        this.context = context;
-        this.data = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
-            this.data.add(new SearchResults(i, "https://iseeporto.revtut.net/uploads/PoI_photos/18.jpg", "Rogério Costa"));
-        }
     }
 
     @Override
@@ -78,7 +73,8 @@ public class SearchFriendsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        row = inflater.inflate(R.layout.search_result_row, parent, false);
+        if(row != null)
+            row = inflater.inflate(R.layout.search_result_row, parent, false);
         SearchResults searchResults = data.get(position);
 
         ImageView image = (ImageView) row.findViewById(R.id.friend_user_image);
@@ -89,7 +85,7 @@ public class SearchFriendsAdapter extends BaseAdapter {
                 row.post(new Runnable() {
                     @Override
                     public void run() {
-                        bmImage.setImageBitmap(result);
+                        getBmImage().setImageBitmap(result);
                     }
                 });
             }

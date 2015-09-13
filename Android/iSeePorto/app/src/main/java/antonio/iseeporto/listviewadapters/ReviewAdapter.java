@@ -1,4 +1,4 @@
-package antonio.iseeporto;
+package antonio.iseeporto.listviewadapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import antonio.iseeporto.DownloadImageTask;
+import antonio.iseeporto.R;
 
 /**
  * Created by Duarte on 13/09/2015.
@@ -34,7 +37,7 @@ public class ReviewAdapter extends BaseAdapter {
         protected String comment;
         protected boolean liked;
 
-        ReviewData(long userID, String userImageURL, String userName, String comment, boolean liked) {
+        public ReviewData(long userID, String userImageURL, String userName, String comment, boolean liked) {
             this.userImageURL = userImageURL;
             this.userID = userID;
             this.userName = userName;
@@ -70,12 +73,12 @@ public class ReviewAdapter extends BaseAdapter {
     }
 
 
-    ReviewAdapter(Context context, Activity activity) {
+    public ReviewAdapter(Context context, Activity activity) {
         this.context = context;
         data = new ArrayList<>();
     }
 
-    ReviewAdapter(Context context, List<ReviewData> dataV) {
+    public ReviewAdapter(Context context, List<ReviewData> dataV) {
         this.context = context;
         this.data = dataV;
     }
@@ -110,7 +113,7 @@ public class ReviewAdapter extends BaseAdapter {
                 row.post(new Runnable() {
                     @Override
                     public void run() {
-                        bmImage.setImageBitmap(result);
+                        getBmImage().setImageBitmap(result);
                     }
                 });
             }

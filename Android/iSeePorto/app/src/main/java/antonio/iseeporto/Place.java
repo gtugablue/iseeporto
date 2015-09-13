@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import antonio.iseeporto.listviewadapters.ReviewAdapter;
+
 /**
  * Created by Antonio on 08-09-2015.
  */
@@ -59,7 +61,7 @@ public class Place extends android.app.Fragment {
 
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 try {
                     JSONArray array = new JSONArray(data);
@@ -80,7 +82,7 @@ public class Place extends android.app.Fragment {
         {
             JSONObject review = array.getJSONObject(i);
             long userId = review.getLong("userId");
-            Boolean like = review.getInt("like") == 0 ? false : true;
+            Boolean like = review.getInt("like") != 0;
             ReviewAdapter.ReviewData rd =
                     new ReviewAdapter.ReviewData(
                             userId,
@@ -97,7 +99,7 @@ public class Place extends android.app.Fragment {
     {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
                 if (!result) {
                     return;
@@ -105,11 +107,11 @@ public class Place extends android.app.Fragment {
                 try {
                     if (checkVisited)
                     {
-                        infoTransferedBoolean = new Boolean(data);
+                        infoTransferedBoolean = Boolean.valueOf(data);
                     }
                     else if (checkLiked)
                     {
-                        infoTransferedText = new String(data);
+                        infoTransferedText = data;
                     }
                     else {
                         objInfo = new JSONObject(data);
@@ -137,7 +139,7 @@ public class Place extends android.app.Fragment {
     public void visitarLocal() {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
             }
         };
@@ -160,7 +162,7 @@ public class Place extends android.app.Fragment {
     {
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
             }
         };
@@ -171,7 +173,7 @@ public class Place extends android.app.Fragment {
 
         temp = new JSONAsyncTask() {
             @Override
-            protected void onPostExecute(Boolean result) {
+            public void onPostExecute(Boolean result) {
                 super.onPostExecute(result);
             }
         };
@@ -240,14 +242,13 @@ public class Place extends android.app.Fragment {
                     checkLiked = false;
                     if (infoTransferedText.equals("1"))
                     {
-                        ((ImageView)getView().findViewById(R.id.gostoB)).setBackgroundColor(Color.GREEN);
+                        getView().findViewById(R.id.gostoB).setBackgroundColor(Color.GREEN);
                     }
                     else if (infoTransferedText.equals("0"))
                     {
-                        ((ImageView)getView().findViewById(R.id.naoGostoB)).setBackgroundColor(Color.RED);
+                        getView().findViewById(R.id.naoGostoB).setBackgroundColor(Color.RED);
                     }
 
-                    return;
                 }
 
             }
