@@ -54,7 +54,7 @@ public class SearchPoi extends AppCompatActivity {
 
     private void searchByName(String name)
     {
-        String url = "https://iseeporto.revtut.net/api/api.php?action=find_pois_by_name&name=" + name;
+        String url = "https://iseeporto.revtut.net/api/api.php?action=find_pois_by_name&name=" + name + "&currLat=" + Singleton.getInstance().getLatitude() + "&currLon=" + Singleton.getInstance().getLongitude();
         System.out.println(url);
         JSONAsyncTask temp = new JSONAsyncTask() {
             @Override
