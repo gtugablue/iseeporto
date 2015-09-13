@@ -1,7 +1,7 @@
 # Achievements
-INSERT INTO Achievement(id, name, description) VALUES (1, "Perda da virgindade", "Fez a primeira visita.");
+INSERT INTO Achievement(id, name, description) VALUES (1, "Turista", "Fez a primeira visita.");
 INSERT INTO Achievement(id, name, description) VALUES (2, "Comentador", "Fez a primeira review.");
-INSERT INTO Achievement(id, name, description) VALUES (3, "Turista", "Fez 10 visitas.");
+INSERT INTO Achievement(id, name, description) VALUES (3, "Dora, a exploradora", "Fez 10 visitas.");
 INSERT INTO Achievement(id, name, description) VALUES (4, "Contribuidor", "Criou o primeiro ponto de interesse.");
 INSERT INTO Achievement(id, name, description) VALUES (5, "Cartógrafo", "Criou 5 pontos de interesse.");
 

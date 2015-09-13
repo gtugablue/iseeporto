@@ -21,7 +21,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/placePicId"
                 android:src="@mipmap/blank_image"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:layout_margin="5dp" />
 
         </RelativeLayout>
 
@@ -37,30 +38,39 @@
             android:weightSum="1">
 
             <TextView
-                android:layout_width="134dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Nome do Local"
                 android:id="@+id/namePlaceId"
                 android:textSize="25dp"
-                android:layout_marginLeft="5dp" />
+                android:layout_margin="5dp"
+                android:layout_weight="0.3"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="-1"
+                android:singleLine="true"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Address"
                 android:clickable="true"
                 android:id="@+id/idAddress"
-                android:layout_marginLeft="5dp" />
+                android:layout_margin="5dp"
+                android:layout_weight="0.3"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="-1"/>
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:weightSum="1"
                 android:id="@+id/avaliacao"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:layout_margin="5dp"
+                android:layout_weight="0.3">
 
             </LinearLayout>
 
@@ -77,14 +87,16 @@
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Visitas e Gostos"
-            android:id="@+id/placeInfoId" />
+            android:id="@+id/placeInfoId"
+            android:layout_margin="5dp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.33">
+        android:layout_weight="0.33"
+        android:layout_margin="5dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -103,7 +115,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/reviews_list" />
+            android:id="@+id/listView" />
     </LinearLayout>
 
     <LinearLayout
@@ -119,6 +131,7 @@
             android:text="@string/report"
             android:clickable="true"
             android:id="@+id/reportId"
-            android:textColor="#1200ff" />
+            android:textColor="#1200ff"
+            android:layout_margin="5dp" />
     </LinearLayout>
 </LinearLayout>

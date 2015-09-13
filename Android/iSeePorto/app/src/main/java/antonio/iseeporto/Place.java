@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Created by Antonio on 08-09-2015.
@@ -33,6 +34,10 @@ public class Place extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewTemp = inflater.inflate(R.layout.place, container, false);
+        TextView tv1 = (TextView)viewTemp.findViewById(R.id.namePlaceId);
+        tv1.setSelected(true);
+        TextView tv2 = (TextView)viewTemp.findViewById(R.id.idAddress);
+        tv2.setSelected(true);
         report = false;
         executeUrl("https://iseeporto.revtut.net/api/api.php?action=get_poi_info&id=" + SingletonStringId.getInstance().getId());
 
